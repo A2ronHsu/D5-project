@@ -1,11 +1,7 @@
 import Express from "express";
 import dotenv from "dotenv";
-import router from "./routes.js";
-import { google } from "googleapis";
+import router from "./routes";
 
-const auth = new google.auth.GoogleAuth({
-   keyFile: './d5-project-460116-01b43c0675ac.json'
-})
 
 
 const server = Express();
