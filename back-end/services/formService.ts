@@ -1,5 +1,26 @@
+import { Request, Response } from "express";
+import { entradaPosiciones } from "../models/formModel";
+import GoogleRepository from "../repositories/googlesheetRepository";
+
 class FormService {
-   submit (){
-      
+
+   constructor(private repository:GoogleRepository){
    }
+
+
+
+
+   async submit (input:entradaPosiciones){
+      const {codigo, pasillo, bloco, secuencia} = input;
+      const data = await this.repository.writeData("A:M",[[codigo, '' , '',pasillo, bloco, secuencia]]);
+      return data;
+   }
+
+   async getCodigo(codigo:string){
+      const codigoColumns = this.repository.filterCodigoIndex("ZP3035C");
+      return codigoColumns;
+   }
+
 }
+
+export default FormService;

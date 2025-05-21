@@ -1,4 +1,4 @@
-import Express from "express";
+import Express, { urlencoded } from "express";
 import dotenv from "dotenv";
 import router from "./routes";
 
@@ -7,7 +7,7 @@ import router from "./routes";
 const server = Express();
 
 dotenv.config();
-server.use(router);
+server.use(urlencoded({extended:true}),router);
 
 
 server.listen(process.env.PORT,()=>{
