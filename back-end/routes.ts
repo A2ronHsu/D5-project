@@ -14,7 +14,7 @@ router.post("/submit", async (req: Request, res: Response)=>{
    await formController.submit(req, res);
 });
 
-router.get("/getRange", async (req: Request, res: Response)=>{
+router.get("/getCodigo", async (req: Request, res: Response)=>{
    await formController.getCodigo(req,res);
 })
 

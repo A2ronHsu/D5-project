@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import GoogleRepository from "../repositories/googlesheetRepository";
 import { entradaPosicionesValidation, getCodigoValidation } from "../schemas/FormSchemas";
 import FormService from "../services/formService";
 
@@ -19,6 +18,11 @@ class FormController {
       const validInput =  getCodigoValidation(req.body);
       const response = await this.formService.getCodigo(validInput);
       res.json(response);
+   }
+
+   async getAllCodigos(req:Request, res:Response){
+      const response = await this.formService.getAllCodigos();
+      res.json({allCodigos:response});
    }
 }
 

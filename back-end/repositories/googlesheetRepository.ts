@@ -34,7 +34,7 @@ class GoogleRepository {
       range: string,
       values: string[][],
       valueInputOption: "USER_ENTERED" | "RAW" = "USER_ENTERED"
-   ): Promise<sheets_v4.Schema$AppendValuesResponse | null> {
+   ): Promise<any[][] | null | undefined> {
       try {
          const sheets = this.getSheetClient();
 
@@ -42,17 +42,17 @@ class GoogleRepository {
             values: values
          }
 
-         const response = await sheets.spreadsheets.values.append({
+         const response = await sheets.spreadsheets.values.update({
             spreadsheetId: SHEET_ID,
             range: range,
             valueInputOption: valueInputOption,
-            requestBody: requestBody
+            requestBody: requestBody,
+            includeValuesInResponse: true
 
          });
 
-         console.log(`Data appended: ${response.data.updates?.updatedCells}`);
-         console.log(response.data);
-         return response.data;
+         // console.log(response.data.updatedData);
+         return response.data.updatedData?.values;
 
       } catch (error: any) {
          console.error(`Error peendin data to range ${range}:, `, error.message);
@@ -60,22 +60,22 @@ class GoogleRepository {
       }
    }
 
+
    /**
     * 
     * @param range range using A1 notation to be returned
-    * @returns range as an array of array [][], as row x column
+    * @returns data as an array of array [][] on the given range, as row x column, otherwise return undefined
     */
-   async getRange(range: string) {
+   private async getRange(range: string): Promise<any[][] | null | undefined> {
       try {
          const sheets = this.getSheetClient();
          const response = await sheets.spreadsheets.values.get({
             spreadsheetId: SHEET_ID,
             range: range
          });
-         
+
          const values = response.data.values;
-         
-         if (!values) throw new Error("empty range");
+
          return values
 
       } catch (error: any) {
@@ -84,16 +84,85 @@ class GoogleRepository {
       }
    }
 
+   private async getAll(): Promise<any[][]> {
+      try {
+         const sheet = await this.getRange("A:V");
+
+         if (!sheet) throw new Error("the sheet is empty")
+         return sheet;
+
+      } catch (error: any) {
+         error.message += "; error on getAll"
+         throw new Error(error.message)
+      }
+   }
+
+   /**
+    * use getAll to find the 0 starting index of the the input
+    * 
+    * @param codigo string input to find on the sheets
+    * @returns index of codigo if present otherwise throws an error
+    */
    async filterCodigoIndex(codigo: string) {
-      const codigoColumns = await this.getRange("A:A");
-      let allCodigo: string[] = [];
-      codigoColumns.forEach((row: string[]) => row.forEach((columns: string) => {
-         allCodigo.push(columns);
-      }))
+      try {
+         const codigoColumns = await this.getAll();
 
-      const codigoIndex = allCodigo.indexOf(codigo);
 
-      return codigoIndex;
+         //find the index of the first occurrence of "codigo"
+         let codigoIndex: number = codigoColumns.findIndex((row: string[]) => {
+            return row[0].toLowerCase() == codigo.toLowerCase();
+         });
+
+         if (codigoIndex == -1) throw new Error("codigo not found");
+
+         return codigoIndex;
+
+      } catch (error: any) {
+         error.message += "; error on filterCodigoIndex";
+         console.error(error.message);
+         throw new Error(error.message);
+      }
+   }
+
+   /**
+    * 
+    * @param codigo codigo of the posicion to be updated
+    * @param newPosicion array of the new posicion in the correct order: pasillo, bloco, secuencia
+    * @returns an array of array string[][], representing the row and columns of the updated row of codigo
+    */
+   async appendPosicion(codigo: string, newPosicion: string[]) {
+
+         const condigoIndex = await this.filterCodigoIndex(codigo);
+         console.log(condigoIndex);
+   
+         const range = `D${condigoIndex + 1}:V${condigoIndex + 1}`;
+         const dataRow = await this.getRange(range);
+   
+         if (!dataRow) {
+            return await this.writeData(range, [newPosicion]);
+         }
+         
+         const outputData = newPosicion;
+         outputData.push(...dataRow[0])
+   
+         if (outputData.length > 20){
+            for (let i=0; i<4; i++){
+               outputData.pop();
+            }
+         }
+
+         // console.log(dataRow);
+         return this.writeData(range,[outputData]);
+   }
+
+   /**
+    * 
+    * @returns all codigo of the table, basically the column A:A
+    */
+   async getAllCodigos():Promise<any[][]> {
+      const allCodigos = await this.getRange("A:A");
+      if(!allCodigos) throw new Error("empty codigo columns");
+      return allCodigos
    }
 }
 
