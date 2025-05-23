@@ -20,7 +20,7 @@ class FormService {
       return codigoColumns;
    }
 
-   async getAllCodigos(): Promise<any[][]>{
+   async getAllCodigos(): Promise<string[]>{
       const allCodigos = await this.repository.getAllCodigos();
       return allCodigos;
    }

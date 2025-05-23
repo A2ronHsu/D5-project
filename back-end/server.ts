@@ -1,4 +1,4 @@
-import Express, { urlencoded } from "express";
+import Express, { json, urlencoded } from "express";
 import dotenv from "dotenv";
 import router from "./routes";
 
@@ -6,8 +6,10 @@ import router from "./routes";
 
 const server = Express();
 
+
+
 dotenv.config();
-server.use(urlencoded({extended:true}),router);
+server.use(Express.static("public"), json(),urlencoded({extended:true}),router);
 
 
 server.listen(process.env.PORT,()=>{

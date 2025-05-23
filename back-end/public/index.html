@@ -10,28 +10,29 @@
 </head>
 
 <body>
-   <form class="formulario_entrada_posiciones" method="post" action="http://localhost:3000/submit">
+   <form id="formulario_entrada_posiciones" method="post" action="http://localhost:3000/submit">
       <fieldset class="entrada_posiciones">
          <legend>
             Entrada de posiciones
          </legend>
          <label for="codigo">Codigo</label>
-         <input type="search" name="codigo" id="codigo" list="codigoslist">
+         <input type="search" name="codigo" id="codigo" list="codigoslist" required >
          <datalist id="codigoslist">
 
          </datalist>
 
          <label for="passillo">Pasillo</label>
-         <input type="text" name="pasillo" id="pasillo">
+         <input type="number" name="pasillo" id="pasillo" pattern="\d+" required>
 
          <label for="bloco">Bloco</label>
-         <input type="text" name="bloco" id="bloco">
+         <input type="number" name="bloco" id="bloco" pattern="\d+" required>
 
          <label for="secuencia">Secuencia</label>
-         <input type="text" name="secuencia" id="secuencia">
+         <input type="number" name="secuencia" id="secuencia" pattern="\d+" required">
+         <button type="submit">Enviar</button>
       </fieldset>
-      <button type="submit">Enviar</button>
    </form>
+   <div id="response"></div>
 
 </body>
 

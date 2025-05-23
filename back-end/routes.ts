@@ -19,7 +19,7 @@ router.get("/getCodigo", async (req: Request, res: Response)=>{
 })
 
 router.get("/getAllCodigos", async (req: Request, res: Response)=>{
-   await formController.getAllCodigos(req, res);c
+   await formController.getAllCodigos(req, res);
 })
 
 

@@ -133,7 +133,6 @@ class GoogleRepository {
    async appendPosicion(codigo: string, newPosicion: string[]) {
 
          const condigoIndex = await this.filterCodigoIndex(codigo);
-         console.log(condigoIndex);
    
          const range = `D${condigoIndex + 1}:V${condigoIndex + 1}`;
          const dataRow = await this.getRange(range);
@@ -159,10 +158,11 @@ class GoogleRepository {
     * 
     * @returns all codigo of the table, basically the column A:A
     */
-   async getAllCodigos():Promise<any[][]> {
+   async getAllCodigos():Promise<string[]> {
       const allCodigos = await this.getRange("A:A");
+      
       if(!allCodigos) throw new Error("empty codigo columns");
-      return allCodigos
+      return allCodigos.flat();
    }
 }
 
