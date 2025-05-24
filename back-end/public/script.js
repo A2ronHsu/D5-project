@@ -12,7 +12,7 @@ const removeAllChild = (element = codigosListContainer) => {
 
 const populateDataList = async () => {
    const cache = await caches.open("codigolist");
-   const isChached = await cache.match("http://localhost:3000/getAllCodigos");
+   const isChached = await cache.match("/getAllCodigos");
    if (isChached) {
       const allCodigos = await isChached.json();
       console.log(allCodigos);
@@ -23,7 +23,7 @@ const populateDataList = async () => {
       })
    }
 
-   fetch("http://localhost:3000/getAllCodigos")
+   fetch("/getAllCodigos")
       .then(async res => await res.json())
       .then(async (allCodigos = []) => {
          console.log(allCodigos);
