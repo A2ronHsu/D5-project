@@ -29,7 +29,7 @@ const populateDataList = async () => {
          console.log(allCodigos);
 
          const cacheResponse = new Response(JSON.stringify(allCodigos));
-         await cache.put("http://localhost:3000/getAllCodigos", cacheResponse);
+         await cache.put("/getAllCodigos", cacheResponse);
 
          removeAllChild(codigosListContainer);
          allCodigos.allCodigos.forEach(codigo => {
@@ -59,7 +59,7 @@ form.addEventListener("submit", (event) => {
 
 
 
-      fetch("http://localhost:3000/submit", {
+      fetch("/submit", {
          method: "POST",
          headers: {
             "content-type": "application/json"
