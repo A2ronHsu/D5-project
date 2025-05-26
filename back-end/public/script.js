@@ -11,17 +11,17 @@ const removeAllChild = (element = codigosListContainer) => {
 
 
 const populateDataList = async () => {
-   const cache = await caches.open("codigolist");
-   const isChached = await cache.match("/getAllCodigos");
-   if (isChached) {
-      const allCodigos = await isChached.json();
-      console.log(allCodigos);
-      allCodigos.allCodigos.forEach(codigo => {
-         const option = document.createElement("option");
-         option.setAttribute("value", codigo);
-         codigosListContainer.append(option);
-      })
-   }
+   // const cache = await caches.open("codigolist");
+   // const isChached = await cache.match("/getAllCodigos");
+   // if (isChached) {
+   //    const allCodigos = await isChached.json();
+   //    console.log(allCodigos);
+   //    allCodigos.allCodigos.forEach(codigo => {
+   //       const option = document.createElement("option");
+   //       option.setAttribute("value", codigo);
+   //       codigosListContainer.append(option);
+   //    })
+   // }
 
    fetch("/getAllCodigos")
       .then(async res => await res.json())
