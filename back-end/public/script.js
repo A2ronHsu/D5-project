@@ -28,8 +28,8 @@ const populateDataList = async () => {
       .then(async (allCodigos = []) => {
          console.log(allCodigos);
 
-         const cacheResponse = new Response(JSON.stringify(allCodigos));
-         await cache.put("/getAllCodigos", cacheResponse);
+         // const cacheResponse = new Response(JSON.stringify(allCodigos));
+         // await cache.put("/getAllCodigos", cacheResponse);
 
          removeAllChild(codigosListContainer);
          allCodigos.allCodigos.forEach(codigo => {
