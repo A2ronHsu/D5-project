@@ -12,6 +12,6 @@ dotenv.config();
 server.use(Express.static("public"), json(),urlencoded({extended:true}),router);
 
 
-server.listen(3000,()=>{
+server.listen(process.env.PORT,()=>{
    console.log("listening")
 })

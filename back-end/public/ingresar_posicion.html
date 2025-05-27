@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Entrada de posiciones D5</title>
+   <link rel="stylesheet" href="ingresar_posicion.css">
+   <script src="ingresar_posicion.js" defer></script>
+</head>
+
+<body>
+   <form id="formulario_entrada_posiciones" method="post" action="/submit">
+      <fieldset class="entrada_posiciones">
+         <legend>
+            Entrada de posiciones
+         </legend>
+         <label for="codigo">Codigo</label>
+         <input type="search" name="codigo" id="codigo" list="codigoslist" required >
+         <datalist id="codigoslist">
+
+         </datalist>
+
+         <label for="passillo">Pasillo</label>
+         <input type="number" name="pasillo" id="pasillo" pattern="\d+" required>
+
+         <label for="bloco">Bloco</label>
+         <input type="number" name="bloco" id="bloco" pattern="\d+" required>
+
+         <label for="secuencia">Secuencia</label>
+         <input type="number" name="secuencia" id="secuencia" pattern="\d+" required">
+         <button type="submit">Enviar</button>
+      </fieldset>
+   </form>
+   <div id="response"></div>
+
+</body>
+
+</html>

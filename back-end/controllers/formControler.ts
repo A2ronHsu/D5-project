@@ -24,6 +24,12 @@ class FormController {
       const response = await this.formService.getAllCodigos();
       res.json({allCodigos:response});
    }
+
+   async getRow(req:Request, res: Response){
+      const {codigo} = req.body;
+      const response = await this.formService.getRow(codigo);
+      res.json({row:response});
+   }
 }
 
 export default FormController;

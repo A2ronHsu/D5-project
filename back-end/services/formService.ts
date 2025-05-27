@@ -24,6 +24,12 @@ class FormService {
       const allCodigos = await this.repository.getAllCodigos();
       return allCodigos;
    }
+
+   async getRow(codigo:string):Promise<string[]>{
+      const row = await this.repository.getRow(codigo);
+      return row;
+
+   }
 }
 
 export default FormService;

@@ -7,22 +7,24 @@ import authClient from "./schemas/authGoogle";
 
 
 const router = Router();
-const formController = new FormController (new FormService( new GoogleRepository(authClient()))); 
+const formController = new FormController(new FormService(new GoogleRepository(authClient())));
 
 
-router.post("/submit", async (req: Request, res: Response)=>{
+router.post("/submit", async (req: Request, res: Response) => {
    await formController.submit(req, res);
 });
 
-router.get("/getCodigo", async (req: Request, res: Response)=>{
-   await formController.getCodigo(req,res);
+router.get("/getCodigo", async (req: Request, res: Response) => {
+   await formController.getCodigo(req, res);
 })
 
-router.get("/getAllCodigos", async (req: Request, res: Response)=>{
+router.get("/getAllCodigos", async (req: Request, res: Response) => {
    await formController.getAllCodigos(req, res);
 })
 
-
+router.post("/getRow", async (req: Request, res: Response) => {
+   await formController.getRow(req, res);
+})
 
 /**
 router.post("/", async (req: Request,res: Response)=>{
