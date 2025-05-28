@@ -28,6 +28,7 @@ const populateDataList = async () => {
       .then(async (allCodigos = []) => {
          console.log(allCodigos);
 
+         
          // const cacheResponse = new Response(JSON.stringify(allCodigos));
          // await cache.put("/getAllCodigos", cacheResponse);
 
