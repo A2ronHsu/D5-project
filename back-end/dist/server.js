@@ -43,5 +43,6 @@ const server = (0, express_1.default)();
 dotenv_1.default.config();
 server.use(express_1.default.static("public"), (0, express_1.json)(), (0, express_1.urlencoded)({ extended: true }), routes_1.default);
 server.listen(process.env.PORT, () => {
+    console.log(process.env.PORT);
     console.log("listening");
 });
