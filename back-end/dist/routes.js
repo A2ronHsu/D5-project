@@ -19,6 +19,9 @@ router.get("/getCodigo", async (req, res) => {
 router.get("/getAllCodigos", async (req, res) => {
     await formController.getAllCodigos(req, res);
 });
+router.post("/getRow", async (req, res) => {
+    await formController.getRow(req, res);
+});
 /**
 router.post("/", async (req: Request,res: Response)=>{
    const repository = await GoogleRepository.build();

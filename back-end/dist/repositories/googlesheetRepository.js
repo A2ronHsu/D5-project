@@ -87,11 +87,9 @@ class GoogleRepository {
      */
     async filterCodigoIndex(codigo) {
         try {
-            const codigoColumns = await this.getAll();
+            const codigoColumns = await this.getAllCodigos();
             //find the index of the first occurrence of "codigo"
-            let codigoIndex = codigoColumns.findIndex((row) => {
-                return row[0].toLowerCase() == codigo.toLowerCase();
-            });
+            let codigoIndex = codigoColumns.findIndex(row => row.toLocaleLowerCase() == codigo.toLocaleLowerCase());
             if (codigoIndex == -1)
                 throw new Error("codigo not found");
             return codigoIndex;
@@ -134,6 +132,13 @@ class GoogleRepository {
         if (!allCodigos)
             throw new Error("empty codigo columns");
         return allCodigos.flat();
+    }
+    async getRow(codigo) {
+        const index = await this.filterCodigoIndex(codigo);
+        const row = (await this.getRange(`D${index + 1}:V${index + 1}`))?.flat();
+        if (!row)
+            throw new Error("error on getRow");
+        return row;
     }
 }
 exports.default = GoogleRepository;
