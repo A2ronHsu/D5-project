@@ -1,12 +1,31 @@
-.formulario_entrada_posiciones{
+body {
+   text-align: center;
+   max-width: 80vw;
+}
+
+
+.link_button {
+   display: inline-block;
+   padding: 10px 20px;
+   background-color: #007bff;
+   color: white;
+   text-decoration: none;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   text-align: center;
+}
+
+
+.formulario_entrada_posiciones {
    display: flex;
    flex-direction: column;
    align-items: center;
 }
 
-.entrada_posiciones{
-   /* max-width: 100%; */
-   min-width: 90vw;
+.entrada_posiciones {
+   max-width: 80vw;
+   min-width: 300px;
    display: flex;
    flex-direction: column;
    align-items: center;
@@ -15,6 +34,6 @@
 
 
 
-input{
+input {
    margin-bottom: 1em;
 }

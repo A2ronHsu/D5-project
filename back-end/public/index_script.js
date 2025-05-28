@@ -34,6 +34,8 @@ populatelist();
 
 form.addEventListener("submit", (event) => {
    event.preventDefault();
+   removeAllChild();
+
    fetch("/getRow", {
       method: "POST",
       headers: {
@@ -49,9 +51,28 @@ form.addEventListener("submit", (event) => {
          } else {
             const row = (await res.json()).row;
             console.log(row);
-            let newRow = document.createElement("tr");
+            let newRow = null;
+
             row.forEach((cell, i) => {
-              
+               if(!newRow){
+                  newRow = document.createElement("tr");
+                  newRow.setAttribute("class", "posiciones");
+                  const newCodigoCell = document.createElement("td");
+                  newCodigoCell.innerText = inputCodigo.value;
+                  newRow.append(newCodigoCell);
+               }
+
+
+               if (i % 5 < 3) {
+                  const newPosicion = document.createElement("td");
+                  newPosicion.innerText = cell;
+                  newRow.append(newPosicion);
+               }
+               if (newRow.childElementCount === 4) {
+                  posiciones_table.append(newRow);
+                  newRow = null;
+               }
+
             })
          }
       })

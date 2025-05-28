@@ -10,28 +10,33 @@
 </head>
 
 <body>
-   <form id="formulario_entrada_posiciones" method="post" action="/submit">
-      <fieldset class="entrada_posiciones">
-         <legend>
-            Entrada de posiciones
-         </legend>
-         <label for="codigo">Codigo</label>
-         <input type="search" name="codigo" id="codigo" list="codigoslist" required >
-         <datalist id="codigoslist">
+   <div class="entrada_posiciones">
+      <a href="/index.html" class="link_button">Buscar codigo</a>
 
-         </datalist>
-
-         <label for="passillo">Pasillo</label>
-         <input type="number" name="pasillo" id="pasillo" pattern="\d+" required>
-
-         <label for="bloco">Bloco</label>
-         <input type="number" name="bloco" id="bloco" pattern="\d+" required>
-
-         <label for="secuencia">Secuencia</label>
-         <input type="number" name="secuencia" id="secuencia" pattern="\d+" required">
-         <button type="submit">Enviar</button>
-      </fieldset>
-   </form>
+      <form id="formulario_entrada_posiciones" method="post" action="/submit">
+         <fieldset class="entrada_posiciones">
+            <legend>
+               Entrada de posiciones
+            </legend>
+            <label for="codigo">Codigo</label>
+            <input type="search" name="codigo" id="codigo" list="codigoslist" required >
+            <datalist id="codigoslist">
+   
+            </datalist>
+   
+            <label for="passillo">Pasillo</label>
+            <input type="number" name="pasillo" id="pasillo" pattern="\d+" required>
+   
+            <label for="bloco">Bloco</label>
+            <input type="number" name="bloco" id="bloco" pattern="\d+" required>
+   
+            <label for="secuencia">Secuencia</label>
+            <input type="number" name="secuencia" id="secuencia" pattern="\d+" required">
+            <button type="submit">Enviar</button>
+         </fieldset>
+         
+      </form>
+   </div>
    <div id="response"></div>
 
 </body>
