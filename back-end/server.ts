@@ -13,7 +13,7 @@ server.use(Express.static("public"), json(),urlencoded({extended:true}),router);
 
 
 
-server.listen(process.env.PORT,()=>{
+server.listen(3000,()=>{
    console.log(process.env.PORT)
    console.log("listening")
 })
