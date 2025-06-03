@@ -5,7 +5,7 @@ import { GoogleAuth } from "google-auth-library";
 const SHEET_ID = "1MWYhGu-_8qygncjqUFn3FrwXVLcijCz-1ofay4x6q60"
 
 class GoogleRepository {
-   private sheet: sheets_v4.Sheets | undefined;
+   private sheet: sheets_v4.Sheets;
 
    constructor(private authClient: GoogleAuth) {
       // This line initializes the 'googleapis' Sheets client instance, configuring it to use the 'auth' object (which handles the actual authentication tokens) for all API requests.
@@ -14,10 +14,10 @@ class GoogleRepository {
    }
 
 
-   private getSheetClient(): sheets_v4.Sheets {
-      if (!this.sheet) throw new Error("SheetService not initialized.");
-      return this.sheet;
-   }
+   // private getSheetClient(): sheets_v4.Sheets {
+   //    if (!this.sheet) throw new Error("SheetService not initialized.");
+   //    return this.sheet;
+   // }
 
    /**
     * Appends new rows of data to the specified range in the Google Sheet.
@@ -36,7 +36,7 @@ class GoogleRepository {
       valueInputOption: "USER_ENTERED" | "RAW" = "USER_ENTERED"
    ): Promise<any[][] | null | undefined> {
       try {
-         const sheets = this.getSheetClient();
+         const sheets = this.sheet;
 
          const requestBody: sheets_v4.Schema$ValueRange = {
             values: values
@@ -68,7 +68,7 @@ class GoogleRepository {
     */
    private async getRange(range: string): Promise<any[][] | null | undefined> {
       try {
-         const sheets = this.getSheetClient();
+         const sheets = this.sheet;
          const response = await sheets.spreadsheets.values.get({
             spreadsheetId: SHEET_ID,
             range: range

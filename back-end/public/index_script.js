@@ -45,8 +45,10 @@ form.addEventListener("submit", (event) => {
    })
       .then(async res => {
          if (!res.ok) {
+            removeAllChild();
             const response = document.createElement("p");
             response.innerText = "No encontrado";
+            response.setAttribute("class","posiciones")
             main.append(response);
          } else {
             const row = (await res.json()).row;
@@ -56,7 +58,7 @@ form.addEventListener("submit", (event) => {
             row.forEach((cell, i) => {
                if(!newRow){
                   newRow = document.createElement("tr");
-                  newRow.setAttribute("class", "posiciones");
+                  newRow.setAttribute("class","posiciones");
                   const newCodigoCell = document.createElement("td");
                   newCodigoCell.innerText = inputCodigo.value;
                   newRow.append(newCodigoCell);
