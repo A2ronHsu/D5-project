@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import FormController from "./controllers/formControler";
+import FormController from "./controllers/formController";
 import FormService from "./services/formService";
 import GoogleRepository from "./repositories/googlesheetRepository";
 import authClient from "./schemas/authGoogle";

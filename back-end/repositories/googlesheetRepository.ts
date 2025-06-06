@@ -13,12 +13,6 @@ class GoogleRepository {
 
    }
 
-
-   // private getSheetClient(): sheets_v4.Sheets {
-   //    if (!this.sheet) throw new Error("SheetService not initialized.");
-   //    return this.sheet;
-   // }
-
    /**
     * Appends new rows of data to the specified range in the Google Sheet.
     * This is ideal for adding new records.
@@ -26,7 +20,7 @@ class GoogleRepository {
     * @param range The A1 notation or R1C1 notation of a range to append values to.
     * If the range is 'Sheet1!A:D', data will be appended after the last row in columns A-D.
     * @param values The data to append, as an array of arrays (each inner array is a row).
-    * @param valueInputOption How the input data should be interpreted. 'USER_ENTERED' (default) parses values
+    * @param valueInputOption How the infilterCodigoIndexput data should be interpreted. 'USER_ENTERED' (default) parses values
     * as if they were entered into the UI. 'RAW' treats all values as strings.
     * @returns A promise that resolves to the append response from the API, or null if an error occurs.
     */

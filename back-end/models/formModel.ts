@@ -8,3 +8,7 @@ export interface entradaPosiciones {
 export interface getRange {
    range: string,
 }
+
+export interface ICustomError extends Error {
+   statusCode: number;
+}
