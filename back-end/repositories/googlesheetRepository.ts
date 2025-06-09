@@ -1,5 +1,7 @@
 import { google, sheets_v4 } from "googleapis";
 import { GoogleAuth } from "google-auth-library";
+import ResponseErrorHandler from "../schemas/requestErrorHandler";
+import { response } from "express";
 
 //id of my spreadsheet on googlesheets
 const SHEET_ID = "1MWYhGu-_8qygncjqUFn3FrwXVLcijCz-1ofay4x6q60"
@@ -28,7 +30,7 @@ class GoogleRepository {
       range: string,
       values: string[][],
       valueInputOption: "USER_ENTERED" | "RAW" = "USER_ENTERED"
-   ): Promise<any[][] | null | undefined> {
+   ): Promise<any[][]> {
       try {
          const sheets = this.sheet;
 
@@ -44,13 +46,19 @@ class GoogleRepository {
             includeValuesInResponse: true
 
          });
-
+         if (!response.data.updatedData!.values) {
+            throw new Error();
+         }
          // console.log(response.data.updatedData);
-         return response.data.updatedData?.values;
+         return response.data.updatedData!.values;
 
-      } catch (error: any) {
-         console.error(`Error peendin data to range ${range}:, `, error.message);
-         return null
+      } catch (error: unknown) {
+         console.error(`Error apending data to range ${range}:, `, error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "unknown error");
+         }
       }
    }
 
@@ -60,7 +68,7 @@ class GoogleRepository {
     * @param range range using A1 notation to be returned
     * @returns data as an array of array [][] on the given range, as row x column, otherwise return undefined
     */
-   private async getRange(range: string): Promise<any[][] | null | undefined> {
+   private async getRange(range: string): Promise<any[][]> {
       try {
          const sheets = this.sheet;
          const response = await sheets.spreadsheets.values.get({
@@ -69,12 +77,18 @@ class GoogleRepository {
          });
 
          const values = response.data.values;
+         if(!values) throw new Error ("no values on get range");
+         
 
          return values
 
-      } catch (error: any) {
-
-         throw error.message
+      } catch (error: unknown) {
+         console.error("Error getting the range ", range, error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "unknown error");
+         }
       }
    }
 
@@ -85,9 +99,14 @@ class GoogleRepository {
          if (!sheet) throw new Error("the sheet is empty")
          return sheet;
 
-      } catch (error: any) {
-         error.message += "; error on getAll"
-         throw new Error(error.message)
+      } catch (error: unknown) {
+         console.error("error getting all", error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "unknown error");
+
+         }
       }
    }
 
@@ -97,7 +116,7 @@ class GoogleRepository {
     * @param codigo string input to find on the sheets
     * @returns index of codigo if present otherwise throws an error
     */
-   async filterCodigoIndex(codigo: string) {
+   async findCodigoIndex(codigo: string) {
       try {
          const codigoColumns = await this.getAllCodigos();
 
@@ -109,10 +128,13 @@ class GoogleRepository {
 
          return codigoIndex;
 
-      } catch (error: any) {
-         error.message += "; error on filterCodigoIndex";
-         console.error(error.message);
-         throw new Error(error.message);
+      } catch (error: unknown) {
+         console.error("error fetching codigo index", error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "unknown error");
+         }
       }
    }
 
@@ -123,45 +145,78 @@ class GoogleRepository {
     * @returns an array of array string[][], representing the row and columns of the updated row of codigo
     */
    async appendPosicion(codigo: string, newPosicion: string[]) {
+      try {
+         const codigoIndex = await this.findCodigoIndex(codigo);
 
-         const condigoIndex = await this.filterCodigoIndex(codigo);
-   
-         const range = `D${condigoIndex + 1}:V${condigoIndex + 1}`;
+         const range = `D${codigoIndex + 1}:V${codigoIndex + 1}`;
          const dataRow = await this.getRange(range);
-   
+
          if (!dataRow) {
             return await this.writeData(range, [newPosicion]);
          }
-         
-         const outputData = newPosicion;
+
+         const outputData = Array.from(newPosicion);
          outputData.push(...dataRow[0])
-   
-         if (outputData.length > 20){
-            for (let i=0; i<4; i++){
+
+         //these two constants are specific for the table formatting
+         const endOfSheet = 20; //this is the number of columns
+         const posicionDataUnit = 4; //this is the size of data unit, which is 5 cells
+         if (outputData.length > endOfSheet) {
+            for (let i = 0; i < posicionDataUnit; i++) {
                outputData.pop();
             }
          }
 
          // console.log(dataRow);
-         return this.writeData(range,[outputData]);
+         return this.writeData(range, [outputData]);
+      } catch (error) {
+         console.error("error appending", error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "Unknown error");
+         }
+      }
+
+
    }
 
    /**
     * 
     * @returns all codigo of the table, basically the column A:A
     */
-   async getAllCodigos():Promise<string[]> {
-      const allCodigos = await this.getRange("A:A");
-      
-      if(!allCodigos) throw new Error("empty codigo columns");
-      return allCodigos.flat();
+   async getAllCodigos(): Promise<string[]> {
+      try {
+         const allCodigos = await this.getRange("A:A");
+
+         if (!allCodigos) throw new Error("empty codigo columns");
+         return allCodigos.flat();
+      } catch (error) {
+         console.error("error getting all codigos", error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "unknown error");
+         }
+      }
+
    }
 
-   async getRow(codigo:string): Promise<string[]>{
-      const index = await this.filterCodigoIndex(codigo);
-      const row = (await this.getRange(`D${index+1}:V${index+1}`))?.flat();
-      if (!row) throw new Error("error on getRow");
-      return row;
+   async getRow(codigo: string): Promise<string[]> {
+      try {
+         const index = await this.findCodigoIndex(codigo);
+         const row = (await this.getRange(`D${index + 1}:V${index + 1}`))?.flat();
+         if (!row) throw new Error("error on getRow");
+         return row;
+      } catch (error) {
+         console.error("error getting row", error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "unknown error");
+         }
+      }
+
 
    }
 }

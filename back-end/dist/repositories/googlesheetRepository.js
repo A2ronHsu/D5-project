@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const googleapis_1 = require("googleapis");
+const requestErrorHandler_1 = __importDefault(require("../schemas/requestErrorHandler"));
 //id of my spreadsheet on googlesheets
 const SHEET_ID = "1MWYhGu-_8qygncjqUFn3FrwXVLcijCz-1ofay4x6q60";
 class GoogleRepository {
@@ -11,11 +15,6 @@ class GoogleRepository {
         // This line initializes the 'googleapis' Sheets client instance, configuring it to use the 'auth' object (which handles the actual authentication tokens) for all API requests.
         this.sheet = googleapis_1.google.sheets({ version: "v4", auth: authClient });
     }
-    getSheetClient() {
-        if (!this.sheet)
-            throw new Error("SheetService not initialized.");
-        return this.sheet;
-    }
     /**
      * Appends new rows of data to the specified range in the Google Sheet.
      * This is ideal for adding new records.
@@ -23,13 +22,13 @@ class GoogleRepository {
      * @param range The A1 notation or R1C1 notation of a range to append values to.
      * If the range is 'Sheet1!A:D', data will be appended after the last row in columns A-D.
      * @param values The data to append, as an array of arrays (each inner array is a row).
-     * @param valueInputOption How the input data should be interpreted. 'USER_ENTERED' (default) parses values
+     * @param valueInputOption How the infilterCodigoIndexput data should be interpreted. 'USER_ENTERED' (default) parses values
      * as if they were entered into the UI. 'RAW' treats all values as strings.
      * @returns A promise that resolves to the append response from the API, or null if an error occurs.
      */
     async writeData(range, values, valueInputOption = "USER_ENTERED") {
         try {
-            const sheets = this.getSheetClient();
+            const sheets = this.sheet;
             const requestBody = {
                 values: values
             };
@@ -40,12 +39,20 @@ class GoogleRepository {
                 requestBody: requestBody,
                 includeValuesInResponse: true
             });
+            if (!response.data.updatedData.values) {
+                throw new Error();
+            }
             // console.log(response.data.updatedData);
-            return response.data.updatedData?.values;
+            return response.data.updatedData.values;
         }
         catch (error) {
-            console.error(`Error peendin data to range ${range}:, `, error.message);
-            return null;
+            console.error(`Error apending data to range ${range}:, `, error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "unknown error");
+            }
         }
     }
     /**
@@ -55,16 +62,24 @@ class GoogleRepository {
      */
     async getRange(range) {
         try {
-            const sheets = this.getSheetClient();
+            const sheets = this.sheet;
             const response = await sheets.spreadsheets.values.get({
                 spreadsheetId: SHEET_ID,
                 range: range
             });
             const values = response.data.values;
+            if (!values)
+                throw new Error("no values on get range");
             return values;
         }
         catch (error) {
-            throw error.message;
+            console.error("Error getting the range ", range, error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "unknown error");
+            }
         }
     }
     async getAll() {
@@ -75,8 +90,13 @@ class GoogleRepository {
             return sheet;
         }
         catch (error) {
-            error.message += "; error on getAll";
-            throw new Error(error.message);
+            console.error("error getting all", error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "unknown error");
+            }
         }
     }
     /**
@@ -85,7 +105,7 @@ class GoogleRepository {
      * @param codigo string input to find on the sheets
      * @returns index of codigo if present otherwise throws an error
      */
-    async filterCodigoIndex(codigo) {
+    async findCodigoIndex(codigo) {
         try {
             const codigoColumns = await this.getAllCodigos();
             //find the index of the first occurrence of "codigo"
@@ -95,9 +115,13 @@ class GoogleRepository {
             return codigoIndex;
         }
         catch (error) {
-            error.message += "; error on filterCodigoIndex";
-            console.error(error.message);
-            throw new Error(error.message);
+            console.error("error fetching codigo index", error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "unknown error");
+            }
         }
     }
     /**
@@ -107,38 +131,74 @@ class GoogleRepository {
      * @returns an array of array string[][], representing the row and columns of the updated row of codigo
      */
     async appendPosicion(codigo, newPosicion) {
-        const condigoIndex = await this.filterCodigoIndex(codigo);
-        const range = `D${condigoIndex + 1}:V${condigoIndex + 1}`;
-        const dataRow = await this.getRange(range);
-        if (!dataRow) {
-            return await this.writeData(range, [newPosicion]);
+        try {
+            const codigoIndex = await this.findCodigoIndex(codigo);
+            const range = `D${codigoIndex + 1}:V${codigoIndex + 1}`;
+            const dataRow = await this.getRange(range);
+            if (!dataRow) {
+                return await this.writeData(range, [newPosicion]);
+            }
+            const outputData = Array.from(newPosicion);
+            outputData.push(...dataRow[0]);
+            //these two constants are specific for the table formatting
+            const endOfSheet = 20; //this is the number of columns
+            const posicionDataUnit = 4; //this is the size of data unit, which is 5 cells
+            if (outputData.length > endOfSheet) {
+                for (let i = 0; i < posicionDataUnit; i++) {
+                    outputData.pop();
+                }
+            }
+            // console.log(dataRow);
+            return this.writeData(range, [outputData]);
         }
-        const outputData = newPosicion;
-        outputData.push(...dataRow[0]);
-        if (outputData.length > 20) {
-            for (let i = 0; i < 4; i++) {
-                outputData.pop();
+        catch (error) {
+            console.error("error appending", error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "Unknown error");
             }
         }
-        // console.log(dataRow);
-        return this.writeData(range, [outputData]);
     }
     /**
      *
      * @returns all codigo of the table, basically the column A:A
      */
     async getAllCodigos() {
-        const allCodigos = await this.getRange("A:A");
-        if (!allCodigos)
-            throw new Error("empty codigo columns");
-        return allCodigos.flat();
+        try {
+            const allCodigos = await this.getRange("A:A");
+            if (!allCodigos)
+                throw new Error("empty codigo columns");
+            return allCodigos.flat();
+        }
+        catch (error) {
+            console.error("error getting all codigos", error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "unknown error");
+            }
+        }
     }
     async getRow(codigo) {
-        const index = await this.filterCodigoIndex(codigo);
-        const row = (await this.getRange(`D${index + 1}:V${index + 1}`))?.flat();
-        if (!row)
-            throw new Error("error on getRow");
-        return row;
+        try {
+            const index = await this.findCodigoIndex(codigo);
+            const row = (await this.getRange(`D${index + 1}:V${index + 1}`))?.flat();
+            if (!row)
+                throw new Error("error on getRow");
+            return row;
+        }
+        catch (error) {
+            console.error("error getting row", error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "unknown error");
+            }
+        }
     }
 }
 exports.default = GoogleRepository;

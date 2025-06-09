@@ -7,13 +7,14 @@ class FormService {
     }
     async submit(input) {
         const { codigo, pasillo, bloco, secuencia } = input;
-        const data = await this.repository.appendPosicion(codigo, [pasillo, bloco, secuencia, "", ""]);
+        const data = await this.repository.appendPosicion(codigo, [pasillo, bloco, secuencia, "", ""]); //this two empty cells are required for furture usage on the main sheet.
         return data;
     }
     async getCodigo(codigo) {
-        const codigoColumns = this.repository.filterCodigoIndex("ZP3035C");
-        return codigoColumns;
+        const codigoRowNumber = await this.repository.findCodigoIndex("codigo");
+        return codigoRowNumber;
     }
+    ;
     async getAllCodigos() {
         const allCodigos = await this.repository.getAllCodigos();
         return allCodigos;

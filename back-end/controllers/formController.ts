@@ -11,8 +11,8 @@ class FormController {
 
    async submit(req: Request, res: Response) {
       try {
-         const validIput = entradaPosicionesValidation(req.body);
-         const response = await this.formService.submit(validIput);
+         const validInput = entradaPosicionesValidation(req.body);
+         const response = await this.formService.submit(validInput);
          res.json(response);
       } catch (err: unknown) {
          if (err instanceof ResponseErrorHandler) {
@@ -21,7 +21,7 @@ class FormController {
                message: err.message
             });
          } else {
-            res.json({ erro: "unknown error" });
+            res.json({ error: "unknown error" });
 
          }
       }
@@ -33,8 +33,16 @@ class FormController {
          const response = await this.formService.getCodigo(validInput);
          res.json(response);
 
-      } catch (error) {
-         res.json(error);
+      } catch (err: unknown) {
+         if (err instanceof ResponseErrorHandler) {
+            res.status(err.statusCode).json({
+               name: err.name,
+               message: err.message
+            });
+         } else {
+            res.json({ error: "unknown error" });
+
+         }
       }
    }
 
@@ -44,8 +52,16 @@ class FormController {
          res.json({ allCodigos: response });
 
 
-      } catch (error) {
-         res.json(error)
+      } catch (err: unknown) {
+         if (err instanceof ResponseErrorHandler) {
+            res.status(err.statusCode).json({
+               name: err.name,
+               message: err.message
+            });
+         } else {
+            res.json({ error: "unknown error" });
+
+         }
       }
    }
 
@@ -55,8 +71,16 @@ class FormController {
          const response = await this.formService.getRow(codigo);
          res.json({ row: response });
 
-      } catch (error) {
-         res.json(error);
+      } catch (err: unknown) {
+         if (err instanceof ResponseErrorHandler) {
+            res.status(err.statusCode).json({
+               name: err.name,
+               message: err.message
+            });
+         } else {
+            res.json({ error: "unknown error" });
+
+         }
       }
    }
 }
