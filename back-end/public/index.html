@@ -15,35 +15,19 @@
       <form id="search_codigo" action="/getRow" method="POST">
          <input type="search" id="codigo" name="codigo" list="listCodigo" required>
          <datalist id="listCodigo">
-
+            
          </datalist>
          <button type="submit" id="submit">Buscar</button>
       </form>
-
-      <table class="table" id="codigo_table">
-         <tr>
-            <th>Codigo</th>
-            <th>Uni/Cjs</th>
-         </tr>
-      </table>
-
-      <table class="table" id="descripcion_table">
-         <tr>
-            <th>Descripcion</th>
-   
-         </tr>
-
-      </table>
-      
-      <table class="table" id="posiciones_table">
-
+      <table id="posiciones_table">
          <tr class="posiciones_headings">
-
-            <th>Pas</th>
-            <th>Blo</th>
-            <th>Sec</th>
+            <th>Codigo</th>
+            <th>Pasillo</th>
+            <th>Bloco</th>
+            <th>Secuencia</th>
          </tr>
-         <tr class="deletable">
+         <tr class="posiciones">
+            <td>999999999</td>
             <td>1</td>
             <td>2</td>
             <td>3</td>

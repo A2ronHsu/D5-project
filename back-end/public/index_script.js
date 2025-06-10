@@ -2,18 +2,16 @@ const inputCodigo = document.querySelector("#codigo");
 const posiciones = document.querySelector("#posiciones")
 const posiciones_table = document.querySelector("#posiciones_table")
 const main = document.querySelector("main");
-const form = document.querySelector("#search_codigo");
-const codigoTable = document.querySelector("#codigo_table");
-const descripcionTable = document.querySelector("#descripcion_table");
+const form = document.querySelector("#search_codigo")
 
 
-const removeDeletable = () => {
-   const allPosiciones = document.querySelectorAll(".deletable");
+const removeAllChild = () => {
+   const allPosiciones = document.querySelectorAll(".posiciones");
    allPosiciones.forEach(element => element.remove());
 }
 
 inputCodigo.addEventListener("input", () => {
-   removeDeletable();
+   removeAllChild();
 })
 
 const populatelist = () => {
@@ -36,7 +34,7 @@ populatelist();
 
 form.addEventListener("submit", (event) => {
    event.preventDefault();
-   removeDeletable();
+   removeAllChild();
 
    fetch("/getRow", {
       method: "POST",
@@ -47,53 +45,37 @@ form.addEventListener("submit", (event) => {
    })
       .then(async res => {
          if (!res.ok) {
-            removeDeletable();
+            removeAllChild();
             const response = document.createElement("p");
             response.innerText = "No encontrado";
-            response.setAttribute("class", "deletable")
+            response.setAttribute("class","posiciones")
             main.append(response);
          } else {
             const row = (await res.json()).row;
             console.log(row);
-
-            const codigoRow = document.createElement("tr");
-            codigoRow.setAttribute("class", "deletable");
-            const codigoColumn = document.createElement("td");
-            const packColumn = document.createElement("td");
-            codigoColumn.innerText = inputCodigo.value;
-            packColumn.innerText = row[0];
-            codigoRow.append(codigoColumn, packColumn);
-            codigoTable.appendChild(codigoRow);
-
-
-            const descripcionRow = document.createElement("tr");
-            descripcionRow.setAttribute("class", "deletable");
-            const descripcionColumn = document.createElement("td");
-            descripcionColumn.innerText = row[1];
-            descripcionRow.appendChild(descripcionColumn);
-            descripcionTable.appendChild(descripcionRow);
-
-
             let newRow = null;
 
-            for (i = 2; i < row.length; i++) {
-               if (!newRow) {
+            row.forEach((cell, i) => {
+               if(!newRow){
                   newRow = document.createElement("tr");
-                  newRow.setAttribute("class", "deletable");
+                  newRow.setAttribute("class","posiciones");
+                  const newCodigoCell = document.createElement("td");
+                  newCodigoCell.innerText = inputCodigo.value;
+                  newRow.append(newCodigoCell);
                }
 
 
-               if ((i - 2) % 5 < 3) {
+               if (i % 5 < 3) {
                   const newPosicion = document.createElement("td");
-                  newPosicion.innerText = row[i];
+                  newPosicion.innerText = cell;
                   newRow.append(newPosicion);
                }
-               if (newRow.childElementCount === 3) {
+               if (newRow.childElementCount === 4) {
                   posiciones_table.append(newRow);
                   newRow = null;
                }
 
-            }
+            })
          }
       })
 })

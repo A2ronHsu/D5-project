@@ -182,15 +182,10 @@ class GoogleRepository {
             }
         }
     }
-    /**
-     *
-     * @param codigo the string representing the codigo of the product on the sheet
-     * @returns flaten array representing the data on the fetched row.
-     */
     async getRow(codigo) {
         try {
             const index = await this.findCodigoIndex(codigo);
-            const row = (await this.getRange(`B${index + 1}:V${index + 1}`))?.flat();
+            const row = (await this.getRange(`D${index + 1}:V${index + 1}`))?.flat();
             if (!row)
                 throw new Error("error on getRow");
             return row;
