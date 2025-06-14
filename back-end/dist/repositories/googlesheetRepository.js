@@ -68,8 +68,7 @@ class GoogleRepository {
                 range: range
             });
             const values = response.data.values;
-            if (!values)
-                throw new Error("no values on get range");
+            // if(!values) throw new Error ("no values on get range");
             return values;
         }
         catch (error) {

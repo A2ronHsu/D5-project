@@ -68,7 +68,7 @@ class GoogleRepository {
     * @param range range using A1 notation to be returned
     * @returns data as an array of array [][] on the given range, as row x column, otherwise return undefined
     */
-   private async getRange(range: string): Promise<any[][]> {
+   private async getRange(range: string): Promise<any[][]|null|undefined> {
       try {
          const sheets = this.sheet;
          const response = await sheets.spreadsheets.values.get({
@@ -77,7 +77,7 @@ class GoogleRepository {
          });
 
          const values = response.data.values;
-         if(!values) throw new Error ("no values on get range");
+         // if(!values) throw new Error ("no values on get range");
          
 
          return values
