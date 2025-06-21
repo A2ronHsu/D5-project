@@ -2,7 +2,8 @@ export interface entradaPosiciones {
    codigo: string,
    pasillo: string,
    bloco: string,
-   secuencia: string
+   secuencia: string,
+   dep:string
 }
 
 export interface getRange {

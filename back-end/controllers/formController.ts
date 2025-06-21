@@ -30,7 +30,7 @@ class FormController {
    async getCodigo(req: Request, res: Response) {
       try {
          const validInput = getCodigoValidation(req.body);
-         const response = await this.formService.getCodigo(validInput);
+         const response = await this.formService.getCodigo(validInput.codigo, validInput.dep);
          res.json(response);
 
       } catch (err: unknown) {
@@ -48,7 +48,8 @@ class FormController {
 
    async getAllCodigos(req: Request, res: Response) {
       try {
-         const response = await this.formService.getAllCodigos();
+         const {dep} = req.params;
+         const response = await this.formService.getAllCodigos(dep);
          res.json({ allCodigos: response });
 
 
@@ -67,8 +68,8 @@ class FormController {
 
    async getRow(req: Request, res: Response) {
       try {
-         const { codigo } = req.body;
-         const response = await this.formService.getRow(codigo);
+         const { codigo, dep } = req.body;
+         const response = await this.formService.getRow(codigo, dep);
          res.json({ row: response });
 
       } catch (err: unknown) {

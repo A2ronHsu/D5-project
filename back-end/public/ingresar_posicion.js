@@ -23,7 +23,7 @@ const populateDataList = async () => {
    //    })
    // }
 
-   fetch("/getAllCodigos")
+   fetch("/getAllCodigos/")
       .then(async res => await res.json())
       .then(async (allCodigos = []) => {
          console.log(allCodigos);
@@ -53,7 +53,8 @@ form.addEventListener("submit", (event) => {
       codigo: document.querySelector("#codigo").value,
       pasillo: document.querySelector("#pasillo").value,
       bloco: document.querySelector("#bloco").value,
-      secuencia: document.querySelector("#secuencia").value
+      secuencia: document.querySelector("#secuencia").value,
+      dep: document.querySelector("#dep")
    }
    console.log(formData);
 

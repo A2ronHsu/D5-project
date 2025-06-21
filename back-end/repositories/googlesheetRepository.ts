@@ -1,10 +1,12 @@
 import { google, sheets_v4 } from "googleapis";
 import { GoogleAuth } from "google-auth-library";
 import ResponseErrorHandler from "../schemas/requestErrorHandler";
-import { response } from "express";
 
 //id of my spreadsheet on googlesheets
-const SHEET_ID = "1MWYhGu-_8qygncjqUFn3FrwXVLcijCz-1ofay4x6q60"
+const SHEET_ID: {[key:string] : string} = {
+   'D5':"1MWYhGu-_8qygncjqUFn3FrwXVLcijCz-1ofay4x6q60",
+   'D8':"1ZWucpyRvk3ohx-RanInGmwdzDkjdVcMZ9e2HJTl56fo"
+}
 
 class GoogleRepository {
    private sheet: sheets_v4.Sheets;
@@ -29,6 +31,7 @@ class GoogleRepository {
    async writeData(
       range: string,
       values: string[][],
+      dep:string,
       valueInputOption: "USER_ENTERED" | "RAW" = "USER_ENTERED"
    ): Promise<any[][]> {
       try {
@@ -39,7 +42,7 @@ class GoogleRepository {
          }
 
          const response = await sheets.spreadsheets.values.update({
-            spreadsheetId: SHEET_ID,
+            spreadsheetId: SHEET_ID[dep],
             range: range,
             valueInputOption: valueInputOption,
             requestBody: requestBody,
@@ -68,11 +71,11 @@ class GoogleRepository {
     * @param range range using A1 notation to be returned
     * @returns data as an array of array [][] on the given range, as row x column, otherwise return undefined
     */
-   private async getRange(range: string): Promise<any[][]|null|undefined> {
+   private async getRange(range: string, dep: string): Promise<any[][]|null|undefined> {
       try {
          const sheets = this.sheet;
          const response = await sheets.spreadsheets.values.get({
-            spreadsheetId: SHEET_ID,
+            spreadsheetId: SHEET_ID[dep],
             range: range
          });
 
@@ -92,9 +95,9 @@ class GoogleRepository {
       }
    }
 
-   private async getAll(): Promise<any[][]> {
+   async getAll(dep:string): Promise<any[][]> {
       try {
-         const sheet = await this.getRange("A:V");
+         const sheet = await this.getRange("A:V",dep);
 
          if (!sheet) throw new Error("the sheet is empty")
          return sheet;
@@ -116,9 +119,9 @@ class GoogleRepository {
     * @param codigo string input to find on the sheets
     * @returns index of codigo if present otherwise throws an error
     */
-   async findCodigoIndex(codigo: string) {
+   async findCodigoIndex(codigo: string, dep: string) {
       try {
-         const codigoColumns = await this.getAllCodigos();
+         const codigoColumns = await this.getAllCodigos(dep);
 
 
          //find the index of the first occurrence of "codigo"
@@ -144,15 +147,15 @@ class GoogleRepository {
     * @param newPosicion array of the new posicion in the correct order: pasillo, bloco, secuencia
     * @returns an array of array string[][], representing the row and columns of the updated row of codigo
     */
-   async appendPosicion(codigo: string, newPosicion: string[]) {
+   async appendPosicion(codigo: string, newPosicion: string[],dep:string) {
       try {
-         const codigoIndex = await this.findCodigoIndex(codigo);
+         const codigoIndex = await this.findCodigoIndex(codigo,dep);
 
          const range = `D${codigoIndex + 1}:V${codigoIndex + 1}`;
-         const dataRow = await this.getRange(range);
+         const dataRow = await this.getRange(range, dep);
 
          if (!dataRow) {
-            return await this.writeData(range, [newPosicion]);
+            return await this.writeData(range, [newPosicion],dep);
          }
 
          const outputData = Array.from(newPosicion);
@@ -168,7 +171,7 @@ class GoogleRepository {
          }
 
          // console.log(dataRow);
-         return this.writeData(range, [outputData]);
+         return this.writeData(range, [outputData],dep);
       } catch (error) {
          console.error("error appending", error);
          if (error instanceof Error) {
@@ -185,9 +188,9 @@ class GoogleRepository {
     * 
     * @returns all codigo of the table, basically the column A:A
     */
-   async getAllCodigos(): Promise<string[]> {
+   async getAllCodigos(dep:string): Promise<string[]> {
       try {
-         const allCodigos = await this.getRange("A:A");
+         const allCodigos = await this.getRange("A:A",dep);
 
          if (!allCodigos) throw new Error("empty codigo columns");
          return allCodigos.flat();
@@ -207,10 +210,10 @@ class GoogleRepository {
     * @param codigo the string representing the codigo of the product on the sheet
     * @returns flaten array representing the data on the fetched row.
     */
-   async getRow(codigo: string): Promise<string[]> {
+   async getRow(codigo: string, dep: string): Promise<string[]> {
       try {
-         const index = await this.findCodigoIndex(codigo);
-         const row = (await this.getRange(`B${index + 1}:V${index + 1}`))?.flat();
+         const index = await this.findCodigoIndex(codigo, dep);
+         const row = (await this.getRange(`B${index + 1}:V${index + 1}`,dep))?.flat();
          if (!row) throw new Error("error on getRow");
          return row;
       } catch (error) {

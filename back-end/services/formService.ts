@@ -10,23 +10,23 @@ class FormService {
 
 
    async submit(input: entradaPosiciones) {
-      const { codigo, pasillo, bloco, secuencia } = input;
-      const data = await this.repository.appendPosicion(codigo, [pasillo, bloco, secuencia, "", ""]); //this two empty cells are required for furture usage on the main sheet.
+      const { codigo, pasillo, bloco, secuencia, dep } = input;
+      const data = await this.repository.appendPosicion(codigo, [pasillo, bloco, secuencia, "", ""], dep); //this two empty cells are required for furture usage on the main sheet.
       return data;
    }
 
-   async getCodigo(codigo: string) : Promise<number> {
-      const codigoRowNumber = await this.repository.findCodigoIndex("codigo");
+   async getCodigo(codigo: string, dep:string): Promise<number> {
+      const codigoRowNumber = await this.repository.findCodigoIndex("codigo", dep);
       return codigoRowNumber;
    };
 
-   async getAllCodigos(): Promise<string[]>{
-      const allCodigos = await this.repository.getAllCodigos();
+   async getAllCodigos(dep:string): Promise<string[]> {
+      const allCodigos = await this.repository.getAllCodigos(dep);
       return allCodigos;
    }
 
-   async getRow(codigo:string):Promise<string[]>{
-      const row = await this.repository.getRow(codigo);
+   async getRow(codigo: string, dep: string): Promise<string[]> {
+      const row = await this.repository.getRow(codigo, dep);
       return row;
 
    }

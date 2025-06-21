@@ -10,31 +10,42 @@
 </head>
 
 <body>
+      <nav id="nav-links">
+         <a href="index.html" class="link_button">Buscar D5</a>
+         <a href="D8.html" class="link_button">Buscar D8</a>
+         <a href="ingresar_posicion.html" class="link_button">Ingresar Posicion</a>
+      </nav>
+
    <div class="entrada_posiciones">
-      <a href="/index.html" class="link_button">Buscar codigo</a>
 
       <form id="formulario_entrada_posiciones" method="post" action="/submit">
          <fieldset class="entrada_posiciones">
             <legend>
                Entrada de posiciones
             </legend>
+            <label for="dep">Deposito</label>
+            <select name="dep" id="dep">
+               <option value="D5">D5</option>
+               <option value="D8">D8</option>
+            </select>
+
             <label for="codigo">Codigo</label>
-            <input type="search" name="codigo" id="codigo" list="codigoslist" required >
+            <input type="search" name="codigo" id="codigo" list="codigoslist" required>
             <datalist id="codigoslist">
-   
+
             </datalist>
-   
+
             <label for="passillo">Pasillo</label>
             <input type="number" name="pasillo" id="pasillo" pattern="\d+" required>
-   
+
             <label for="bloco">Bloco</label>
             <input type="number" name="bloco" id="bloco" pattern="\d+" required>
-   
+
             <label for="secuencia">Secuencia</label>
             <input type="number" name="secuencia" id="secuencia" pattern="\d+" required">
             <button type="submit">Enviar</button>
          </fieldset>
-         
+
       </form>
    </div>
    <div id="response"></div>

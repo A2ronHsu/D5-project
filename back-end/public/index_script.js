@@ -1,4 +1,5 @@
 const inputCodigo = document.querySelector("#codigo");
+const inputDep = document.querySelector("#dep");
 const posiciones = document.querySelector("#posiciones")
 const posiciones_table = document.querySelector("#posiciones_table")
 const main = document.querySelector("main");
@@ -17,7 +18,7 @@ inputCodigo.addEventListener("input", () => {
 })
 
 const populatelist = () => {
-   fetch("/getAllCodigos")
+   fetch("/getAllCodigos/D5")
       .then(async res => {
          const row = (await res.json()).allCodigos;
          console.log(row);
@@ -43,7 +44,7 @@ form.addEventListener("submit", (event) => {
       headers: {
          "content-type": "application/json"
       },
-      body: JSON.stringify({ codigo: inputCodigo.value })
+      body: JSON.stringify({ codigo: inputCodigo.value, dep:inputDep.value })
    })
       .then(async res => {
          if (!res.ok) {
