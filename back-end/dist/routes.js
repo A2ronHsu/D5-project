@@ -16,7 +16,7 @@ router.post("/submit", async (req, res) => {
 router.get("/getCodigo", async (req, res) => {
     await formController.getCodigo(req, res);
 });
-router.get("/getAllCodigos", async (req, res) => {
+router.get("/getAllCodigos/:dep", async (req, res) => {
     await formController.getAllCodigos(req, res);
 });
 router.post("/getRow", async (req, res) => {

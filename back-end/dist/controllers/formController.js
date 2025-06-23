@@ -12,6 +12,7 @@ class FormController {
     }
     async submit(req, res) {
         try {
+            console.log(req.body);
             const validInput = (0, FormSchemas_1.entradaPosicionesValidation)(req.body);
             const response = await this.formService.submit(validInput);
             res.json(response);
@@ -31,7 +32,7 @@ class FormController {
     async getCodigo(req, res) {
         try {
             const validInput = (0, FormSchemas_1.getCodigoValidation)(req.body);
-            const response = await this.formService.getCodigo(validInput);
+            const response = await this.formService.getCodigo(validInput.codigo, validInput.dep);
             res.json(response);
         }
         catch (err) {
@@ -48,7 +49,8 @@ class FormController {
     }
     async getAllCodigos(req, res) {
         try {
-            const response = await this.formService.getAllCodigos();
+            const { dep } = req.params;
+            const response = await this.formService.getAllCodigos(dep);
             res.json({ allCodigos: response });
         }
         catch (err) {
@@ -65,8 +67,8 @@ class FormController {
     }
     async getRow(req, res) {
         try {
-            const { codigo } = req.body;
-            const response = await this.formService.getRow(codigo);
+            const { codigo, dep } = req.body;
+            const response = await this.formService.getRow(codigo, dep);
             res.json({ row: response });
         }
         catch (err) {

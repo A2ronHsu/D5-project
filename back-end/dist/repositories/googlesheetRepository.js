@@ -6,7 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const googleapis_1 = require("googleapis");
 const requestErrorHandler_1 = __importDefault(require("../schemas/requestErrorHandler"));
 //id of my spreadsheet on googlesheets
-const SHEET_ID = "1MWYhGu-_8qygncjqUFn3FrwXVLcijCz-1ofay4x6q60";
+const SHEET_ID = {
+    'D5': "1MWYhGu-_8qygncjqUFn3FrwXVLcijCz-1ofay4x6q60",
+    'D8': "1ZWucpyRvk3ohx-RanInGmwdzDkjdVcMZ9e2HJTl56fo"
+};
 class GoogleRepository {
     authClient;
     sheet;
@@ -26,14 +29,14 @@ class GoogleRepository {
      * as if they were entered into the UI. 'RAW' treats all values as strings.
      * @returns A promise that resolves to the append response from the API, or null if an error occurs.
      */
-    async writeData(range, values, valueInputOption = "USER_ENTERED") {
+    async writeData(range, values, dep, valueInputOption = "USER_ENTERED") {
         try {
             const sheets = this.sheet;
             const requestBody = {
                 values: values
             };
             const response = await sheets.spreadsheets.values.update({
-                spreadsheetId: SHEET_ID,
+                spreadsheetId: SHEET_ID[dep],
                 range: range,
                 valueInputOption: valueInputOption,
                 requestBody: requestBody,
@@ -60,11 +63,11 @@ class GoogleRepository {
      * @param range range using A1 notation to be returned
      * @returns data as an array of array [][] on the given range, as row x column, otherwise return undefined
      */
-    async getRange(range) {
+    async getRange(range, dep) {
         try {
             const sheets = this.sheet;
             const response = await sheets.spreadsheets.values.get({
-                spreadsheetId: SHEET_ID,
+                spreadsheetId: SHEET_ID[dep],
                 range: range
             });
             const values = response.data.values;
@@ -81,9 +84,9 @@ class GoogleRepository {
             }
         }
     }
-    async getAll() {
+    async getAll(dep) {
         try {
-            const sheet = await this.getRange("A:V");
+            const sheet = await this.getRange("A:V", dep);
             if (!sheet)
                 throw new Error("the sheet is empty");
             return sheet;
@@ -104,9 +107,9 @@ class GoogleRepository {
      * @param codigo string input to find on the sheets
      * @returns index of codigo if present otherwise throws an error
      */
-    async findCodigoIndex(codigo) {
+    async findCodigoIndex(codigo, dep) {
         try {
-            const codigoColumns = await this.getAllCodigos();
+            const codigoColumns = await this.getAllCodigos(dep);
             //find the index of the first occurrence of "codigo"
             let codigoIndex = codigoColumns.findIndex(row => row.toLocaleLowerCase() == codigo.toLocaleLowerCase());
             if (codigoIndex == -1)
@@ -129,13 +132,13 @@ class GoogleRepository {
      * @param newPosicion array of the new posicion in the correct order: pasillo, bloco, secuencia
      * @returns an array of array string[][], representing the row and columns of the updated row of codigo
      */
-    async appendPosicion(codigo, newPosicion) {
+    async appendPosicion(codigo, newPosicion, dep) {
         try {
-            const codigoIndex = await this.findCodigoIndex(codigo);
+            const codigoIndex = await this.findCodigoIndex(codigo, dep);
             const range = `D${codigoIndex + 1}:V${codigoIndex + 1}`;
-            const dataRow = await this.getRange(range);
+            const dataRow = await this.getRange(range, dep);
             if (!dataRow) {
-                return await this.writeData(range, [newPosicion]);
+                return await this.writeData(range, [newPosicion], dep);
             }
             const outputData = Array.from(newPosicion);
             outputData.push(...dataRow[0]);
@@ -148,7 +151,7 @@ class GoogleRepository {
                 }
             }
             // console.log(dataRow);
-            return this.writeData(range, [outputData]);
+            return this.writeData(range, [outputData], dep);
         }
         catch (error) {
             console.error("error appending", error);
@@ -164,9 +167,9 @@ class GoogleRepository {
      *
      * @returns all codigo of the table, basically the column A:A
      */
-    async getAllCodigos() {
+    async getAllCodigos(dep) {
         try {
-            const allCodigos = await this.getRange("A:A");
+            const allCodigos = await this.getRange("A:A", dep);
             if (!allCodigos)
                 throw new Error("empty codigo columns");
             return allCodigos.flat();
@@ -186,10 +189,10 @@ class GoogleRepository {
      * @param codigo the string representing the codigo of the product on the sheet
      * @returns flaten array representing the data on the fetched row.
      */
-    async getRow(codigo) {
+    async getRow(codigo, dep) {
         try {
-            const index = await this.findCodigoIndex(codigo);
-            const row = (await this.getRange(`B${index + 1}:V${index + 1}`))?.flat();
+            const index = await this.findCodigoIndex(codigo, dep);
+            const row = (await this.getRange(`B${index + 1}:V${index + 1}`, dep))?.flat();
             if (!row)
                 throw new Error("error on getRow");
             return row;

@@ -18,7 +18,7 @@ inputCodigo.addEventListener("input", () => {
 })
 
 const populatelist = () => {
-   fetch("/getAllCodigos/D5")
+   fetch(`/getAllCodigos/${inputDep.value}`)
       .then(async res => {
          const row = (await res.json()).allCodigos;
          console.log(row);

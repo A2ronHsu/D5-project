@@ -6,11 +6,11 @@ main {
    align-items: center;
 }
 
-#nav-links{
+#nav-links {
    display: flex;
 }
 
-#search_codigo{
+#search_codigo {
    margin: 1rem;
 }
 
@@ -41,10 +41,9 @@ main {
    text-align: center;
    border: black solid 1px;
    margin: 0rem 1rem 0 1rem;
-   min-width: 20rem;
+   width: 20rem;
 }
 
 td {
    padding: .5em;
 }
-

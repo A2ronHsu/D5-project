@@ -6,21 +6,21 @@ class FormService {
         this.repository = repository;
     }
     async submit(input) {
-        const { codigo, pasillo, bloco, secuencia } = input;
-        const data = await this.repository.appendPosicion(codigo, [pasillo, bloco, secuencia, "", ""]); //this two empty cells are required for furture usage on the main sheet.
+        const { codigo, pasillo, bloco, secuencia, dep } = input;
+        const data = await this.repository.appendPosicion(codigo, [pasillo, bloco, secuencia, "", ""], dep); //this two empty cells are required for furture usage on the main sheet.
         return data;
     }
-    async getCodigo(codigo) {
-        const codigoRowNumber = await this.repository.findCodigoIndex("codigo");
+    async getCodigo(codigo, dep) {
+        const codigoRowNumber = await this.repository.findCodigoIndex("codigo", dep);
         return codigoRowNumber;
     }
     ;
-    async getAllCodigos() {
-        const allCodigos = await this.repository.getAllCodigos();
+    async getAllCodigos(dep) {
+        const allCodigos = await this.repository.getAllCodigos(dep);
         return allCodigos;
     }
-    async getRow(codigo) {
-        const row = await this.repository.getRow(codigo);
+    async getRow(codigo, dep) {
+        const row = await this.repository.getRow(codigo, dep);
         return row;
     }
 }
