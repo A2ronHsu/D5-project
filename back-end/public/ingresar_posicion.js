@@ -47,7 +47,6 @@ const populateDataList = async (dep) => {
 populateDataList(inputDep.value);
 
 inputDep.addEventListener("input", () => {
-   console.log("event fired");
    populateDataList(inputDep.value);
 })
 

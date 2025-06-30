@@ -7,8 +7,8 @@ const googleapis_1 = require("googleapis");
 const requestErrorHandler_1 = __importDefault(require("../schemas/requestErrorHandler"));
 //id of my spreadsheet on googlesheets
 const SHEET_ID = {
-    'D5': "1MWYhGu-_8qygncjqUFn3FrwXVLcijCz-1ofay4x6q60",
-    'D8': "1ZWucpyRvk3ohx-RanInGmwdzDkjdVcMZ9e2HJTl56fo"
+    'D5': "1NECc6VReyx16_O1TTrizbDPZzyGas4lmatn8hGAG3xE",
+    'D8': "1Ut6kE5d_Jn_KC0jBP4I9BhJ5u6A17tAB3cGI4cxZLzA"
 };
 class GoogleRepository {
     authClient;
@@ -22,11 +22,10 @@ class GoogleRepository {
      * Appends new rows of data to the specified range in the Google Sheet.
      * This is ideal for adding new records.
      *
-     * @param range The A1 notation or R1C1 notation of a range to append values to.
-     * If the range is 'Sheet1!A:D', data will be appended after the last row in columns A-D.
+     * @param range The A1 notation or R1C1 notation of a range to append values to.  If the range is 'Sheet1!A:D', data will be appended after the last row in columns A-D.
      * @param values The data to append, as an array of arrays (each inner array is a row).
-     * @param valueInputOption How the infilterCodigoIndexput data should be interpreted. 'USER_ENTERED' (default) parses values
-     * as if they were entered into the UI. 'RAW' treats all values as strings.
+     * @param valueInputOption How the infilterCodigoIndexput data should be interpreted. 'USER_ENTERED' (default) parses values     * as if they were entered into the UI. 'RAW' treats all values as strings.
+     * @param dep Warehouse name referent to SHEET_ID
      * @returns A promise that resolves to the append response from the API, or null if an error occurs.
      */
     async writeData(range, values, dep, valueInputOption = "USER_ENTERED") {
@@ -61,6 +60,7 @@ class GoogleRepository {
     /**
      *
      * @param range range using A1 notation to be returned
+     * @param dep Warehouse name referent to SHEET_ID
      * @returns data as an array of array [][] on the given range, as row x column, otherwise return undefined
      */
     async getRange(range, dep) {
@@ -84,6 +84,10 @@ class GoogleRepository {
             }
         }
     }
+    /**
+     * @param dep Warehouse name referent to SHEET_ID
+     * @returns Entire table data
+     */
     async getAll(dep) {
         try {
             const sheet = await this.getRange("A:V", dep);
@@ -103,6 +107,7 @@ class GoogleRepository {
     }
     /**
      * use getAll to find the 0 starting index of the the input
+     * @param dep Warehouse name referent to SHEET_ID
      *
      * @param codigo string input to find on the sheets
      * @returns index of codigo if present otherwise throws an error
@@ -127,6 +132,7 @@ class GoogleRepository {
         }
     }
     /**
+     * @param dep Warehouse name referent to SHEET_ID
      *
      * @param codigo codigo of the posicion to be updated
      * @param newPosicion array of the new posicion in the correct order: pasillo, bloco, secuencia
@@ -164,6 +170,7 @@ class GoogleRepository {
         }
     }
     /**
+     * @param dep Warehouse name referent to SHEET_ID
      *
      * @returns all codigo of the table, basically the column A:A
      */
@@ -185,6 +192,7 @@ class GoogleRepository {
         }
     }
     /**
+     * @param dep Warehouse name referent to SHEET_ID
      *
      * @param codigo the string representing the codigo of the product on the sheet
      * @returns flaten array representing the data on the fetched row.
