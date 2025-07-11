@@ -9,7 +9,7 @@ const server = Express();
 
 
 dotenv.config();
-server.use(Express.static("public"), json(),urlencoded({extended:true}),router);
+server.use(Express.static("../front-end/dist"), json(),urlencoded({extended:true}),router);
 
 
 
