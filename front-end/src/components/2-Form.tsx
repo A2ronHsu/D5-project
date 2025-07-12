@@ -1,25 +1,77 @@
 import React, { useEffect, useState, type ChangeEvent } from "react";
 
-const Form: React.FC = ()=>{
-   const [dep, setDep] = useState("D5");
+const Form: React.FC = () => {
+   const [dep, setDep] = useState<string>("D5");
+   const [loadingList, setLoading] = useState<boolean>(false);
+   const [error, setError] = useState<string | null>(null);
 
-   
-   
-   const handleDepChange = (event: ChangeEvent<HTMLSelectElement>) => {
-      setDep(event.target.value);
+   const [allCodigos, setAllCodigos] = useState<string[]>([]);
+
+
+   const populateList = async () => {
+      try {
+
+
+         setLoading(true);
+         setError(null);
+
+
+
+         const res = await fetch(`/getAllCodigos/${dep}`);
+         if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`)
+         }
+         const resJson = await res.json();
+         const newAllCodigos: string[] = resJson.allCodigos;
+
+         setAllCodigos((prevState)=>{
+            console.log("updated function ",prevState)
+            return newAllCodigos
+         });
+         return newAllCodigos;
+
+      } catch (err: any) {
+         setError(err.message)
+         setAllCodigos([]);
+      } finally {
+         setLoading(false);
+      }
+
+      return []
    }
 
-   const handleSubmit = (event:React.FormEvent<HTMLFormElement>)=>{
-      event.preventDefault();
-   }
 
-   
+   useEffect(() => {
+      populateList();
+
+   }, [dep])
+
 
    useEffect(()=>{
+      console.log("useEffect ",dep, allCodigos);
+   })
 
-   },[])
+   const handleDepChange = (event: ChangeEvent<HTMLSelectElement>) => {
+      setDep(event.target.value);
+      populateList()
+      console.log(dep, allCodigos);
 
-   return(
+   }
+
+   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+      // event.preventDefault();
+   }
+
+
+
+
+
+
+
+
+
+
+   return (
       <form id="search_codigo" onSubmit={handleSubmit} >
          <div id="dep-selection-container">
             <h3 id="dep-title">Buscar en</h3>
