@@ -13,7 +13,13 @@ export default defineConfig({
       "/getAllCodigos": {
         target: "http://localhost:3000/",
         changeOrigin: true,
+      },
+      "/getRow": {
+        target: "http://localhost:3000/",
+        changeOrigin: true,
       }
     }
+
+
   }
 })

@@ -16,7 +16,7 @@ class FormService {
    }
 
    async getCodigo(codigo: string, dep:string): Promise<number> {
-      const codigoRowNumber = await this.repository.findCodigoIndex("codigo", dep);
+      const codigoRowNumber = await this.repository.findCodigoIndex(codigo, dep);
       return codigoRowNumber;
    };
 

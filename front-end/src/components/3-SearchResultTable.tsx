@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-const SearchResultTable: React.FC = () => {
+interface ISearch {
+   searchInput: string,
+   row: string[]
+}
+
+const SearchResultTable: React.FC<ISearch> = ({searchInput, row}) => {
+   useEffect(()=>{
+      console.log(row);
+   },[row]);
+
    return (
       <>
          <table className="table" id="codigo_table">
@@ -10,17 +19,26 @@ const SearchResultTable: React.FC = () => {
                   <th>Uni/Cjs</th>
                </tr>
             </thead>
+            <tbody>
+               <tr>
+                  <td>{searchInput}</td>
+                  <td>{row[0]}</td>
+               </tr>
+            </tbody>
          </table>
 
          <table className="table" id="descripcion_table">
-            <tbody>
+            <thead>
                <tr>
                   <th>Descripcion</th>
-
                </tr>
-
+               
+            </thead>
+            <tbody>
+               <tr>
+                  <td>{row[1]}</td>
+               </tr>
             </tbody>
-
          </table>
 
          <table className="table" id="posiciones_table">
