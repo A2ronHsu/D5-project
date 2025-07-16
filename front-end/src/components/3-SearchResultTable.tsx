@@ -1,14 +1,46 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, type ReactElement } from "react";
 
 interface ISearch {
    searchInput: string,
    row: string[]
 }
 
-const SearchResultTable: React.FC<ISearch> = ({searchInput, row}) => {
-   useEffect(()=>{
-      console.log(row);
-   },[row]);
+const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
+   const [unidadPorCaja, setUnidadPorCaja] = useState<string>("");
+   const [descripcion, setDescripcion] = useState<string>("");
+   const [codigo, setCodigo] = useState<string>("");
+   const [content, setContent] = useState<ReactElement[]>([]);
+   useEffect(() => {
+      setUnidadPorCaja("");
+      setDescripcion("");
+      setCodigo("");
+      setContent([]);
+   }, [searchInput]);
+
+   useEffect(() => {
+      setCodigo(searchInput);
+      setUnidadPorCaja(row[0]);
+      setDescripcion(row[1]);
+      tableContent();
+   }, [row]);
+
+   const tableContent = () => {
+      let posicion = [];
+      let content: ReactElement[] = [];
+      for (let i = 2; i < row.length; i++) {
+         if ((i - 2) % 5 < 3){
+            posicion.push(<td>{row[i]}</td>);
+         }
+         if (posicion.length == 3){
+            content.push(<tr key={i}>{...posicion}</tr>)
+            posicion = [];
+         }
+      }
+      setContent(content);
+   }
+
+
+
 
    return (
       <>
@@ -21,8 +53,8 @@ const SearchResultTable: React.FC<ISearch> = ({searchInput, row}) => {
             </thead>
             <tbody>
                <tr>
-                  <td>{searchInput}</td>
-                  <td>{row[0]}</td>
+                  <td>{codigo}</td>
+                  <td>{unidadPorCaja}</td>
                </tr>
             </tbody>
          </table>
@@ -32,11 +64,11 @@ const SearchResultTable: React.FC<ISearch> = ({searchInput, row}) => {
                <tr>
                   <th>Descripcion</th>
                </tr>
-               
+
             </thead>
             <tbody>
                <tr>
-                  <td>{row[1]}</td>
+                  <td>{descripcion}</td>
                </tr>
             </tbody>
          </table>
@@ -49,17 +81,18 @@ const SearchResultTable: React.FC<ISearch> = ({searchInput, row}) => {
                   <th>Blo</th>
                   <th>Sec</th>
                </tr>
+               {
+
+               }
 
             </thead>
 
             <tbody>
-               <tr className="deletable">
-                  <td></td>
-                  <td></td>
-                  <td></td>
-               </tr>
+               {content}
 
             </tbody>
+
+
 
          </table>
       </>

@@ -40,32 +40,45 @@ const Form: React.FC = () => {
       }
 
       populateList(dep);
-
+      setSearhInput("");
+      setRow([]);
+      setError(null);
+      
    }, [dep])
 
 
    const handleDepChange = (event: ChangeEvent<HTMLSelectElement>) => {
       setDep(event.target.value);
+      setError(null)
    }
 
    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      const res = await fetch("/getRow", {
-         method: "POST",
-         headers: {
-            "content-type": "application/json"
-         },
-         body: JSON.stringify({ codigo: searchInput, dep: dep })
-      });
+      setError(null);
+      try{
+         const res = await fetch("/getRow", {
+            method: "POST",
+            headers: {
+               "content-type": "application/json"
+            },
+            body: JSON.stringify({ codigo: searchInput, dep: dep })
+         });
 
-      const json = await res.json();
-      setRow(json.row);
+         if(!res.ok) throw new Error();
+   
+         const json = await res.json();
+         setRow(json.row);
+         
+      }catch(error:any){
+         setError(`codigo no existe o no encontrado`);
+      }
 
    }
 
 
    const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
       setSearhInput(event.target.value)
+      setError(null);
    }
 
 
@@ -75,7 +88,6 @@ const Form: React.FC = () => {
          <h1>Cargando...</h1>
       )
    }
-   if (error) return <h1>Error</h1>
 
 
 
@@ -99,11 +111,11 @@ const Form: React.FC = () => {
                <button type="submit" id="submit">Buscar</button>
             </div>
          </form>
+         {error && (<h3>{error}</h3>)}
+
          <SearchResultTable searchInput={searchInput} row={row}></SearchResultTable>
       </>
    )
-
-
 }
 
 export default Form;
