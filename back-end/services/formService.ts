@@ -10,6 +10,7 @@ class FormService {
 
 
    async submit(input: entradaPosiciones) {
+
       const { codigo, pasillo, bloco, secuencia, dep } = input;
       const data = await this.repository.appendPosicion(codigo, [pasillo, bloco, secuencia, "", ""], dep); //this two empty cells are required for furture usage on the main sheet.
       return data;

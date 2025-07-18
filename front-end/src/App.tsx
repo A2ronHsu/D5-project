@@ -1,14 +1,14 @@
+import { Route, Routes} from 'react-router-dom';
 import './App.css'
-import Nav from './components/1-Nav';
-import Form from './components/2-Form';
+import BuscarCodigo from './components/0-BuscarCodigo';
+import IngresarCodigo from './components/4-IngresarCodigo';
 
 function App() {
  return (
-  <>
-    <Nav></Nav>
-    <Form></Form>
-    
-  </>
+  <Routes>
+    <Route path='/' element={<BuscarCodigo />} />
+    <Route path='/ingresar_codigo' element={<IngresarCodigo/>} />
+  </Routes>
  )
 }
 

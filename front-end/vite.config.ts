@@ -17,6 +17,10 @@ export default defineConfig({
       "/getRow": {
         target: "http://localhost:3000/",
         changeOrigin: true,
+      },
+      "/submit": {
+        target: "http://localhost:3000/",
+        changeOrigin: true
       }
     }
 

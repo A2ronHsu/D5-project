@@ -1,10 +1,10 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 const Nav : React.FC = ()=>{
    return(
       <nav>
-         <a href="index.html" className="link_button">Buscar por Codigo</a>
-         <a href="ingresar_posicion.html" className="link_button">Ingresar Posicion</a>
+         <Link to="/" className="link_button">Buscar por Codigo</Link>
+         <Link to="/ingresar_codigo" className="link_button">Ingresar Posicion</Link>
       </nav>
    )
 }

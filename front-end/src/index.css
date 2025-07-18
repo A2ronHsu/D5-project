@@ -43,6 +43,7 @@ main {
 #search-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin: .25em 0 1em 0;
   gap: .5em;
 }
@@ -81,3 +82,5 @@ main {
 td {
   padding: .5em;
 }
+
+
