@@ -7,7 +7,7 @@ const IngresarForm: React.FC = () => {
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
    const [response, setResponse] = useState<string>("");
-   
+
    const [searchInput, setSearhInput] = useState<string>("")
    const [pasillo, setPasillo] = useState<string>("");
    const [bloco, setBloco] = useState<string>("");
@@ -44,6 +44,7 @@ const IngresarForm: React.FC = () => {
       setSearhInput("");
       setPasillo("");
       setBloco("");
+      setSecuencia("");
       setError(null);
 
    }, [dep])
@@ -60,7 +61,7 @@ const IngresarForm: React.FC = () => {
       event.preventDefault();
       setError(null);
       setResponse("");
-
+      setLoading(true);
       const formData = {
          codigo: searchInput,
          pasillo: pasillo,
@@ -92,6 +93,8 @@ const IngresarForm: React.FC = () => {
       } catch (error: any) {
          setResponse("Problema de Envio")
          setError(error.message);
+      } finally {
+         setLoading(false);
       }
 
 
@@ -151,7 +154,7 @@ const IngresarForm: React.FC = () => {
 
                <label htmlFor="secuencia">Secuencia</label>
                <input type="number" name="secuencia" id="secuencia" pattern="\d+" value={secuencia} onChange={handleSecuencia} required />
-               <button type="submit">Enviar</button>
+               <button type="submit" disabled={loading} >Enviar</button>
             </fieldset>
          </form>
          {error && <h3>Ocurrio un erro</h3>}
