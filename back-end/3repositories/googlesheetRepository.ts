@@ -158,7 +158,7 @@ class GoogleRepository {
       try {
          const codigoIndex = await this.findCodigoIndex(codigo,dep);
 
-         const range = `D${codigoIndex + 1}:V${codigoIndex + 1}`;
+         const range = `D${codigoIndex + 1}:W${codigoIndex + 1}`;
          const dataRow = await this.getRange(range, dep);
 
          if (!dataRow) {
