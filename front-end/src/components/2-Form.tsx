@@ -99,6 +99,8 @@ const Form: React.FC = () => {
                <select name="dep" id="dep" value={dep} onChange={handleDepChange}>
                   <option className="dep-options" value="D5">D5</option>
                   <option className="dep-options" value="D8">D8</option>
+                  <option className="dep-options" value="D1">D1</option>
+
                </select>
             </div>
             <div id="search-container">

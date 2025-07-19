@@ -1,11 +1,12 @@
 import { google, sheets_v4 } from "googleapis";
 import { GoogleAuth } from "google-auth-library";
-import ResponseErrorHandler from "../schemas/requestErrorHandler";
+import ResponseErrorHandler from "../4schemas/requestErrorHandler";
 
 //id of my spreadsheet on googlesheets
 const SHEET_ID: {[key:string] : string} = {
    'D5':"1NECc6VReyx16_O1TTrizbDPZzyGas4lmatn8hGAG3xE",
-   'D8':"1Ut6kE5d_Jn_KC0jBP4I9BhJ5u6A17tAB3cGI4cxZLzA"
+   'D8':"1Ut6kE5d_Jn_KC0jBP4I9BhJ5u6A17tAB3cGI4cxZLzA",
+   'D1':"1CqLs1V4tMhBMb1EeOyOsy4heoruVqqDLogiSQSSppVE"
 }
 
 class GoogleRepository {

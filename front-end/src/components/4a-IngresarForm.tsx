@@ -132,6 +132,7 @@ const IngresarForm: React.FC = () => {
                <select name="dep" id="ingresar-dep" value={dep} onChange={handleDepChange}>
                   <option value="D5">D5</option>
                   <option value="D8">D8</option>
+                  <option value="D1">D1</option>
                </select>
                {loading && <h3>Cargando</h3>}
 

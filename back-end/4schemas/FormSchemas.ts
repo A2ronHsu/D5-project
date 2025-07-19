@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { entradaPosiciones, ICustomError } from "../models/formModel";
+import { entradaPosiciones, ICustomError } from "../5models/formModel";
 import ResponseErrorHandler from "./requestErrorHandler";
 
 

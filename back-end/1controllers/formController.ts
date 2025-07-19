@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { entradaPosicionesValidation, getCodigoValidation } from "../schemas/FormSchemas";
-import FormService from "../services/formService";
-import ResponseErrorHandler from "../schemas/requestErrorHandler";
+import { entradaPosicionesValidation, getCodigoValidation } from "../4schemas/FormSchemas";
+import FormService from "../2services/formService";
+import ResponseErrorHandler from "../4schemas/requestErrorHandler";
 
 
 class FormController {

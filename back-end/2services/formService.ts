@@ -1,5 +1,5 @@
-import { entradaPosiciones } from "../models/formModel";
-import GoogleRepository from "../repositories/googlesheetRepository";
+import { entradaPosiciones } from "../5models/formModel";
+import GoogleRepository from "../3repositories/googlesheetRepository";
 
 class FormService {
 

@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const formController_1 = __importDefault(require("./controllers/formController"));
-const formService_1 = __importDefault(require("./services/formService"));
-const googlesheetRepository_1 = __importDefault(require("./repositories/googlesheetRepository"));
-const authGoogle_1 = __importDefault(require("./schemas/authGoogle"));
+const formController_1 = __importDefault(require("./1controllers/formController"));
+const formService_1 = __importDefault(require("./2services/formService"));
+const googlesheetRepository_1 = __importDefault(require("./3repositories/googlesheetRepository"));
+const authGoogle_1 = __importDefault(require("./4schemas/authGoogle"));
 const router = (0, express_1.Router)();
 const formController = new formController_1.default(new formService_1.default(new googlesheetRepository_1.default((0, authGoogle_1.default)())));
 router.post("/submit", async (req, res) => {
