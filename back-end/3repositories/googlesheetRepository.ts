@@ -52,7 +52,7 @@ class GoogleRepository {
          if (!response.data.updatedData!.values) {
             throw new Error();
          }
-         // console.log(response.data.updatedData);
+         console.log(response.data.updatedData);
          return response.data.updatedData!.values;
 
       } catch (error: unknown) {
@@ -162,7 +162,7 @@ class GoogleRepository {
          const dataRow = await this.getRange(range, dep);
 
          if (!dataRow) {
-            return await this.writeData(range, [newPosicion],dep);
+            throw new ResponseErrorHandler(500, "cannot appendPosicion");
          }
 
          const outputData = Array.from(newPosicion);
@@ -170,10 +170,11 @@ class GoogleRepository {
 
          //these two constants are specific for the table formatting
          const endOfSheet = 20; //this is the number of columns
-         const posicionDataUnit = 4; //this is the size of data unit, which is 5 cells
+         const posicionDataUnit = 5; //this is the size of data unit, which is 5 cells
          if (outputData.length > endOfSheet) {
             for (let i = 0; i < posicionDataUnit; i++) {
                outputData.pop();
+               console.log(outputData);
             }
          }
 
@@ -222,7 +223,7 @@ class GoogleRepository {
    async getRow(codigo: string, dep: string): Promise<string[]> {
       try {
          const index = await this.findCodigoIndex(codigo, dep);
-         const row = (await this.getRange(`B${index + 1}:V${index + 1}`,dep))?.flat();
+         const row = (await this.getRange(`B${index + 1}:W${index + 1}`,dep))?.flat();
          if (!row) throw new Error("error on getRow");
          return row;
       } catch (error) {
