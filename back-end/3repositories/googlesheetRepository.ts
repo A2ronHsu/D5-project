@@ -174,7 +174,6 @@ class GoogleRepository {
          if (outputData.length > endOfSheet) {
             for (let i = 0; i < posicionDataUnit; i++) {
                outputData.pop();
-               console.log(outputData);
             }
          }
 
