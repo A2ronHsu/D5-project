@@ -45,7 +45,6 @@ class GoogleRepository {
             if (!response.data.updatedData.values) {
                 throw new Error();
             }
-            console.log(response.data.updatedData);
             return response.data.updatedData.values;
         }
         catch (error) {
@@ -134,7 +133,6 @@ class GoogleRepository {
     }
     /**
      * @param dep Warehouse name referent to SHEET_ID
-     *
      * @param codigo codigo of the posicion to be updated
      * @param newPosicion array of the new posicion in the correct order: pasillo, bloco, secuencia
      * @returns an array of array string[][], representing the row and columns of the updated row of codigo
@@ -143,9 +141,9 @@ class GoogleRepository {
         try {
             const codigoIndex = await this.findCodigoIndex(codigo, dep);
             const range = `D${codigoIndex + 1}:W${codigoIndex + 1}`;
-            const dataRow = await this.getRange(range, dep);
+            let dataRow = await this.getRange(range, dep);
             if (!dataRow) {
-                throw new requestErrorHandler_1.default(500, "cannot appendPosicion");
+                dataRow = [[]];
             }
             const outputData = Array.from(newPosicion);
             outputData.push(...dataRow[0]);
@@ -155,7 +153,6 @@ class GoogleRepository {
             if (outputData.length > endOfSheet) {
                 for (let i = 0; i < posicionDataUnit; i++) {
                     outputData.pop();
-                    console.log(outputData);
                 }
             }
             // console.log(dataRow);

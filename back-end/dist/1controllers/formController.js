@@ -14,7 +14,6 @@ class FormController {
         try {
             console.log(req.body);
             const validInput = (0, FormSchemas_1.entradaPosicionesValidation)(req.body);
-            console.log("here");
             const response = await this.formService.submit(validInput);
             res.json(response);
         }
