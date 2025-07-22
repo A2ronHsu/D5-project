@@ -19,15 +19,16 @@ const Form: React.FC = () => {
          try {
             setLoading(true);
             setError(null);
-
             const res = await fetch(`/getAllCodigos/${dep}`);
             if (!res.ok) {
                throw new Error(`HTTP error! status: ${res.status}`)
             }
             const resJson = await res.json();
             const newAllCodigos: string[] = resJson.allCodigos;
-
             setAllCodigos(newAllCodigos);
+
+
+
             return newAllCodigos;
 
          } catch (err: any) {
@@ -35,15 +36,14 @@ const Form: React.FC = () => {
             setAllCodigos([]);
          } finally {
             setLoading(false);
+       
          }
 
       }
 
       populateList(dep);
-      setSearhInput("");
-      setRow([]);
-      setError(null);
-      
+
+
    }, [dep])
 
 
@@ -55,7 +55,7 @@ const Form: React.FC = () => {
    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       setError(null);
-      try{
+      try {
          const res = await fetch("/getRow", {
             method: "POST",
             headers: {
@@ -64,12 +64,12 @@ const Form: React.FC = () => {
             body: JSON.stringify({ codigo: searchInput, dep: dep })
          });
 
-         if(!res.ok) throw new Error();
-   
+         if (!res.ok) throw new Error();
+
          const json = await res.json();
          setRow(json.row);
-         
-      }catch(error:any){
+
+      } catch (error: any) {
          setError(`codigo no existe o no encontrado`);
       }
 
@@ -83,12 +83,13 @@ const Form: React.FC = () => {
 
 
 
+
+
    if (loading) {
       return (
          <h1>Cargando...</h1>
       )
    }
-
 
 
    return (
@@ -106,9 +107,11 @@ const Form: React.FC = () => {
             <div id="search-container">
                <input type="search" id="codigo" name="codigo" list="listCodigo" value={searchInput} onChange={handleSearchInput} required></input>
                <datalist id="listCodigo">
-                  {allCodigos.map((option, key) => (
-                     <option value={option} key={key}>{option}</option>
-                  ))}
+                  {allCodigos.map((option, key) => {
+                     return (
+                        <option value={option} key={key}>{option}</option>
+                     )
+                  })}
                </datalist>
                <button type="submit" id="submit">Buscar</button>
             </div>
