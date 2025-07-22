@@ -149,7 +149,6 @@ class GoogleRepository {
 
    /**
     * @param dep Warehouse name referent to SHEET_ID
-    * 
     * @param codigo codigo of the posicion to be updated
     * @param newPosicion array of the new posicion in the correct order: pasillo, bloco, secuencia
     * @returns an array of array string[][], representing the row and columns of the updated row of codigo
