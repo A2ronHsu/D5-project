@@ -13,15 +13,25 @@ const router = Router();
 const formController = new FormController(new FormService(new GoogleRepository(authClient())));
 const authRegisterController = new AuthRegisterController(new AuthRegisterService( new AuthRepository()));
 
-router.post("/submit", formController.submit);
+router.post("/submit", async (req: Request, res:Response)=>{
+   await formController.submit(req, res);
+});
 
-router.get("/getCodigo", formController.getCodigo);
+router.get("/getCodigo", async (req: Request, res:Response)=>{
+   await formController.getCodigo(req, res);
+});
 
-router.get("/getAllCodigos/:dep", formController.getAllCodigos);
+router.get("/getAllCodigos/:dep", async (req: Request, res:Response)=>{
+   await formController.getAllCodigos(req, res);
+});
 
-router.post("/getRow", formController.getRow)
+router.post("/getRow", async (req: Request, res:Response)=>{
+   await formController.getRow(req, res);
+});
 
-router.post("/auth/register", authRegisterController.register);
+router.post("/auth/register", async (req: Request, res:Response)=>{
+   await authRegisterController.register(req, res);
+});
 
 //
 

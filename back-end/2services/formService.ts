@@ -22,7 +22,9 @@ class FormService {
    };
 
    async getAllCodigos(dep:string): Promise<string[]> {
+
       const allCodigos = await this.repository.getAllCodigos(dep);
+
       return allCodigos;
    }
 

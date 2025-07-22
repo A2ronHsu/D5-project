@@ -16,7 +16,6 @@ class FormController {
          
          console.log(req.body)
          const validInput = entradaPosicionesValidation(req.body);
-         console.log("here")
          const response = await this.formService.submit(validInput);
          res.json(response);
       } catch (err: unknown) {
@@ -54,6 +53,7 @@ class FormController {
    async getAllCodigos(req: Request, res: Response) {
       try {
          const {dep} = req.params;
+         
          const response = await this.formService.getAllCodigos(dep);
          res.json({ allCodigos: response });
 
@@ -66,6 +66,7 @@ class FormController {
             });
          } else {
             res.json({ error: "unknown error" });
+            
 
          }
       }

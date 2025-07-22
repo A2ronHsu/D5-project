@@ -196,6 +196,7 @@ class GoogleRepository {
     */
    async getAllCodigos(dep:string): Promise<string[]> {
       try {
+
          const allCodigos = await this.getRange("A:A",dep);
 
          if (!allCodigos) throw new Error("empty codigo columns");
