@@ -52,7 +52,6 @@ class GoogleRepository {
          if (!response.data.updatedData!.values) {
             throw new Error();
          }
-         console.log(response.data.updatedData);
          return response.data.updatedData!.values;
 
       } catch (error: unknown) {
@@ -158,10 +157,10 @@ class GoogleRepository {
          const codigoIndex = await this.findCodigoIndex(codigo,dep);
 
          const range = `D${codigoIndex + 1}:W${codigoIndex + 1}`;
-         const dataRow = await this.getRange(range, dep);
+         let dataRow = await this.getRange(range, dep);
 
          if (!dataRow) {
-            throw new ResponseErrorHandler(500, "cannot appendPosicion");
+            dataRow = [[]];
          }
 
          const outputData = Array.from(newPosicion);
