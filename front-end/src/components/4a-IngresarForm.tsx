@@ -133,6 +133,8 @@ const IngresarForm: React.FC = () => {
                   <option value="D5">D5</option>
                   <option value="D8">D8</option>
                   <option value="D1">D1</option>
+                  <option value="D9">D9</option>
+
                </select>
                {loading && <h3>Cargando</h3>}
 
