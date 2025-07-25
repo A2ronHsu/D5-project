@@ -7,8 +7,7 @@ import ResponseErrorHandler from "./requestErrorHandler";
 export const entradaPosicionesValidation = (input: any) => {
    const { codigo, pasillo, bloco, secuencia, dep } = input;
    if (!codigo || !pasillo || !bloco || !secuencia || !dep) {
-      let error = new ResponseErrorHandler(400, "invalid Input",);
-      error.name = "Input Error";
+      let error = new ResponseErrorHandler(400, "Input Error","invalid Input");
       throw error
    };
    return { codigo, pasillo, bloco, secuencia, dep };
@@ -18,8 +17,7 @@ export const entradaPosicionesValidation = (input: any) => {
 export const getCodigoValidation = (input: any) => {
    const { codigo, dep } = input;
    if (!codigo || !dep) {
-      let error = new ResponseErrorHandler(400, "Invalid Input");
-      error.name = "Input Error"
+      let error = new ResponseErrorHandler(400, "Input Error","Invalid Input");
       throw error
    };
    return {codigo, dep};

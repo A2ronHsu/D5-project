@@ -3,11 +3,11 @@ import { GoogleAuth } from "google-auth-library";
 import ResponseErrorHandler from "../4schemas/requestErrorHandler";
 
 //id of my spreadsheet on googlesheets
-const SHEET_ID: {[key:string] : string} = {
-   'D5':"1NECc6VReyx16_O1TTrizbDPZzyGas4lmatn8hGAG3xE",
-   'D8':"1Ut6kE5d_Jn_KC0jBP4I9BhJ5u6A17tAB3cGI4cxZLzA",
-   'D1':"1CqLs1V4tMhBMb1EeOyOsy4heoruVqqDLogiSQSSppVE",
-   'D9':"1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k"
+const SHEET_ID: { [key: string]: string } = {
+   'D5': "1NECc6VReyx16_O1TTrizbDPZzyGas4lmatn8hGAG3xE",
+   'D8': "1Ut6kE5d_Jn_KC0jBP4I9BhJ5u6A17tAB3cGI4cxZLzA",
+   'D1': "1CqLs1V4tMhBMb1EeOyOsy4heoruVqqDLogiSQSSppVE",
+   'D9': "1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k"
 }
 
 class GoogleRepository {
@@ -32,7 +32,7 @@ class GoogleRepository {
    async writeData(
       range: string,
       values: string[][],
-      dep:string,
+      dep: string,
       valueInputOption: "USER_ENTERED" | "RAW" = "USER_ENTERED"
    ): Promise<any[][]> {
       try {
@@ -58,9 +58,9 @@ class GoogleRepository {
       } catch (error: unknown) {
          console.error(`Error apending data to range ${range}:, `, error);
          if (error instanceof Error) {
-            throw new ResponseErrorHandler(500, error.message);
+            throw new ResponseErrorHandler(500, "Error on writing data", error.message);
          } else {
-            throw new ResponseErrorHandler(500, "unknown error");
+            throw new ResponseErrorHandler(500, "Error on writing data", "unknown error");
          }
       }
    }
@@ -72,7 +72,7 @@ class GoogleRepository {
     * @param dep Warehouse name referent to SHEET_ID
     * @returns data as an array of array [][] on the given range, as row x column, otherwise return undefined
     */
-   private async getRange(range: string, dep: string): Promise<any[][]|null|undefined> {
+   private async getRange(range: string, dep: string): Promise<any[][] | null | undefined> {
       try {
          const sheets = this.sheet;
          const response = await sheets.spreadsheets.values.get({
@@ -82,16 +82,16 @@ class GoogleRepository {
 
          const values = response.data.values;
          // if(!values) throw new Error ("no values on get range");
-         
+
 
          return values
 
       } catch (error: unknown) {
          console.error("Error getting the range ", range, error);
          if (error instanceof Error) {
-            throw new ResponseErrorHandler(500, error.message);
+            throw new ResponseErrorHandler(500, "error getting range", error.message);
          } else {
-            throw new ResponseErrorHandler(500, "unknown error");
+            throw new ResponseErrorHandler(500, "error getting range", "unknown error");
          }
       }
    }
@@ -100,9 +100,9 @@ class GoogleRepository {
     * @param dep Warehouse name referent to SHEET_ID
     * @returns Entire table data 
     */
-   async getAll(dep:string): Promise<any[][]> {
+   async getAll(dep: string): Promise<any[][]> {
       try {
-         const sheet = await this.getRange("A:V",dep);
+         const sheet = await this.getRange("A:V", dep);
 
          if (!sheet) throw new Error("the sheet is empty")
          return sheet;
@@ -110,9 +110,9 @@ class GoogleRepository {
       } catch (error: unknown) {
          console.error("error getting all", error);
          if (error instanceof Error) {
-            throw new ResponseErrorHandler(500, error.message);
+            throw new ResponseErrorHandler(500, "error getting all", error.message);
          } else {
-            throw new ResponseErrorHandler(500, "unknown error");
+            throw new ResponseErrorHandler(500, "error getting all", "unknown error");
 
          }
       }
@@ -140,9 +140,9 @@ class GoogleRepository {
       } catch (error: unknown) {
          console.error("error fetching codigo index", error);
          if (error instanceof Error) {
-            throw new ResponseErrorHandler(500, error.message);
+            throw new ResponseErrorHandler(500, "index error", error.message);
          } else {
-            throw new ResponseErrorHandler(500, "unknown error");
+            throw new ResponseErrorHandler(500, "index error", "unknown error");
          }
       }
    }
@@ -153,9 +153,9 @@ class GoogleRepository {
     * @param newPosicion array of the new posicion in the correct order: pasillo, bloco, secuencia
     * @returns an array of array string[][], representing the row and columns of the updated row of codigo
     */
-   async appendPosicion(codigo: string, newPosicion: string[],dep:string) {
+   async appendPosicion(codigo: string, newPosicion: string[], dep: string) {
       try {
-         const codigoIndex = await this.findCodigoIndex(codigo,dep);
+         const codigoIndex = await this.findCodigoIndex(codigo, dep);
 
          const range = `D${codigoIndex + 1}:W${codigoIndex + 1}`;
          let dataRow = await this.getRange(range, dep);
@@ -177,13 +177,13 @@ class GoogleRepository {
          }
 
          // console.log(dataRow);
-         return this.writeData(range, [outputData],dep);
+         return this.writeData(range, [outputData], dep);
       } catch (error) {
          console.error("error appending", error);
          if (error instanceof Error) {
-            throw new ResponseErrorHandler(500, error.message);
+            throw new ResponseErrorHandler(500, "append error", error.message);
          } else {
-            throw new ResponseErrorHandler(500, "Unknown error");
+            throw new ResponseErrorHandler(500, "append error", "Unknown error");
          }
       }
 
@@ -195,19 +195,19 @@ class GoogleRepository {
     * 
     * @returns all codigo of the table, basically the column A:A
     */
-   async getAllCodigos(dep:string): Promise<string[]> {
+   async getAllCodigos(dep: string): Promise<string[]> {
       try {
 
-         const allCodigos = await this.getRange("A:A",dep);
+         const allCodigos = await this.getRange("A:A", dep);
 
          if (!allCodigos) throw new Error("empty codigo columns");
          return allCodigos.flat();
       } catch (error) {
          console.error("error getting all codigos", error);
          if (error instanceof Error) {
-            throw new ResponseErrorHandler(500, error.message);
+            throw new ResponseErrorHandler(500, "error getting codigo", error.message);
          } else {
-            throw new ResponseErrorHandler(500, "unknown error");
+            throw new ResponseErrorHandler(500, "error getting codigo", "unknown error");
          }
       }
 
@@ -222,15 +222,15 @@ class GoogleRepository {
    async getRow(codigo: string, dep: string): Promise<string[]> {
       try {
          const index = await this.findCodigoIndex(codigo, dep);
-         const row = (await this.getRange(`B${index + 1}:W${index + 1}`,dep))?.flat();
+         const row = (await this.getRange(`B${index + 1}:W${index + 1}`, dep))?.flat();
          if (!row) throw new Error("error on getRow");
          return row;
       } catch (error) {
          console.error("error getting row", error);
          if (error instanceof Error) {
-            throw new ResponseErrorHandler(500, error.message);
+            throw new ResponseErrorHandler(500, "row error", error.message);
          } else {
-            throw new ResponseErrorHandler(500, "unknown error");
+            throw new ResponseErrorHandler(500, "row error", "unknown error");
          }
       }
 

@@ -11,9 +11,6 @@ class FormController {
 
    async submit(req: Request, res: Response) {
       try {
-
-
-         
          console.log(req.body)
          const validInput = entradaPosicionesValidation(req.body);
          const response = await this.formService.submit(validInput);

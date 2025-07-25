@@ -3,35 +3,39 @@ import FormController from "./1controllers/formController";
 import FormService from "./2services/formService";
 import GoogleRepository from "./3repositories/googlesheetRepository";
 import authClient from "./4schemas/authGoogle";
-import AuthRegisterController from "./1controllers/AuthRegisterController";
-import AuthRegisterService from "./2services/AuthRegisterService";
+import AuthController from "./1controllers/AuthController";
+import AuthService from "./2services/AuthService";
 import AuthRepository from "./3repositories/AuthRepository";
 
 
 
 const router = Router();
 const formController = new FormController(new FormService(new GoogleRepository(authClient())));
-const authRegisterController = new AuthRegisterController(new AuthRegisterService( new AuthRepository()));
+const authController = new AuthController(new AuthService(new AuthRepository()));
 
-router.post("/submit", async (req: Request, res:Response)=>{
+router.post("/submit", async (req: Request, res: Response) => {
    await formController.submit(req, res);
 });
 
-router.get("/getCodigo", async (req: Request, res:Response)=>{
+router.get("/getCodigo", async (req: Request, res: Response) => {
    await formController.getCodigo(req, res);
 });
 
-router.get("/getAllCodigos/:dep", async (req: Request, res:Response)=>{
+router.get("/getAllCodigos/:dep", async (req: Request, res: Response) => {
    await formController.getAllCodigos(req, res);
 });
 
-router.post("/getRow", async (req: Request, res:Response)=>{
+router.post("/getRow", async (req: Request, res: Response) => {
    await formController.getRow(req, res);
 });
 
-router.post("/auth/register", async (req: Request, res:Response)=>{
-   await authRegisterController.register(req, res);
+router.post("/auth/register", async (req: Request, res: Response) => {
+   await authController.register(req, res);
 });
+
+router.post("/auth/login", async (req: Request, res: Response) => {
+   await authController.login(req, res);
+})
 
 //
 
