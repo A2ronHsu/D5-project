@@ -8,12 +8,12 @@ const formController_1 = __importDefault(require("./1controllers/formController"
 const formService_1 = __importDefault(require("./2services/formService"));
 const googlesheetRepository_1 = __importDefault(require("./3repositories/googlesheetRepository"));
 const authGoogle_1 = __importDefault(require("./4schemas/authGoogle"));
-const AuthRegisterController_1 = __importDefault(require("./1controllers/AuthRegisterController"));
-const AuthRegisterService_1 = __importDefault(require("./2services/AuthRegisterService"));
+const AuthController_1 = __importDefault(require("./1controllers/AuthController"));
+const AuthService_1 = __importDefault(require("./2services/AuthService"));
 const AuthRepository_1 = __importDefault(require("./3repositories/AuthRepository"));
 const router = (0, express_1.Router)();
 const formController = new formController_1.default(new formService_1.default(new googlesheetRepository_1.default((0, authGoogle_1.default)())));
-const authRegisterController = new AuthRegisterController_1.default(new AuthRegisterService_1.default(new AuthRepository_1.default()));
+const authController = new AuthController_1.default(new AuthService_1.default(new AuthRepository_1.default()));
 router.post("/submit", async (req, res) => {
     await formController.submit(req, res);
 });
@@ -27,7 +27,10 @@ router.post("/getRow", async (req, res) => {
     await formController.getRow(req, res);
 });
 router.post("/auth/register", async (req, res) => {
-    await authRegisterController.register(req, res);
+    await authController.register(req, res);
+});
+router.post("/auth/login", async (req, res) => {
+    await authController.login(req, res);
 });
 //
 /**

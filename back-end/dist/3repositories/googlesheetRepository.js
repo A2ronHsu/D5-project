@@ -10,7 +10,8 @@ const SHEET_ID = {
     'D5': "1NECc6VReyx16_O1TTrizbDPZzyGas4lmatn8hGAG3xE",
     'D8': "1Ut6kE5d_Jn_KC0jBP4I9BhJ5u6A17tAB3cGI4cxZLzA",
     'D1': "1CqLs1V4tMhBMb1EeOyOsy4heoruVqqDLogiSQSSppVE",
-    'D9': "1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k"
+    'D9': "1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k",
+    'D4': "1SaMpkICKXfvdlBmdogTb_GPOubPN7KapdP6n-GGMYf8"
 };
 class GoogleRepository {
     authClient;
@@ -51,10 +52,10 @@ class GoogleRepository {
         catch (error) {
             console.error(`Error apending data to range ${range}:, `, error);
             if (error instanceof Error) {
-                throw new requestErrorHandler_1.default(500, error.message);
+                throw new requestErrorHandler_1.default(500, "Error on writing data", error.message);
             }
             else {
-                throw new requestErrorHandler_1.default(500, "unknown error");
+                throw new requestErrorHandler_1.default(500, "Error on writing data", "unknown error");
             }
         }
     }
@@ -78,10 +79,10 @@ class GoogleRepository {
         catch (error) {
             console.error("Error getting the range ", range, error);
             if (error instanceof Error) {
-                throw new requestErrorHandler_1.default(500, error.message);
+                throw new requestErrorHandler_1.default(500, "error getting range", error.message);
             }
             else {
-                throw new requestErrorHandler_1.default(500, "unknown error");
+                throw new requestErrorHandler_1.default(500, "error getting range", "unknown error");
             }
         }
     }
@@ -99,10 +100,10 @@ class GoogleRepository {
         catch (error) {
             console.error("error getting all", error);
             if (error instanceof Error) {
-                throw new requestErrorHandler_1.default(500, error.message);
+                throw new requestErrorHandler_1.default(500, "error getting all", error.message);
             }
             else {
-                throw new requestErrorHandler_1.default(500, "unknown error");
+                throw new requestErrorHandler_1.default(500, "error getting all", "unknown error");
             }
         }
     }
@@ -125,10 +126,10 @@ class GoogleRepository {
         catch (error) {
             console.error("error fetching codigo index", error);
             if (error instanceof Error) {
-                throw new requestErrorHandler_1.default(500, error.message);
+                throw new requestErrorHandler_1.default(500, "index error", error.message);
             }
             else {
-                throw new requestErrorHandler_1.default(500, "unknown error");
+                throw new requestErrorHandler_1.default(500, "index error", "unknown error");
             }
         }
     }
@@ -162,10 +163,10 @@ class GoogleRepository {
         catch (error) {
             console.error("error appending", error);
             if (error instanceof Error) {
-                throw new requestErrorHandler_1.default(500, error.message);
+                throw new requestErrorHandler_1.default(500, "append error", error.message);
             }
             else {
-                throw new requestErrorHandler_1.default(500, "Unknown error");
+                throw new requestErrorHandler_1.default(500, "append error", "Unknown error");
             }
         }
     }
@@ -184,10 +185,10 @@ class GoogleRepository {
         catch (error) {
             console.error("error getting all codigos", error);
             if (error instanceof Error) {
-                throw new requestErrorHandler_1.default(500, error.message);
+                throw new requestErrorHandler_1.default(500, "error getting codigo", error.message);
             }
             else {
-                throw new requestErrorHandler_1.default(500, "unknown error");
+                throw new requestErrorHandler_1.default(500, "error getting codigo", "unknown error");
             }
         }
     }
@@ -208,10 +209,10 @@ class GoogleRepository {
         catch (error) {
             console.error("error getting row", error);
             if (error instanceof Error) {
-                throw new requestErrorHandler_1.default(500, error.message);
+                throw new requestErrorHandler_1.default(500, "row error", error.message);
             }
             else {
-                throw new requestErrorHandler_1.default(500, "unknown error");
+                throw new requestErrorHandler_1.default(500, "row error", "unknown error");
             }
         }
     }
