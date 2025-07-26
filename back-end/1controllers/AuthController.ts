@@ -34,7 +34,33 @@ export default class AuthController {
    }
 
 
-   async login(req:Request, res:Response){
-      const userLogin : IUserLogin = validadeUserLogin(req.body);
+   async login(req: Request, res: Response) {
+      try {
+         const userLogin: IUserLogin = validadeUserLogin(req.body);
+         const response = await this.authService.login(userLogin);
+         res.status(200).cookie("login",response.loginToken,{
+            httpOnly:true,
+            maxAge: 18000000, // 5h expiration in miliseconds,
+            sameSite: "lax", //Protects againd CSRF,
+            path: '/', // Accessible across the whole domain.
+         })
+         .json({
+            message: "logged in",
+            userName:response.userName
+         });
+
+      } catch (err) {
+         if (err instanceof ResponseErrorHandler) {
+            res.status(400).json({
+               name: err.name,
+               message: err.message
+            })
+         }
+         else {
+            res.status(400).json({
+               error: "unknow error on login"
+            })
+         }
+      }
    }
 }

@@ -1,6 +1,5 @@
 import ResponseErrorHandler from "../4schemas/requestErrorHandler";
 import { IUser, IUserRegistration } from "../5models/AuthModels";
-import bcrypt from 'bcrypt';
 
 
 
@@ -20,13 +19,12 @@ export default class AuthRepository {
 
    async register(userRegistration: IUserRegistration) {
       try {
-         const hashedPassword = await bcrypt.hash(userRegistration.password, 10);
          
          const newUser: IUser = {
             id: "1111",
             userName: userRegistration.username,
             email: userRegistration.email,
-            password: hashedPassword,
+            password: userRegistration.password,
             role: "depositero"
          }
 

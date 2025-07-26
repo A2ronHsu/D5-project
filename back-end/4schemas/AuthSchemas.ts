@@ -10,10 +10,10 @@ export const validadeUserRegistration = (reqBody: any): IUserRegistration => {
 }
 
 export const validadeUserLogin = (reqBody: any): IUserLogin => {
-   const {username, password} = reqBody;
-   if(!username || !password) {
+   const {email, password} = reqBody;
+   if(!email || !password) {
       throw new ResponseErrorHandler(400,"bad input")
    }
-   return {username, password}
+   return {email, password}
 
 }
