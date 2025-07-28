@@ -1,9 +1,13 @@
+export type Roles = 'user'|'admin' | 'depositero';
+export const roles : Array<Roles>= ["user", "admin", "depositero"];
+
+
 export interface IUser {
    id: string,
    userName: string,
    email:string,
    password: string,
-   role:'user'|'admin' | 'depositero'
+   role: Roles
 }
 
 /**
@@ -19,4 +23,9 @@ export interface IUserRegistration {
 export interface IUserLogin {
    email: string,
    password: string
+}
+
+export interface jwtToken {
+   id: string,
+   role: string,
 }

@@ -3,15 +3,33 @@ import FormController from "./1controllers/formController";
 import FormService from "./2services/formService";
 import GoogleRepository from "./3repositories/googlesheetRepository";
 import authClient from "./4schemas/authGoogle";
+
 import AuthController from "./1controllers/AuthController";
 import AuthService from "./2services/AuthService";
 import AuthRepository from "./3repositories/AuthRepository";
+import authenticationMiddleware from "./5middlewares/authenticationMiddleware";
+import authorizationMiddleware from "./5middlewares/authorizationMiddleware";
+import { Roles } from "./5models/AuthModels";
+
 
 
 
 const router = Router();
 const formController = new FormController(new FormService(new GoogleRepository(authClient())));
 const authController = new AuthController(new AuthService(new AuthRepository()));
+
+declare global {
+   namespace Express {
+      interface Request {
+         user?: {
+            id: string,
+            role: Roles
+         }
+      }
+   }
+}
+
+
 
 router.post("/submit", async (req: Request, res: Response) => {
    await formController.submit(req, res);
