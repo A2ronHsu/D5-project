@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const requestErrorHandler_1 = __importDefault(require("../4schemas/requestErrorHandler"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
 class AuthRepository {
     Users = [
         {
@@ -19,12 +18,11 @@ class AuthRepository {
     }
     async register(userRegistration) {
         try {
-            const hashedPassword = await bcrypt_1.default.hash(userRegistration.password, 10);
             const newUser = {
                 id: "1111",
                 userName: userRegistration.username,
                 email: userRegistration.email,
-                password: hashedPassword,
+                password: userRegistration.password,
                 role: "depositero"
             };
             this.Users.push(newUser);

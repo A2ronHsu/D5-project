@@ -14,10 +14,10 @@ const validadeUserRegistration = (reqBody) => {
 };
 exports.validadeUserRegistration = validadeUserRegistration;
 const validadeUserLogin = (reqBody) => {
-    const { username, password } = reqBody;
-    if (!username || !password) {
+    const { email, password } = reqBody;
+    if (!email || !password) {
         throw new requestErrorHandler_1.default(400, "bad input");
     }
-    return { username, password };
+    return { email, password };
 };
 exports.validadeUserLogin = validadeUserLogin;

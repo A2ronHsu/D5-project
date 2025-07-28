@@ -39,9 +39,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importStar(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const routes_1 = __importDefault(require("./routes"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const server = (0, express_1.default)();
 dotenv_1.default.config();
-server.use(express_1.default.static("../front-end/dist"), (0, express_1.json)(), (0, express_1.urlencoded)({ extended: true }), routes_1.default);
+server.use(express_1.default.static("../front-end/dist"), (0, cookie_parser_1.default)(), (0, express_1.json)(), (0, express_1.urlencoded)({ extended: true }), routes_1.default);
 server.listen(3000, () => {
     console.log(process.env.PORT);
     console.log("listening");

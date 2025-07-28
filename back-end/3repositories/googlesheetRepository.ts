@@ -8,7 +8,8 @@ const SHEET_ID: { [key: string]: string } = {
    'D8': "1Ut6kE5d_Jn_KC0jBP4I9BhJ5u6A17tAB3cGI4cxZLzA",
    'D1': "1CqLs1V4tMhBMb1EeOyOsy4heoruVqqDLogiSQSSppVE",
    'D9': "1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k",
-   'D4': "1SaMpkICKXfvdlBmdogTb_GPOubPN7KapdP6n-GGMYf8"
+   'D4': "1SaMpkICKXfvdlBmdogTb_GPOubPN7KapdP6n-GGMYf8",
+   'D2': "1m5lRqJ2JSaLxG9lNDOBKPtbpI0b7zjeccDlCHQvS5co"
 }
 
 class GoogleRepository {

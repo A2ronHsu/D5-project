@@ -103,6 +103,8 @@ const Form: React.FC = () => {
                   <option className="dep-options" value="D1">D1</option>
                   <option className="dep-options" value="D9">D9</option>
                   <option className="dep-options" value="D4">D4</option>
+                  <option className="dep-options" value="D2">D2</option>
+
 
 
 
