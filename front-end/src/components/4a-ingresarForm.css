@@ -61,3 +61,11 @@ input {
    box-sizing: border-box;
    margin-bottom: 1em;
 }
+
+#search_result_table {
+   margin-top: 2em;
+}
+
+button {
+   font-size: larger;
+}

@@ -1,5 +1,7 @@
 import React, { useEffect, useState, type ChangeEvent } from "react";
 import "./4a-ingresarForm.css";
+import { DepOptions } from "./-1-DepOptions";
+import SearchResultTable from "./3-SearchResultTable";
 
 
 const IngresarForm: React.FC = () => {
@@ -13,6 +15,10 @@ const IngresarForm: React.FC = () => {
    const [bloco, setBloco] = useState<string>("");
    const [secuencia, setSecuencia] = useState<string>("");
    const [dep, setDep] = useState<string>("D5");
+
+
+
+   const [row, setRow] = useState<string[]>([]);
 
 
    useEffect(() => {
@@ -48,8 +54,6 @@ const IngresarForm: React.FC = () => {
       setError(null);
 
    }, [dep])
-
-
 
    const handleDepChange = (event: ChangeEvent<HTMLSelectElement>) => {
       setDep(event.target.value);
@@ -106,6 +110,29 @@ const IngresarForm: React.FC = () => {
 
    }
 
+   const handleSearchButtton = async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setError(null);
+      try {
+         const res = await fetch("/getRow", {
+            method: "POST",
+            headers: {
+               "content-type": "application/json"
+            },
+            body: JSON.stringify({ codigo: searchInput, dep: dep })
+         });
+
+         if (!res.ok) throw new Error();
+
+         const json = await res.json();
+         setRow(json.row);
+
+      } catch (error: any) {
+         setError(`codigo no existe o no encontrado`);
+      }
+
+   }
+
    const handlePasillo = (event: ChangeEvent<HTMLInputElement>) => {
       setPasillo(event.target.value);
    }
@@ -130,15 +157,7 @@ const IngresarForm: React.FC = () => {
                </legend>
                <label htmlFor="ingresar-dep">Deposito</label>
                <select name="dep" id="ingresar-dep" value={dep} onChange={handleDepChange}>
-                  <option value="D5">D5</option>
-                  <option value="D8">D8</option>
-                  <option value="D1">D1</option>
-                  <option value="D9">D9</option>
-                  <option value="D4">D4</option>
-                  <option value="D2">D2</option>
-
-
-
+                  <DepOptions />
                </select>
                {loading && <h3>Cargando</h3>}
 
@@ -164,8 +183,12 @@ const IngresarForm: React.FC = () => {
                <button type="submit" disabled={loading} >Enviar</button>
             </fieldset>
          </form>
+         <form onSubmit={handleSearchButtton}>
+            <button type="submit">Buscar Posicion</button>
+         </form>
          {error && <h3>Ocurrio un erro</h3>}
          {response && <h3>{response}</h3>}
+         <SearchResultTable searchInput={searchInput} row={row}></SearchResultTable>
       </div>
    )
 }

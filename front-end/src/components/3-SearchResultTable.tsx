@@ -43,7 +43,7 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
 
 
    return (
-      <>
+      <div id="search_result_table">
          <table className="table" id="codigo_table">
             <thead>
                <tr>
@@ -95,7 +95,7 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
 
 
          </table>
-      </>
+      </div>
    )
 }
 
