@@ -113,6 +113,7 @@ const IngresarForm: React.FC = () => {
    const handleSearchButtton = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       setError(null);
+      setLoading(true)
       try {
          const res = await fetch("/getRow", {
             method: "POST",
@@ -129,6 +130,8 @@ const IngresarForm: React.FC = () => {
 
       } catch (error: any) {
          setError(`codigo no existe o no encontrado`);
+      } finally {
+         setLoading(false);
       }
 
    }
@@ -184,7 +187,7 @@ const IngresarForm: React.FC = () => {
             </fieldset>
          </form>
          <form onSubmit={handleSearchButtton}>
-            <button type="submit">Buscar Posicion</button>
+            <button type="submit" disabled={loading}>Buscar Posicion</button>
          </form>
          {error && <h3>Ocurrio un erro</h3>}
          {response && <h3>{response}</h3>}

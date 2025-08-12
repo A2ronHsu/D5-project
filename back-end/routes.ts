@@ -10,7 +10,6 @@ import AuthRepository from "./3repositories/AuthRepository";
 import authenticationMiddleware from "./5middlewares/authenticationMiddleware";
 import authorizationMiddleware from "./5middlewares/authorizationMiddleware";
 import { Roles } from "./5models/AuthModels";
-import TransferController from "./1controllers/TransferControler";
 
 
 
@@ -18,7 +17,6 @@ import TransferController from "./1controllers/TransferControler";
 const router = Router();
 const formController = new FormController(new FormService(new GoogleRepository(authClient())));
 const authController = new AuthController(new AuthService(new AuthRepository()));
-const transferController = new TransferController();
 
 declare global {
    namespace Express {
@@ -59,17 +57,12 @@ router.post("/auth/login", async (req: Request, res: Response) => {
 
 
 router.post("/danyhome/transfer", authenticationMiddleware, authorizationMiddleware(["depositero"]), async (req: Request, res: Response) => {
-   await transferController.post(req, res);
+   await formController.transfer(req, res);
+
 })
 
 //
 
 
-/**
-router.post("/", async (req: Request,res: Response)=>{
-   const repository = await GoogleRepository.build();
-   repository.writeData("A:M",[['1','2','3','4'],['2'],["3"],["4"]],)
-   res.json({ok:"ok"})
-})
-**/
+
 export default router;

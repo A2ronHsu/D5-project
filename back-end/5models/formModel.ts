@@ -13,3 +13,11 @@ export interface getRange {
 export interface ICustomError extends Error {
    statusCode: number;
 }
+
+export interface ITransfer {
+   fecha: string,
+   dep: string,
+   codigo: string,
+   bloco: number,
+   cantidad: number
+}

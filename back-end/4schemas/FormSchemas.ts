@@ -23,3 +23,16 @@ export const getCodigoValidation = (input: any) => {
    return {codigo, dep};
 }
 
+export const transferValidation = (input:any) =>{
+   let {fecha, dep, codigo, bloco, cantidad} = input;
+   if( !fecha || !dep || !codigo || !bloco || !cantidad){
+      let error = new ResponseErrorHandler(400, "Input Error", "Invalid Input");
+      throw error;
+   };
+
+   bloco = Number(bloco);
+   cantidad = Number(cantidad);
+
+   return {fecha, dep, codigo, bloco, cantidad};
+
+}

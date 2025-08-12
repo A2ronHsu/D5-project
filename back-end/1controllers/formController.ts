@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { entradaPosicionesValidation, getCodigoValidation } from "../4schemas/FormSchemas";
+import { entradaPosicionesValidation, getCodigoValidation, transferValidation } from "../4schemas/FormSchemas";
 import FormService from "../2services/formService";
 import ResponseErrorHandler from "../4schemas/requestErrorHandler";
 
@@ -84,6 +84,24 @@ class FormController {
          } else {
             res.json({ error: "unknown error" });
 
+         }
+      }
+   }
+
+      transfer (req: Request, res: Response) {
+      try {
+         console.log(req.body);
+         const validInput = transferValidation(req.body);
+         const response = this.formService.transfer(validInput);
+         res.json(response);
+      } catch (err) {
+         if (err instanceof ResponseErrorHandler) {
+            res.status(err.statusCode).json({
+               name: err.name,
+               message: err.message
+            });
+         } else {
+            res.json({ error: "unknown error on e281f39d" });
          }
       }
    }

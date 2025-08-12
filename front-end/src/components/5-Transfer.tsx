@@ -1,12 +1,18 @@
-import React, { useEffect, useState, type ChangeEvent } from "react";
+import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
+import "./5-Transfer.css";
 
 const Transfer: React.FC = () => {
    const [allCodigos, setAllCodigos] = useState<string[]>([]);
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
+   const [response, setResponse] = useState<string>("");
 
+   const [fecha, setFecha] = useState<string>();
+   const [dep, setDep] = useState<string>("");
    const [codigo, setCodigo] = useState<string>("");
    const [bloco, setBloco] = useState<string>("");
+   const [cantidad, setCantidad] = useState<string>("");
+
 
    useEffect(() => {
       const populateList = async (dep: string) => {
@@ -39,48 +45,122 @@ const Transfer: React.FC = () => {
       console.log(allCodigos);
    }, [allCodigos]);
 
-   const handleSubmit = () => { };
 
-   const handleCodigo = (event:ChangeEvent<HTMLInputElement>) => {
+
+   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setError(null);
+      setResponse("");
+      setLoading(true);
+      setResponse("");
+
+      const formData = {
+         fecha: fecha,
+         dep: dep,
+         codigo: codigo,
+         bloco: bloco,
+         cantidad: cantidad
+
+      }
+
+      try {
+         const res = await fetch("/dannyhome/transfer", {
+            method: "POST",
+            headers: {
+               "content-type": "application/json"
+            },
+            body: JSON.stringify({ ...formData })
+         })
+
+         const json = await res.json();
+
+         if (!res.ok) {
+            console.error(json);
+            throw new Error(json);
+         }
+         setResponse("Enviado");
+         setCodigo("");
+         setBloco("");
+         setCantidad("");
+         setError(null);
+
+      } catch (err: any) {
+         setResponse("Problema de Envio");
+         setError(err.message);
+      } finally {
+         setLoading(false);
+      }
+   };
+
+   const handleDep = (event: ChangeEvent<HTMLSelectElement>) => {
+      setDep(event.target.value);
+   }
+
+
+
+   const handleCodigo = (event: ChangeEvent<HTMLInputElement>) => {
       setCodigo(event.target.value);
-    };
+   };
 
-   const handleBloco = (event:ChangeEvent<HTMLInputElement>) => {
+   const handleBloco = (event: ChangeEvent<HTMLInputElement>) => {
       setBloco(event.target.value);
-    };
+   };
 
+   const handleCantidad = (event: ChangeEvent<HTMLInputElement>) => {
+      setCantidad(event.target.value);
+   }
+
+   const filteredOptions = useMemo(() => {
+      if (codigo === '') return [];
+      return allCodigos.filter(element => element.toUpperCase().includes(codigo.toUpperCase())).slice(0, 15);
+   }, [codigo]);
 
    return (
-      <div>
+      <div id="wrapper">
          {loading && <h3>Cargando</h3>}
-         <form id="tranfer" onSubmit={handleSubmit}>
-            <fieldset>
+         <form id="transfer" onSubmit={handleSubmit}>
+            <fieldset id="transferFieldset">
                <legend>
                   Tranferencia
                </legend>
-               
-               <input type="date" name="fecha" id="fecha" value={new Date().toString()} hidden/>
+
+               <input type="datetime" name="fecha" id="fecha" value={new Date().toDateString()} onChange={() => { setFecha(new Date().toDateString()) }} hidden required />
 
                <label htmlFor="deposito">Deposito de Origen</label>
-               <input
+               <select name="dep" id="deposito" value={dep} onChange={handleDep} required>
+                  <option value="D1">D1</option>
+                  <option value="D2">D2</option>
+                  <option value="D4">D4</option>
+                  <option value="D5">D5</option>
+               </select>
 
-               <label htmlFor="codigo">Codigo</label>
-               <input type="search" name="codigo" id="codigo" list="codigoslist" value={codigo} onChange={handleCodigo} required />
-               <datalist id="codigolist">
+               <label htmlFor="transfercodigo">Codigo</label>
+               <input type="search" name="codigo" id="transfercodigo" list="codigoslist" value={codigo} onChange={handleCodigo} required />
+               <datalist id="codigoslist">
                   {
-                     allCodigos.map((codigo, i) => {
-                        return <option key={i} value={codigo}>{codigo}</option>
-                     })
+                     filteredOptions.length > 0 ? (
+                        filteredOptions.map((element, i) => {
+                           return <option key={`${i}+${element}`} value={element}>{element}</option>
+                        })
+                     )
+                        :
+                        (
+                           <option key="codigilistNull" value="">Codigo no encontrado</option>
+                        )
                   }
                </datalist>
 
-               <label htmlFor="bloco">Bloco</label>
-               <input type="number" name="bloco" id="bloco" pattern="\d+" value={bloco} onChange={handleBloco} />
+               <label htmlFor="tbloco">Bloco</label>
+               <input type="number" name="bloco" id="tbloco" pattern="\d+" value={bloco} onChange={handleBloco} required />
 
-               
+               <label htmlFor="cantidad">Cantidad en Unidades</label>
+               <input type="number" name="cantidad" id="cantidad" pattern="\d+" value={cantidad} onChange={handleCantidad} required />
 
+               <button type="submit" disabled={loading}>Enviar</button>
             </fieldset>
          </form>
+         {error && <h3>Ocurrio un erro</h3>}
+         {response && <h3>response</h3>}
       </div>
    )
 }
