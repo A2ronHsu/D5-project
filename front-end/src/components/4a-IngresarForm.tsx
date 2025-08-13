@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type ChangeEvent } from "react";
+import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import "./4a-ingresarForm.css";
 import { DepOptions } from "./-1-DepOptions";
 import SearchResultTable from "./3-SearchResultTable";
@@ -148,6 +148,10 @@ const IngresarForm: React.FC = () => {
       setSecuencia(event.target.value);
    }
 
+   const filteredOptions = useMemo(() => {
+      if (searchInput === '') return [];
+      return allCodigos.filter(element => element.toUpperCase().includes(searchInput.toUpperCase())).slice(0, 7);
+   }, [searchInput,allCodigos]);
 
 
 
@@ -168,9 +172,15 @@ const IngresarForm: React.FC = () => {
                <input type="search" name="codigo" id="ingresar-codigo" list="codigoslist" value={searchInput} onChange={handleIngressarCodigo} required />
                <datalist id="codigoslist">
                   {
-                     allCodigos.map((codigo, i) => {
-                        return <option key={i} value={codigo}>{codigo}</option>
-                     })
+                     filteredOptions.length > 0 ? (
+                        filteredOptions.map((element, i) => {
+                           return <option key={`${i}+${element}`} value={element}>{element}</option>
+                        })
+                     )
+                        :
+                        (
+                           <option ></option>
+                        )
                   }
                </datalist>
 

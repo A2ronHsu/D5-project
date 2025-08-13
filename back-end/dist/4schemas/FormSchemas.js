@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCodigoValidation = exports.entradaPosicionesValidation = void 0;
+exports.transferValidation = exports.getCodigoValidation = exports.entradaPosicionesValidation = void 0;
 const requestErrorHandler_1 = __importDefault(require("./requestErrorHandler"));
 const entradaPosicionesValidation = (input) => {
     const { codigo, pasillo, bloco, secuencia, dep } = input;
@@ -25,3 +25,15 @@ const getCodigoValidation = (input) => {
     return { codigo, dep };
 };
 exports.getCodigoValidation = getCodigoValidation;
+const transferValidation = (input) => {
+    let { fecha, dep, codigo, bloco, cantidad } = input;
+    if (!fecha || !dep || !codigo || !bloco || !cantidad) {
+        let error = new requestErrorHandler_1.default(400, "Input Error", "Invalid Input");
+        throw error;
+    }
+    ;
+    bloco = Number(bloco);
+    cantidad = Number(cantidad);
+    return { fecha, dep, codigo, bloco, cantidad };
+};
+exports.transferValidation = transferValidation;

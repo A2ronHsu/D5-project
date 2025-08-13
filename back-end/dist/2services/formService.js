@@ -23,5 +23,10 @@ class FormService {
         const row = await this.repository.getRow(codigo, dep);
         return row;
     }
+    async transfer(input) {
+        const { fecha, dep, codigo, bloco, cantidad } = input;
+        const response = await this.repository.transfer([fecha, dep, codigo, bloco, cantidad]);
+        return response;
+    }
 }
 exports.default = FormService;

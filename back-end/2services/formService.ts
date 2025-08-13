@@ -34,9 +34,9 @@ class FormService {
 
    }
 
-   transfer(input: ITransfer) {
+   async transfer(input: ITransfer) {
       const {fecha, dep, codigo, bloco, cantidad} = input;
-      const response = this.repository.transfer([fecha, dep, codigo, bloco, cantidad]);
+      const response = await this.repository.transfer([fecha, dep, codigo, bloco, cantidad]);
       return response;
    }
 }

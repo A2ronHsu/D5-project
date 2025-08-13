@@ -56,7 +56,7 @@ router.post("/auth/login", async (req: Request, res: Response) => {
 })
 
 
-router.post("/danyhome/transfer", authenticationMiddleware, authorizationMiddleware(["depositero"]), async (req: Request, res: Response) => {
+router.post("/dannyhome/transfer/post",  async (req: Request, res: Response) => {
    await formController.transfer(req, res);
 
 })

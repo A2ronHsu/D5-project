@@ -21,9 +21,11 @@ export default defineConfig({
       "/submit": {
         target: "http://localhost:3000/",
         changeOrigin: true
+      },
+      "/dannyhome/transfer/post" : {
+        target: "http://localhost:3000",
+        changeOrigin : true
       }
     }
-
-
   }
 })

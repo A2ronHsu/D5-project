@@ -32,12 +32,8 @@ router.post("/auth/register", async (req, res) => {
 router.post("/auth/login", async (req, res) => {
     await authController.login(req, res);
 });
+router.post("/dannyhome/transfer/post", async (req, res) => {
+    await formController.transfer(req, res);
+});
 //
-/**
-router.post("/", async (req: Request,res: Response)=>{
-   const repository = await GoogleRepository.build();
-   repository.writeData("A:M",[['1','2','3','4'],['2'],["3"],["4"]],)
-   res.json({ok:"ok"})
-})
-**/
 exports.default = router;

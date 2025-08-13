@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type ChangeEvent } from "react";
+import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import SearchResultTable from "./3-SearchResultTable";
 import { DepOptions } from "./-1-DepOptions";
 
@@ -82,6 +82,10 @@ const Form: React.FC = () => {
       setError(null);
    }
 
+      const filteredOptions = useMemo(() => {
+         if (searchInput === '') return [];
+         return allCodigos.filter(element => element.toUpperCase().includes(searchInput.toUpperCase())).slice(0, 7);
+      }, [searchInput,allCodigos]);
 
 
 
@@ -109,11 +113,17 @@ const Form: React.FC = () => {
             <div id="search-container">
                <input type="search" id="codigo" name="codigo" list="listCodigo" value={searchInput} onChange={handleSearchInput} required></input>
                <datalist id="listCodigo">
-                  {allCodigos.map((option, key) => {
-                     return (
-                        <option value={option} key={key}>{option}</option>
+                  {
+                     filteredOptions.length > 0 ? (
+                        filteredOptions.map((element, i) => {
+                           return <option key={`${i}+${element}`} value={element}>{element}</option>
+                        })
                      )
-                  })}
+                        :
+                        (
+                           <option ></option>
+                        )
+                  }
                </datalist>
                <button type="submit" id="submit">Buscar</button>
             </div>

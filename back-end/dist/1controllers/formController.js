@@ -83,5 +83,24 @@ class FormController {
             }
         }
     }
+    async transfer(req, res) {
+        try {
+            console.log(req.body);
+            const validInput = (0, FormSchemas_1.transferValidation)(req.body);
+            const response = await this.formService.transfer(validInput);
+            res.json(response);
+        }
+        catch (err) {
+            if (err instanceof requestErrorHandler_1.default) {
+                res.status(err.statusCode).json({
+                    name: err.name,
+                    message: err.message
+                });
+            }
+            else {
+                res.json({ error: "unknown error on e281f39d" });
+            }
+        }
+    }
 }
 exports.default = FormController;

@@ -7,8 +7,7 @@ const Transfer: React.FC = () => {
    const [error, setError] = useState<string | null>(null);
    const [response, setResponse] = useState<string>("");
 
-   const [fecha, setFecha] = useState<string>();
-   const [dep, setDep] = useState<string>("");
+   const [dep, setDep] = useState<string>("D1");
    const [codigo, setCodigo] = useState<string>("");
    const [bloco, setBloco] = useState<string>("");
    const [cantidad, setCantidad] = useState<string>("");
@@ -54,8 +53,9 @@ const Transfer: React.FC = () => {
       setLoading(true);
       setResponse("");
 
+      const date = new Date();
       const formData = {
-         fecha: fecha,
+         fecha: `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
          dep: dep,
          codigo: codigo,
          bloco: bloco,
@@ -64,7 +64,7 @@ const Transfer: React.FC = () => {
       }
 
       try {
-         const res = await fetch("/dannyhome/transfer", {
+         const res = await fetch("/dannyhome/transfer/post", {
             method: "POST",
             headers: {
                "content-type": "application/json"
@@ -76,7 +76,7 @@ const Transfer: React.FC = () => {
 
          if (!res.ok) {
             console.error(json);
-            throw new Error(json);
+            throw new Error(JSON.stringify(json));
          }
          setResponse("Enviado");
          setCodigo("");
@@ -112,8 +112,8 @@ const Transfer: React.FC = () => {
 
    const filteredOptions = useMemo(() => {
       if (codigo === '') return [];
-      return allCodigos.filter(element => element.toUpperCase().includes(codigo.toUpperCase())).slice(0, 15);
-   }, [codigo]);
+      return allCodigos.filter(element => element.toUpperCase().includes(codigo.toUpperCase())).slice(0, 7);
+   }, [codigo,allCodigos]);
 
    return (
       <div id="wrapper">
@@ -124,7 +124,6 @@ const Transfer: React.FC = () => {
                   Tranferencia
                </legend>
 
-               <input type="datetime" name="fecha" id="fecha" value={new Date().toDateString()} onChange={() => { setFecha(new Date().toDateString()) }} hidden required />
 
                <label htmlFor="deposito">Deposito de Origen</label>
                <select name="dep" id="deposito" value={dep} onChange={handleDep} required>
@@ -145,22 +144,22 @@ const Transfer: React.FC = () => {
                      )
                         :
                         (
-                           <option key="codigilistNull" value="">Codigo no encontrado</option>
+                           <option ></option>
                         )
                   }
                </datalist>
 
                <label htmlFor="tbloco">Bloco</label>
-               <input type="number" name="bloco" id="tbloco" pattern="\d+" value={bloco} onChange={handleBloco} required />
+               <input type="number" name="bloco" id="tbloco"  value={bloco} onChange={handleBloco} required />
 
                <label htmlFor="cantidad">Cantidad en Unidades</label>
-               <input type="number" name="cantidad" id="cantidad" pattern="\d+" value={cantidad} onChange={handleCantidad} required />
+               <input type="number" name="cantidad" id="cantidad"  value={cantidad} onChange={handleCantidad} required />
 
                <button type="submit" disabled={loading}>Enviar</button>
             </fieldset>
          </form>
          {error && <h3>Ocurrio un erro</h3>}
-         {response && <h3>response</h3>}
+         {response && <h3>{response}</h3>}
       </div>
    )
 }

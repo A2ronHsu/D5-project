@@ -88,11 +88,11 @@ class FormController {
       }
    }
 
-      transfer (req: Request, res: Response) {
+      async transfer (req: Request, res: Response) {
       try {
          console.log(req.body);
          const validInput = transferValidation(req.body);
-         const response = this.formService.transfer(validInput);
+         const response = await this.formService.transfer(validInput);
          res.json(response);
       } catch (err) {
          if (err instanceof ResponseErrorHandler) {

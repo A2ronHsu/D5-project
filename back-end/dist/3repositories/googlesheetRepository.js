@@ -12,7 +12,9 @@ const SHEET_ID = {
     'D1': "1CqLs1V4tMhBMb1EeOyOsy4heoruVqqDLogiSQSSppVE",
     'D9': "1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k",
     'D4': "1SaMpkICKXfvdlBmdogTb_GPOubPN7KapdP6n-GGMYf8",
-    'D2': "1m5lRqJ2JSaLxG9lNDOBKPtbpI0b7zjeccDlCHQvS5co"
+    'D2': "1m5lRqJ2JSaLxG9lNDOBKPtbpI0b7zjeccDlCHQvS5co",
+    'DannyHome': "1v4VyPe8r-hls_DPW0kERgtW5Dxpr1pBt5beXlMjddLE",
+    'DannyHomeTransfer': "1EsPt0M46ViybuqiF_mxApg5i5EHVYEEFvkfkaZsQL7E"
 };
 class GoogleRepository {
     authClient;
@@ -214,6 +216,26 @@ class GoogleRepository {
             }
             else {
                 throw new requestErrorHandler_1.default(500, "row error", "unknown error");
+            }
+        }
+    }
+    async transfer(input) {
+        const rowContent = [input];
+        const dep = "DannyHomeTransfer";
+        try {
+            const allCodigos = await this.getAllCodigos(dep);
+            const lastEmptyRow = allCodigos.length + 1;
+            const range = `A${lastEmptyRow}:E${lastEmptyRow}`;
+            const response = await this.writeData(range, rowContent, dep);
+            return response;
+        }
+        catch (error) {
+            console.error(`Error apending :, `, error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, "Error on transfering data", error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "Error on transfering data", "unknown error");
             }
         }
     }
