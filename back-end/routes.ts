@@ -61,6 +61,10 @@ router.post("/dannyhome/transfer/post",  async (req: Request, res: Response) => 
 
 })
 
+router.get("/auth/status", (req: Request, res: Response)=>{
+   authController.status(req, res);
+})
+
 //
 
 

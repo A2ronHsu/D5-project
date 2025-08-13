@@ -5,7 +5,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 
-
 export default class AuthService {
 
    constructor(private authRepository: AuthRepository) {
@@ -34,10 +33,16 @@ export default class AuthService {
          { expiresIn: "3h" }
       )
 
-      
 
 
-      return {loginToken, userName: user.userName }
+
+      return { loginToken, userName: user.userName }
+   }
+
+   status(token: string) {
+      const secret = process.env.JWT_SECRET!;
+      const verifiedToken = jwt.verify(token, secret,{complete:true});
+      verifiedToken.payload
    }
 
 }

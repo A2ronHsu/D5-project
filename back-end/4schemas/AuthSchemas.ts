@@ -17,3 +17,10 @@ export const validadeUserLogin = (reqBody: any): IUserLogin => {
    return {email, password}
 
 }
+
+export const validadeAuthStatus = (cookie:any) =>{
+   const {token} = cookie;
+   if(!token) throw new ResponseErrorHandler(400,"auth error");
+   return token;
+
+}

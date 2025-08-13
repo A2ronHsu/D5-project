@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { validadeUserRegistration, validadeUserLogin } from "../4schemas/AuthSchemas";
+import { request, Request, Response } from "express";
+import { validadeUserRegistration, validadeUserLogin, validadeAuthStatus } from "../4schemas/AuthSchemas";
 import { IUserLogin, IUserRegistration } from "../5models/AuthModels";
 
 import ResponseErrorHandler from "../4schemas/requestErrorHandler";
@@ -38,16 +38,16 @@ export default class AuthController {
       try {
          const userLogin: IUserLogin = validadeUserLogin(req.body);
          const response = await this.authService.login(userLogin);
-         res.status(200).cookie("token",response.loginToken,{
-            httpOnly:true,
+         res.status(200).cookie("token", response.loginToken, {
+            httpOnly: true,
             maxAge: 18000000, // 5h expiration in miliseconds,
             sameSite: "lax", //Protects againd CSRF,
             path: '/', // Accessible across the whole domain.
          })
-         .json({
-            message: "logged in",
-            userName:response.userName
-         });
+            .json({
+               message: "logged in",
+               userName: response.userName
+            });
 
       } catch (err) {
          if (err instanceof ResponseErrorHandler) {
@@ -63,4 +63,33 @@ export default class AuthController {
          }
       }
    }
+
+   status(req: Request, res: Response) {
+      try {
+         const validCookie = validadeAuthStatus(req.cookies);
+         const response = this.authService.status(validCookie);
+         return response;
+
+      } catch (err) {
+         if (err instanceof ResponseErrorHandler) {
+            res.status(400).json({
+               name: err.name,
+               message: err.message
+            })
+         }
+         else {
+            res.status(400).json({
+               error: "unknow error on login"
+            })
+         }
+      }
+   }
+
+
+
+
+   
 }
+
+
+
