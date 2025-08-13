@@ -21,3 +21,5 @@ export interface ITransfer {
    bloco: number,
    cantidad: number
 }
+
+export type ITransferRow = [string, string, string, number, number];

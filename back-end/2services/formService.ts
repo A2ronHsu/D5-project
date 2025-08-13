@@ -35,7 +35,8 @@ class FormService {
    }
 
    transfer(input: ITransfer) {
-      const response = this.repository.transfer(input);
+      const {fecha, dep, codigo, bloco, cantidad} = input;
+      const response = this.repository.transfer([fecha, dep, codigo, bloco, cantidad]);
       return response;
    }
 }

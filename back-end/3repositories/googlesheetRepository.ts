@@ -1,6 +1,7 @@
 import { google, sheets_v4 } from "googleapis";
 import { GoogleAuth } from "google-auth-library";
 import ResponseErrorHandler from "../4schemas/requestErrorHandler";
+import { ITransfer, ITransferRow } from "../5models/formModel";
 
 //id of my spreadsheet on googlesheets
 const SHEET_ID: { [key: string]: string } = {
@@ -34,7 +35,7 @@ class GoogleRepository {
     */
    async writeData(
       range: string,
-      values: string[][],
+      values: any[][],
       dep: string,
       valueInputOption: "USER_ENTERED" | "RAW" = "USER_ENTERED"
    ): Promise<any[][]> {
@@ -238,6 +239,23 @@ class GoogleRepository {
       }
 
 
+   }
+
+   async transfer(input: ITransferRow) {
+      const range = "A:E";
+      const rowContent: ITransferRow[] = [input];
+      const dep = SHEET_ID["DannyHome"];
+      
+      try {
+         this.writeData(range, rowContent, dep)
+      } catch (error) {
+         console.error(`Error apending data to range ${range}:, `, error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, "Error on transfering data", error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "Error on transfering data", "unknown error");
+         }
+      }
    }
 }
 
