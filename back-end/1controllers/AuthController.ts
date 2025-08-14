@@ -38,7 +38,7 @@ export default class AuthController {
       try {
          const userLogin: IUserLogin = validadeUserLogin(req.body);
          const response = await this.authService.login(userLogin);
-         res.status(200).cookie("token", response.loginToken, {
+         res.status(200).cookie("token", response.token, {
             httpOnly: true,
             maxAge: 18000000, // 5h expiration in miliseconds,
             sameSite: "lax", //Protects againd CSRF,
@@ -88,7 +88,7 @@ export default class AuthController {
 
 
 
-   
+
 }
 
 

@@ -27,7 +27,7 @@ export default class AuthService {
       const isPasswordValid: boolean = await bcrypt.compare(userLogin.password, user.password);
       if (!isPasswordValid) throw new ResponseErrorHandler(401, "credential error");
       const secret = process.env.JWT_SECRET!;
-      const loginToken = jwt.sign(
+      const token = jwt.sign(
          { id: user.id, role: user.role },
          secret,
          { expiresIn: "3h" }
@@ -36,13 +36,26 @@ export default class AuthService {
 
 
 
-      return { loginToken, userName: user.userName }
+      return { token, userName: user.userName }
    }
 
    status(token: string) {
       const secret = process.env.JWT_SECRET!;
-      const verifiedToken = jwt.verify(token, secret,{complete:true});
-      verifiedToken.payload
+      try {
+         const verifiedToken = jwt.verify(token, secret);
+         return verifiedToken;
+         
+      } catch (err:any) {
+         if(err.name === 'tokenExpiredError'){
+            throw new ResponseErrorHandler(400, "TokenExpiredError", "token expired")
+         }else{
+            console.log(err);
+            throw new Error(err.message);
+         }
+
+      }
+
+      
    }
 
 }

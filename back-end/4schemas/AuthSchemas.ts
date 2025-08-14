@@ -18,6 +18,11 @@ export const validadeUserLogin = (reqBody: any): IUserLogin => {
 
 }
 
+/**
+ * 
+ * @param cookie cookie object from client
+ * @returns A cookie object property called "token" with a valid jwt token
+ */
 export const validadeAuthStatus = (cookie:any) =>{
    const {token} = cookie;
    if(!token) throw new ResponseErrorHandler(400,"auth error");
