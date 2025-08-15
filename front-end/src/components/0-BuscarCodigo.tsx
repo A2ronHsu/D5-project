@@ -8,7 +8,7 @@ const BuscarCodigo: React.FC = ()=> {
   <>
     <Nav></Nav>
     <Form></Form>
-    <Link to="/dannyhome/transfer" className='link_button'>DannyHome</Link>
+    <Link to="/dannyhome/login" className='link_button'>DannyHome</Link>
   </>
  )
 }

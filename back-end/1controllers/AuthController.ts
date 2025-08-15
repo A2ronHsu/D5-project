@@ -36,7 +36,6 @@ export default class AuthController {
 
    async login(req: Request, res: Response) {
       try {
-         console.log('here')
          const userLogin: IUserLogin = validadeUserLogin(req.body);
          const response = await this.authService.login(userLogin);
          res.status(200).cookie("token", response.token, {

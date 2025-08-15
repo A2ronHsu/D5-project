@@ -11,7 +11,7 @@ function App() {
     <Route path='/' element={<BuscarCodigo />} />
     <Route path='/ingresar_codigo' element={<IngresarCodigo/>} />
     <Route path='/dannyhome/transfer' element={<Transfer/>}/>
-    <Route path='/login' element={<LoginForm/>}/>
+    <Route path='/dannyhome/login' element={<LoginForm/>}/>
   </Routes>
  )
 }

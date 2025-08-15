@@ -21,7 +21,7 @@ const LoginForm: React.FC = () => {
          //because we're returning it from the backend login endpoint.
          console.log('Login successful');
          login(response.data.user);
-         navigate('/');
+         navigate('/dannyhome/transfer');
       } catch (error: any) {
          console.error('Login error: ', error);
          if (error.response.data.message) {
