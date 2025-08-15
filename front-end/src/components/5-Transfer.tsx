@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import "./5-Transfer.css";
+import { useNavigate } from "react-router-dom";
 
 const Transfer: React.FC = () => {
    const [allCodigos, setAllCodigos] = useState<string[]>([]);
@@ -12,6 +13,7 @@ const Transfer: React.FC = () => {
    const [bloco, setBloco] = useState<string>("");
    const [cantidad, setCantidad] = useState<string>("");
 
+   const navigate = useNavigate();
 
    useEffect(() => {
       const populateList = async (dep: string) => {
@@ -55,7 +57,7 @@ const Transfer: React.FC = () => {
 
       const date = new Date();
       const formData = {
-         fecha: `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+         fecha: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
          dep: dep,
          codigo: codigo,
          bloco: bloco,
@@ -76,6 +78,7 @@ const Transfer: React.FC = () => {
 
          if (!res.ok) {
             console.error(json);
+            navigate('/login');
             throw new Error(JSON.stringify(json));
          }
          setResponse("Enviado");
@@ -113,7 +116,7 @@ const Transfer: React.FC = () => {
    const filteredOptions = useMemo(() => {
       if (codigo === '') return [];
       return allCodigos.filter(element => element.toUpperCase().includes(codigo.toUpperCase())).slice(0, 7);
-   }, [codigo,allCodigos]);
+   }, [codigo, allCodigos]);
 
    return (
       <div id="wrapper">
@@ -150,10 +153,10 @@ const Transfer: React.FC = () => {
                </datalist>
 
                <label htmlFor="tbloco">Bloco</label>
-               <input type="number" name="bloco" id="tbloco"  value={bloco} onChange={handleBloco} required />
+               <input type="number" name="bloco" id="tbloco" value={bloco} onChange={handleBloco} required />
 
                <label htmlFor="cantidad">Cantidad en Unidades</label>
-               <input type="number" name="cantidad" id="cantidad"  value={cantidad} onChange={handleCantidad} required />
+               <input type="number" name="cantidad" id="cantidad" value={cantidad} onChange={handleCantidad} required />
 
                <button type="submit" disabled={loading}>Enviar</button>
             </fieldset>

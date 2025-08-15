@@ -36,6 +36,7 @@ export default class AuthController {
 
    async login(req: Request, res: Response) {
       try {
+         console.log('here')
          const userLogin: IUserLogin = validadeUserLogin(req.body);
          const response = await this.authService.login(userLogin);
          res.status(200).cookie("token", response.token, {
@@ -45,7 +46,7 @@ export default class AuthController {
             path: '/', // Accessible across the whole domain.
          })
             .json({
-               message: "logged in",
+               isAuthenticaded: true,
                userName: response.userName
             });
 
@@ -66,9 +67,11 @@ export default class AuthController {
 
    status(req: Request, res: Response) {
       try {
-         const validCookie = validadeAuthStatus(req.cookies);
-         const response = this.authService.status(validCookie);
-         return response;
+         if(!req.user) throw new ResponseErrorHandler(520, 'unkown error', '86f77fe3');
+         res.status(200).json({
+            isAuthenticated: true,
+            user:req.user
+         })
 
       } catch (err) {
          if (err instanceof ResponseErrorHandler) {

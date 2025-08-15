@@ -33,16 +33,20 @@ const authenticationMiddleware = (req: Request, res: Response, next: NextFunctio
       console.error("token verification failed", err);
       if (err instanceof jwt.TokenExpiredError) {
          res.status(401).json({ message: "token expired" });
+         return
       };
       if (err instanceof ResponseErrorHandler) {
          res.status(err.statusCode).json({
             name: err.name,
             message: err.message
          })
+         return
+
       }
       if (err instanceof jwt.TokenExpiredError) {
          res.status(401).json(err);
          return
+
       }
       res.status(401).json({ message: "unknown token error" });
    }

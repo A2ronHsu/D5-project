@@ -25,6 +25,10 @@ export default defineConfig({
       "/dannyhome/transfer/post" : {
         target: "http://localhost:3000",
         changeOrigin : true
+      },
+      "/auth/login": {
+        target: "http://localhost:3000",
+        changeOrigin: true
       }
     }
   }
