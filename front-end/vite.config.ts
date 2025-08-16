@@ -22,11 +22,15 @@ export default defineConfig({
         target: "http://localhost:3000/",
         changeOrigin: true
       },
-      "/dannyhome/transfer/post" : {
+      "/dannyhome/transfer/post": {
         target: "http://localhost:3000",
-        changeOrigin : true
+        changeOrigin: true
       },
       "/auth/login": {
+        target: "http://localhost:3000",
+        changeOrigin: true
+      },
+      "/auth/logout": {
         target: "http://localhost:3000",
         changeOrigin: true
       }

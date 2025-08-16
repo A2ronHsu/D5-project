@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import "./5-Transfer.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Transfer: React.FC = () => {
    const [allCodigos, setAllCodigos] = useState<string[]>([]);
@@ -14,6 +15,15 @@ const Transfer: React.FC = () => {
    const [cantidad, setCantidad] = useState<string>("");
 
    const navigate = useNavigate();
+   const auth = useAuth();
+
+
+   useEffect(()=>{
+      console.log(auth);
+      if (!auth.isAuthenticated) navigate("/dannyhome/login");
+
+   },[])
+
 
    useEffect(() => {
       const populateList = async (dep: string) => {
@@ -78,7 +88,6 @@ const Transfer: React.FC = () => {
 
          if (!res.ok) {
             console.error(json);
-            navigate('/login');
             throw new Error(JSON.stringify(json));
          }
          setResponse("Enviado");

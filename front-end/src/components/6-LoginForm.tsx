@@ -4,10 +4,14 @@ import api from '../api/axios.Config';
 import { useAuth } from '../context/AuthContext';
 
 const LoginForm: React.FC = () => {
+   
+   const navigate = useNavigate();
+
+
+
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
    const [error, setError] = useState('');
-   const navigate = useNavigate();
    const { login } = useAuth(); //Get the login function from context
 
    const handleSubmit = async (event: React.FormEvent) => {
@@ -20,7 +24,8 @@ const LoginForm: React.FC = () => {
          //The response.data should contain the user object (id, username, email, role)
          //because we're returning it from the backend login endpoint.
          console.log('Login successful');
-         login(response.data.user);
+         console.log(response.data);
+         login(response.data);
          navigate('/dannyhome/transfer');
       } catch (error: any) {
          console.error('Login error: ', error);

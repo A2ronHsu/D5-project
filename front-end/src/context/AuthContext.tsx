@@ -2,13 +2,12 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import api from "../api/axios.Config";
 import { useNavigate } from "react-router-dom";
 import type { ReactNode } from "react";
-import type {IUser} from "../../../back-end/5models/AuthModels"
 
 interface AuthContextType {
-   user: IUser | null,
+   user: LoggedUserData | null,
    isAuthenticated: boolean,
    isLoading: boolean,
-   login: (userData: IUser) => void,
+   login: (userData: LoggedUserData) => void,
    logout: () => void
 }
 
@@ -28,8 +27,13 @@ interface AuthProviderProps {
    children: ReactNode;
 }
 
+interface LoggedUserData {
+   isAuthenticaded: boolean,
+   userName: string
+}
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-   const [user, setUser] = useState<IUser | null>(null);
+   const [user, setUser] = useState<LoggedUserData | null>(null);
    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
    const [isLoading, setIsLoading] = useState<boolean>(false); // To handle initial load/check
    const navigate = useNavigate(); //for programatic navigation
@@ -43,7 +47,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             const response = await api.get('/auth/status'); //access the /auth/status endpoint on server
 
             if (response.status === 200 && response.data.user) {
-               setUser(response.data.user);
+               setUser(response.data.userName);
                setIsAuthenticated(true);
             }
          } catch (error) {
@@ -60,9 +64,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
    },[]);
 
-   const login = (userData:IUser)=>{
-      setUser(userData)
-      setIsAuthenticated(true);
+   const login = (userData:any)=>{
+      console.log(1,userData);
+      setUser(userData.userName);
+      setIsAuthenticated(userData.isAuthenticated);
    }
 
    const logout = async()=>{
@@ -74,7 +79,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }finally{
          setUser(null);
          setIsAuthenticated(false);
-         navigate('/auth/login')
+         navigate('/')
       }
    }
 
