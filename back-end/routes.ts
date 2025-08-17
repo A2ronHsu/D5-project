@@ -65,6 +65,10 @@ router.get("/auth/status", authenticationMiddleware, authorizationMiddleware(["d
    authController.status(req, res);
 })
 
+router.post("/auth/logout",(req: Request, res: Response)=>{
+   authController.logout(req, res);
+})
+
 //
 
 

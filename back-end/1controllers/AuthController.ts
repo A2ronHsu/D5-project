@@ -45,7 +45,7 @@ export default class AuthController {
             path: '/', // Accessible across the whole domain.
          })
             .json({
-               isAuthenticaded: true,
+               isAuthenticated: true,
                userName: response.userName
             });
 
@@ -66,10 +66,10 @@ export default class AuthController {
 
    status(req: Request, res: Response) {
       try {
-         if(!req.user) throw new ResponseErrorHandler(520, 'unkown error', '86f77fe3');
+         if (!req.user) throw new ResponseErrorHandler(520, 'unkown error', '86f77fe3');
          res.status(200).json({
             isAuthenticated: true,
-            user:req.user
+            user: req.user
          })
 
       } catch (err) {
@@ -87,7 +87,15 @@ export default class AuthController {
       }
    }
 
-
+   logout(req: Request, res: Response) {
+      res.clearCookie("token", {
+         httpOnly: true,
+         sameSite: "lax", //Protects againd CSRF,
+         path: '/', // Accessible across the whole domain.
+      }).status(200).json({
+         message:"logged out"         
+      })
+   }
 
 
 

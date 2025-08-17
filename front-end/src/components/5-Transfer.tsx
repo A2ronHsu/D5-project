@@ -22,7 +22,7 @@ const Transfer: React.FC = () => {
       console.log(auth);
       if (!auth.isAuthenticated) navigate("/dannyhome/login");
 
-   },[])
+   },[]);
 
 
    useEffect(() => {
@@ -167,11 +167,12 @@ const Transfer: React.FC = () => {
                <label htmlFor="cantidad">Cantidad en Unidades</label>
                <input type="number" name="cantidad" id="cantidad" value={cantidad} onChange={handleCantidad} required />
 
-               <button type="submit" disabled={loading}>Enviar</button>
+               <button id="submitbtn" type="submit" disabled={loading}>Enviar</button>
             </fieldset>
          </form>
          {error && <h3>Ocurrio un erro</h3>}
          {response && <h3>{response}</h3>}
+         <button id="logoutbtn" onClick={()=>auth.logout()}>logout</button>
       </div>
    )
 }

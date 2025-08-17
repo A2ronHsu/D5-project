@@ -28,7 +28,7 @@ interface AuthProviderProps {
 }
 
 interface LoggedUserData {
-   isAuthenticaded: boolean,
+   isAuthenticated: boolean,
    userName: string
 }
 
@@ -74,6 +74,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
          //Call backend logout endpoint to clear HttpOnly cookie
          await api.post('/auth/logout');
+         setIsAuthenticated(false);
+         setUser(null);
       } catch (error) {
          console.error('Error logging out from backend: ', error);
       }finally{

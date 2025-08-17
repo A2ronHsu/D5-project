@@ -36,9 +36,13 @@ fieldset {
    border-color: black;
 }
 
-button{
+#submitbtn{
    align-self: center;
    height: 3em;
    width: 80%;
 
+}
+
+#logoutbtn{
+   margin-top: 3em;
 }
