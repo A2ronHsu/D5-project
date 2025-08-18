@@ -32,7 +32,6 @@ export default class AuthRepository {
 
          this.Users.push(newUser);
 
-         console.log(this.Users);
 
          return "User registered";
 

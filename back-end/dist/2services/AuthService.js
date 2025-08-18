@@ -30,8 +30,24 @@ class AuthService {
         if (!isPasswordValid)
             throw new requestErrorHandler_1.default(401, "credential error");
         const secret = process.env.JWT_SECRET;
-        const loginToken = jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, secret, { expiresIn: "3h" });
-        return { loginToken, userName: user.userName };
+        const token = jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, secret, { expiresIn: "3h" });
+        return { token, userName: user.userName };
+    }
+    status(token) {
+        const secret = process.env.JWT_SECRET;
+        try {
+            const verifiedToken = jsonwebtoken_1.default.verify(token, secret);
+            return verifiedToken;
+        }
+        catch (err) {
+            if (err.name === 'tokenExpiredError') {
+                throw new requestErrorHandler_1.default(400, "TokenExpiredError", "token expired");
+            }
+            else {
+                console.log(err);
+                throw new Error(err.message);
+            }
+        }
     }
 }
 exports.default = AuthService;

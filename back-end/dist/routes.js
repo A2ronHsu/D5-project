@@ -11,6 +11,8 @@ const authGoogle_1 = __importDefault(require("./4schemas/authGoogle"));
 const AuthController_1 = __importDefault(require("./1controllers/AuthController"));
 const AuthService_1 = __importDefault(require("./2services/AuthService"));
 const AuthRepository_1 = __importDefault(require("./3repositories/AuthRepository"));
+const authenticationMiddleware_1 = __importDefault(require("./5middlewares/authenticationMiddleware"));
+const authorizationMiddleware_1 = __importDefault(require("./5middlewares/authorizationMiddleware"));
 const router = (0, express_1.Router)();
 const formController = new formController_1.default(new formService_1.default(new googlesheetRepository_1.default((0, authGoogle_1.default)())));
 const authController = new AuthController_1.default(new AuthService_1.default(new AuthRepository_1.default()));
@@ -32,8 +34,14 @@ router.post("/auth/register", async (req, res) => {
 router.post("/auth/login", async (req, res) => {
     await authController.login(req, res);
 });
-router.post("/dannyhome/transfer/post", async (req, res) => {
+router.post("/dannyhome/transfer/post", authenticationMiddleware_1.default, (0, authorizationMiddleware_1.default)(["depositero"]), async (req, res) => {
     await formController.transfer(req, res);
+});
+router.get("/auth/status", authenticationMiddleware_1.default, (0, authorizationMiddleware_1.default)(["depositero"]), (req, res) => {
+    authController.status(req, res);
+});
+router.post("/auth/logout", (req, res) => {
+    authController.logout(req, res);
 });
 //
 exports.default = router;

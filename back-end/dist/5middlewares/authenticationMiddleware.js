@@ -25,6 +25,7 @@ const authenticationMiddleware = (req, res, next) => {
         console.error("token verification failed", err);
         if (err instanceof jsonwebtoken_1.default.TokenExpiredError) {
             res.status(401).json({ message: "token expired" });
+            return;
         }
         ;
         if (err instanceof requestErrorHandler_1.default) {
@@ -32,6 +33,7 @@ const authenticationMiddleware = (req, res, next) => {
                 name: err.name,
                 message: err.message
             });
+            return;
         }
         if (err instanceof jsonwebtoken_1.default.TokenExpiredError) {
             res.status(401).json(err);

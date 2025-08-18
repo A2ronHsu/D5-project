@@ -26,7 +26,6 @@ class AuthRepository {
                 role: "depositero"
             };
             this.Users.push(newUser);
-            console.log(this.Users);
             return "User registered";
         }
         catch (err) {
