@@ -65,9 +65,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    },[]);
 
    const login = (userData:any)=>{
-      console.log(1,userData);
+      // console.log(1,userData);
       setUser(userData.userName);
-      setIsAuthenticated(userData.isAuthenticated);
+      setIsAuthenticated(true);
    }
 
    const logout = async()=>{
