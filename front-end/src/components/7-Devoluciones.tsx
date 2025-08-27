@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
-import "./5-Transfer.css";
+// import "./5-Transfer.css";
 import { useAuth } from "../context/AuthContext";
 import Nav from "./1-Nav";
 
-const Transfer: React.FC = () => {
+const Devoluciones: React.FC = () => {
    const [allCodigos, setAllCodigos] = useState<string[]>([]);
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
@@ -120,14 +120,14 @@ const Transfer: React.FC = () => {
    }, [codigo, allCodigos]);
 
    return (
+      
       <div id="wrapper">
          <Nav></Nav>
          {loading && <h3>Cargando</h3>}
-
          <form id="transfer" onSubmit={handleSubmit}>
             <fieldset id="transferFieldset">
                <legend>
-                  Tranferencia
+                  Devoluciones
                </legend>
 
 
@@ -171,4 +171,4 @@ const Transfer: React.FC = () => {
    )
 }
 
-export default Transfer;
+export default Devoluciones;
