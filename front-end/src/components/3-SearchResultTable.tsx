@@ -1,4 +1,5 @@
 import React, { useEffect, useState, type ReactElement } from "react";
+import "./3-SearchResultTable.css"
 
 interface ISearch {
    searchInput: string,
@@ -43,7 +44,7 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
 
 
    return (
-      <div id="search_result_table">
+      <div id="tables-wrapper">
          <table className="table" id="codigo_table">
             <thead>
                <tr>

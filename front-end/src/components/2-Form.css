@@ -1,0 +1,47 @@
+#search-codigo-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 20em;
+  align-content: center;
+  justify-content: center;
+  gap: .5em;
+}
+
+#dep-selection-container{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-content: center;
+}
+
+#dep-title{
+  font-size: large;
+  font-weight: bold;
+}
+
+#dep{
+  margin: 0;
+  height: 2em;
+}
+
+
+#dep-title{
+   text-align: center;
+}
+
+#codigo {
+  text-align: center;
+  height: 2em;
+  margin: 0;
+}
+
+#submit {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 2px;
+  height: 2em;
+}
+
+
+

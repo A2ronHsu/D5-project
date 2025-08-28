@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import SearchResultTable from "./3-SearchResultTable";
 import { DepOptions } from "./-1-DepOptions";
+import "./2-Form.css"
 
 const Form: React.FC = () => {
 
@@ -99,8 +100,7 @@ const Form: React.FC = () => {
 
    return (
       <>
-         <form id="search_codigo" onSubmit={handleSubmit} >
-            <div id="dep-selection-container">
+         <form id="search-codigo-wrapper" onSubmit={handleSubmit} >
                <h3 id="dep-title">Buscar en</h3>
                <select name="dep" id="dep" value={dep} onChange={handleDepChange}>
                   <DepOptions/>
@@ -109,8 +109,6 @@ const Form: React.FC = () => {
 
 
                </select>
-            </div>
-            <div id="search-container">
                <input type="search" id="codigo" name="codigo" list="listCodigo" value={searchInput} onChange={handleSearchInput} required></input>
                <datalist id="listCodigo">
                   {
@@ -126,7 +124,6 @@ const Form: React.FC = () => {
                   }
                </datalist>
                <button type="submit" id="submit">Buscar</button>
-            </div>
          </form>
          {error && (<h3>{error}</h3>)}
 

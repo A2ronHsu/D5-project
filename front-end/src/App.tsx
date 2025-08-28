@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router-dom';
-import './App.css'
 import BuscarCodigo from './components/0-BuscarCodigo';
 import IngresarCodigo from './components/4-IngresarCodigo';
 import Transfer from './components/5-Transfer';
