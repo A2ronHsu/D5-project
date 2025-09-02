@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import SearchResultTable from "./3-SearchResultTable";
 import { DepOptions } from "./-1-DepOptions";
-import "./2-Form.css"
 
 const Form: React.FC = () => {
 

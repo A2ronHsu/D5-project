@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
-import "./4a-ingresarForm.css";
 import { DepOptions } from "./-1-DepOptions";
 import SearchResultTable from "./3-SearchResultTable";
 

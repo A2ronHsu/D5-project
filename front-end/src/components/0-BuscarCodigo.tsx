@@ -1,8 +1,6 @@
 import React from 'react';
 import Nav from './1-Nav';
 import Form from './2-Form';
-import  "./0-BuscarCodigo.css";
-import "./-1-HelperStyles.css"
 import NavFooter from './1a-NavFooter';
 const BuscarCodigo: React.FC = ()=> {
  return (

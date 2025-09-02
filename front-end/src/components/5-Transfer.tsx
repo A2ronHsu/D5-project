@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
-import "./5-Transfer.css";
 import { useAuth } from "../context/AuthContext";
 import Nav from "./1-Nav";
 
