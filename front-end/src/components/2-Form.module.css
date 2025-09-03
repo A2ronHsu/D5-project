@@ -1,4 +1,4 @@
-#search-codigo-wrapper {
+.search-codigo-wrapper {
   display: flex;
   flex-direction: column;
   width: 20em;
@@ -7,40 +7,42 @@
   gap: .5em;
 }
 
-#dep-selection-container{
+.dep-selection-container{
    display: flex;
    flex-direction: column;
    justify-content: center;
    align-content: center;
 }
 
-#dep-title{
+.dep-title{
   font-size: large;
   font-weight: bold;
 }
 
-#dep{
+.dep{
   margin: 0;
   height: 2em;
+  text-align: center;
 }
 
 
-#dep-title{
+.dep-title{
    text-align: center;
 }
 
-#codigo {
+.codigo {
   text-align: center;
   height: 2em;
   margin: 0;
+  padding-left: 2em;
 }
 
-#submit {
+.submit {
   border-color: black;
   border-style: solid;
   border-width: 1px;
   border-radius: 2px;
-  height: 2em;
+  height: 3em;
 }
 
 

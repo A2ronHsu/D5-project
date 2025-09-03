@@ -1,4 +1,6 @@
 import React, { useEffect, useState, type ReactElement } from "react";
+import styles from "./3-SearchResultTable.module.css";
+
 
 interface ISearch {
    searchInput: string,
@@ -43,8 +45,8 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
 
 
    return (
-      <div id="tables-wrapper">
-         <table className="table" id="codigo_table">
+      <div className={styles.tablesWrapper}>
+         <table className={`${styles.table} ${styles.codigo_table}`}>
             <thead>
                <tr>
                   <th>Codigo</th>
@@ -59,7 +61,7 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
             </tbody>
          </table>
 
-         <table className="table" id="descripcion_table">
+         <table className={`${styles.table} ${styles.descripcion_table}`}>
             <thead>
                <tr>
                   <th>Descripcion</th>
@@ -73,9 +75,9 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
             </tbody>
          </table>
 
-         <table className="table" id="posiciones_table">
+         <table className={`${styles.table} ${styles.posiciones_table}`}>
             <thead>
-               <tr className="posiciones_headings">
+               <tr className={`${styles.posiciones_headings}`}>
 
                   <th>Pas</th>
                   <th>Blo</th>

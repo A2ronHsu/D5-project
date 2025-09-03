@@ -4,10 +4,10 @@ import IngresarForm from "./4a-IngresarForm";
 
 const IngresarCodigo: React.FC = () => {
    return (
-      <>
+      <div className="general-wrapper">
          <Nav></Nav>
          <IngresarForm></IngresarForm>
-      </>
+      </div>
    )
 }
 

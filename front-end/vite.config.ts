@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   css: {
     modules: {
-      scopeBehaviour: 'local',
+      scopeBehaviour: "local",
       localsConvention: 'camelCaseOnly', // <-- This explicitly enables named exports
     },
   },

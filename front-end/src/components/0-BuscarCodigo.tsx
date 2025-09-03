@@ -4,7 +4,7 @@ import Form from './2-Form';
 import NavFooter from './1a-NavFooter';
 const BuscarCodigo: React.FC = ()=> {
  return (
-  <div id="general-wrapper">
+  <div className="general-wrapper">
     <Nav></Nav>
     <Form></Form>
     <NavFooter></NavFooter>

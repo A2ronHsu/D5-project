@@ -6,5 +6,7 @@ export const DepOptions = () => (
       <option className="dep-options" value="D9">D9</option>
       <option className="dep-options" value="D4">D4</option>
       <option className="dep-options" value="D2">D2</option>
+      <option className="dep-options" value="D10">D10</option>
+
    </>
 )

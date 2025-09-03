@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { DepOptions } from "./-1-DepOptions";
 import SearchResultTable from "./3-SearchResultTable";
-
+import styles from "./4a-IngresarForm.module.css";
 
 const IngresarForm: React.FC = () => {
    const [allCodigos, setAllCodigos] = useState<string[]>([]);
@@ -9,11 +9,12 @@ const IngresarForm: React.FC = () => {
    const [error, setError] = useState<string | null>(null);
    const [response, setResponse] = useState<string>("");
 
-   const [searchInput, setSearhInput] = useState<string>("")
+   const [dep, setDep] = useState<string>("D5");
+   const [searchInput, setSearhInput] = useState<string>("");
+
    const [pasillo, setPasillo] = useState<string>("");
    const [bloco, setBloco] = useState<string>("");
    const [secuencia, setSecuencia] = useState<string>("");
-   const [dep, setDep] = useState<string>("D5");
 
 
 
@@ -150,57 +151,60 @@ const IngresarForm: React.FC = () => {
    const filteredOptions = useMemo(() => {
       if (searchInput === '') return [];
       return allCodigos.filter(element => element.toUpperCase().includes(searchInput.toUpperCase())).slice(0, 7);
-   }, [searchInput,allCodigos]);
+   }, [searchInput, allCodigos]);
 
 
 
    return (
-      <div className="entrada_posiciones">
-         <form id="formulario_entrada_posiciones" onSubmit={handleSubmit}>
-            <fieldset className="entrada_posiciones">
-               <legend>
-                  Entrada de posiciones
-               </legend>
-               <label htmlFor="ingresar-dep">Deposito</label>
-               <select name="dep" id="ingresar-dep" value={dep} onChange={handleDepChange}>
-                  <DepOptions />
-               </select>
-               {loading && <h3>Cargando</h3>}
+      <div >
+         <fieldset className={styles.wrapper}>
 
-               <label htmlFor="ingresar-codigo">Codigo</label>
-               <input type="search" name="codigo" id="ingresar-codigo" list="codigoslist" value={searchInput} onChange={handleIngressarCodigo} required />
-               <datalist id="codigoslist">
-                  {
-                     filteredOptions.length > 0 ? (
-                        filteredOptions.map((element, i) => {
-                           return <option key={`${i}+${element}`} value={element}>{element}</option>
-                        })
+
+            <label htmlFor="ingresar-dep">Deposito</label>
+            <select className={styles.ingresarDep} name="dep" id="ingresar-dep" value={dep} onChange={handleDepChange}>
+               <DepOptions />
+            </select>
+
+            <label htmlFor="ingresar-codigo">Codigo</label>
+            <input className={styles.ingresarCodigo} type="search" name="codigo" id="ingresar-codigo" list="codigoslist" value={searchInput} onChange={handleIngressarCodigo} required />
+
+            <datalist id="codigoslist">
+               {
+                  filteredOptions.length > 0 ? (
+                     filteredOptions.map((element, i) => {
+                        return <option key={`${i}+${element}`} value={element}>{element}</option>
+                     })
+                  )
+                     :
+                     (
+                        <option ></option>
                      )
-                        :
-                        (
-                           <option ></option>
-                        )
-                  }
-               </datalist>
+               }
+            </datalist>
+            <form onSubmit={handleSearchButtton} >
+               <button type="submit" disabled={loading}>Buscar Posicion</button>
+            </form>
+         </fieldset>
 
-
-               <label htmlFor="passillo">Pasillo</label>
-               <input type="number" name="pasillo" id="pasillo" pattern="\d+" value={pasillo} onChange={handlePasillo} required />
-
-               <label htmlFor="bloco">Bloco</label>
-               <input type="number" name="bloco" id="bloco" pattern="\d+" value={bloco} onChange={handleBloco} required />
-
-               <label htmlFor="secuencia">Secuencia</label>
-               <input type="number" name="secuencia" id="secuencia" pattern="\d+" value={secuencia} onChange={handleSecuencia} required />
-               <button type="submit" disabled={loading} >Enviar</button>
-            </fieldset>
-         </form>
-         <form onSubmit={handleSearchButtton}>
-            <button type="submit" disabled={loading}>Buscar Posicion</button>
-         </form>
-         {error && <h3>Ocurrio un erro</h3>}
-         {response && <h3>{response}</h3>}
          <SearchResultTable searchInput={searchInput} row={row}></SearchResultTable>
+
+         <fieldset className={styles.wrapper}>
+
+            <label htmlFor="passillo">Pasillo</label>
+            <input className={styles.pasillo} type="number" name="pasillo" id="pasillo" pattern="\d+" value={pasillo} onChange={handlePasillo} required />
+
+            <label htmlFor="bloco">Bloco</label>
+            <input className={styles.bloco} type="number" name="bloco" id="bloco" pattern="\d+" value={bloco} onChange={handleBloco} required />
+
+            <label htmlFor="secuencia">Secuencia</label>
+            <input className="secuencia" type="number" name="secuencia" id="secuencia" pattern="\d+" value={secuencia} onChange={handleSecuencia} required />
+            <form className={styles.formularioEntradaPosiciones} onSubmit={handleSubmit}>
+               <button type="submit" disabled={loading} >Enviar</button>
+            </form>
+         </fieldset>
+
+         {error && <h3 className={styles.reponse}>Ocurrio un erro</h3>}
+         {response && <h3 className={styles.reponse}>{response}</h3>}
       </div>
    )
 }

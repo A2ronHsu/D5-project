@@ -1,12 +1,16 @@
-#entrada_posiciones {
+
+
+.wrapper {
    display: flex;
    flex-direction: column;
    align-items: center;
    justify-content: center;
    font-family: Arial, Helvetica, sans-serif;
+   border: 2px black solid;
+   padding: 1em 0 1em 0;
 }
 
-#ingresar-dep {
+.ingresarDep {
    box-sizing: border-box;
    font-weight: 600;
    font-size: large;
@@ -24,7 +28,7 @@ legend {
    display: inline-block;
    padding: 10px 20px;
    margin: 1em .2em 0em .2em;
-   background-color: #007bff;
+   background-color: .007bff;
    color: white;
    text-decoration: none;
    border: none;
@@ -34,25 +38,16 @@ legend {
 }
 
 
-.formulario_entrada_posiciones {
+.formularioEntradaPosiciones {
    display: flex;
    flex-direction: column;
    align-items: center;
 }
 
-.entrada_posiciones {
-   max-width: 80vw;
-   min-width: 300px;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   margin: 1em;
-}
 
-
-#ingresar-codigo {
+.ingresarCodigo {
    margin: 0 0 1em 0;
-   height: 1.5em;
+   height: 2em;
 
 }
 
@@ -62,10 +57,17 @@ input {
    margin-bottom: 1em;
 }
 
-#search_result_table {
+.search_result_table {
    margin-top: 2em;
 }
 
-button {
+.button {
    font-size: larger;
+}
+
+.reponse{
+   margin-top: 1em;
+   font-size: large;
+   font-weight: 600;
+   text-align: center;
 }

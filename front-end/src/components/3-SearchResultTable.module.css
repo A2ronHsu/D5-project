@@ -1,4 +1,4 @@
-#tables-wrapper{
+.tables-wrapper{
   margin: 2em 0 2em 0;
 }
 
@@ -17,6 +17,6 @@ td {
   padding: .5em;
 }
 
-#search_result_table{
+.search_result_table{
    margin-bottom: 1em;
 }

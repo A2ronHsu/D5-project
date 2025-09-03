@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import SearchResultTable from "./3-SearchResultTable";
 import { DepOptions } from "./-1-DepOptions";
+import styles from "./2-Form.module.css"
+
 
 const Form: React.FC = () => {
 
@@ -46,7 +48,12 @@ const Form: React.FC = () => {
 
 
    }, [dep])
+   
 
+   useEffect(()=>{
+      console.log(allCodigos);
+
+   },[allCodigos]);
 
    const handleDepChange = (event: ChangeEvent<HTMLSelectElement>) => {
       setDep(event.target.value);
@@ -99,16 +106,16 @@ const Form: React.FC = () => {
 
    return (
       <>
-         <form id="search-codigo-wrapper" onSubmit={handleSubmit} >
-               <h3 id="dep-title">Buscar en</h3>
-               <select name="dep" id="dep" value={dep} onChange={handleDepChange}>
+         <form className={styles.searchCodigoWrapper} onSubmit={handleSubmit} >
+               <h3 className={styles.depTitle}>Buscar en</h3>
+               <select name="dep" className={styles.dep} value={dep} onChange={handleDepChange}>
                   <DepOptions/>
 
 
 
 
                </select>
-               <input type="search" id="codigo" name="codigo" list="listCodigo" value={searchInput} onChange={handleSearchInput} required></input>
+               <input type="search" className={styles.codigo} name="codigo" list="listCodigo" value={searchInput} onChange={handleSearchInput} required></input>
                <datalist id="listCodigo">
                   {
                      filteredOptions.length > 0 ? (
@@ -122,7 +129,7 @@ const Form: React.FC = () => {
                         )
                   }
                </datalist>
-               <button type="submit" id="submit">Buscar</button>
+               <button type="submit" className={styles.submit}>Buscar</button>
          </form>
          {error && (<h3>{error}</h3>)}
 
