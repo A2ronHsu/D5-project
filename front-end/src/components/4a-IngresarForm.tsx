@@ -166,7 +166,7 @@ const IngresarForm: React.FC = () => {
             </select>
 
             <label htmlFor="ingresar-codigo">Codigo</label>
-            <input className={styles.ingresarCodigo} type="search" name="codigo" id="ingresar-codigo" list="codigoslist" value={searchInput} onChange={handleIngressarCodigo} required />
+            <input className={`${styles.input} ${styles.ingresarCodigo}`} type="search" name="codigo" id="ingresar-codigo" list="codigoslist" value={searchInput} onChange={handleIngressarCodigo} required />
 
             <datalist id="codigoslist">
                {
@@ -191,13 +191,13 @@ const IngresarForm: React.FC = () => {
          <fieldset className={styles.wrapper}>
 
             <label htmlFor="passillo">Pasillo</label>
-            <input className={styles.pasillo} type="number" name="pasillo" id="pasillo" pattern="\d+" value={pasillo} onChange={handlePasillo} required />
+            <input className={`${styles.input} ${styles.pasillo}`} type="number" name="pasillo" id="pasillo" pattern="\d+" value={pasillo} onChange={handlePasillo} required />
 
             <label htmlFor="bloco">Bloco</label>
-            <input className={styles.bloco} type="number" name="bloco" id="bloco" pattern="\d+" value={bloco} onChange={handleBloco} required />
+            <input className={`${styles.input} ${styles.bloco}`} type="number" name="bloco" id="bloco" pattern="\d+" value={bloco} onChange={handleBloco} required />
 
             <label htmlFor="secuencia">Secuencia</label>
-            <input className="secuencia" type="number" name="secuencia" id="secuencia" pattern="\d+" value={secuencia} onChange={handleSecuencia} required />
+           <input className={`${styles.input} ${styles.secuencia}`}  type="number" name="secuencia" id="secuencia" pattern="\d+" value={secuencia} onChange={handleSecuencia} required />
             <form className={styles.formularioEntradaPosiciones} onSubmit={handleSubmit}>
                <button type="submit" disabled={loading} >Enviar</button>
             </form>

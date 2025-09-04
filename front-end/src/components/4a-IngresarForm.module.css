@@ -52,7 +52,7 @@ legend {
 }
 
 
-input {
+.input {
    box-sizing: border-box;
    margin-bottom: 1em;
 }

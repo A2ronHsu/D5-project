@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios.Config';
 import { useAuth } from '../context/AuthContext';
-
+import styles from "./6-LoginForm.module.css";
 const LoginForm: React.FC = () => {
-   
+
    const navigate = useNavigate();
 
 
@@ -36,23 +36,27 @@ const LoginForm: React.FC = () => {
    }
 
    return (
-      <form onSubmit={handleSubmit}>
-         <h2>Login</h2>
-         {error && <p>error</p>}
-         <fieldset>
-            <div>
-               <label htmlFor="emai">Email:</label>
-               <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
-            </div>
+      <div className='general-wrapper'>
+         <form  onSubmit={handleSubmit}>
+            {error && <p>error</p>}
+            <fieldset className={styles.legend}>
+            <legend >Login</legend>
+               <div className={styles.input}>
+                  <label htmlFor="emai">Email:</label>
+                  <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+               </div>
 
-            <div>
-               <label htmlFor="password">Password:</label>
-               <input type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} required />
-            </div>
-            
-            <button type="submit">Login</button>
-         </fieldset>
-      </form>
+               <div className={styles.input}>
+                  <label htmlFor="password">Password:</label>
+                  <input type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} required />
+               </div>
+
+               <button className={styles.button} type="submit">Login</button>
+            </fieldset>
+         </form>
+
+      </div>
+
    )
 
 }
