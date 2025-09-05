@@ -34,7 +34,7 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
             posicion.push(<td>{row[i]}</td>);
          }
          if (posicion.length == 3){
-            content.push(<tr key={i}>{...posicion}</tr>)
+            content.push(<tr className={styles.tr} key={i}>{...posicion}</tr>)
             posicion = [];
          }
       }
@@ -48,13 +48,13 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
       <div className={styles.tablesWrapper}>
          <table className={`${styles.table} ${styles.codigo_table}`}>
             <thead>
-               <tr>
-                  <th>Codigo</th>
-                  <th>Uni/Cjs</th>
+               <tr className={styles.tr}>
+                  <th className={styles.th}>Codigo</th>
+                  <th className={styles.th}>Uni/Cjs</th>
                </tr>
             </thead>
             <tbody>
-               <tr>
+               <tr className={styles.tr}>
                   <td>{codigo}</td>
                   <td>{unidadPorCaja}</td>
                </tr>
@@ -63,13 +63,13 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
 
          <table className={`${styles.table} ${styles.descripcion_table}`}>
             <thead>
-               <tr>
-                  <th>Descripcion</th>
+               <tr className={styles.tr}>
+                  <th className={styles.th}>Descripcion</th>
                </tr>
 
             </thead>
             <tbody>
-               <tr>
+               <tr className={styles.tr}>
                   <td>{descripcion}</td>
                </tr>
             </tbody>
@@ -77,11 +77,11 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
 
          <table className={`${styles.table} ${styles.posiciones_table}`}>
             <thead>
-               <tr className={`${styles.posiciones_headings}`}>
+               <tr className={`${styles.posiciones_headings} ${styles.tr}`}>
 
-                  <th>Pas</th>
-                  <th>Blo</th>
-                  <th>Sec</th>
+                  <th className={styles.th}>Pas</th>
+                  <th className={styles.th}>Blo</th>
+                  <th className={styles.th}>Sec</th>
                </tr>
                {
 

@@ -9,7 +9,7 @@ const PrivateRoute: React.FC = () =>{
       return <div>Loading...</div>
    }
 
-   return isAuthenticated? <Outlet/> : <Navigate to="/dannyhome/login" replace/>
+   return isAuthenticated? <Outlet/> : <Navigate to="/login" replace/>
 
 }
 

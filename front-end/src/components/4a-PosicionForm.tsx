@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { DepOptions } from "./-1-DepOptions";
 import SearchResultTable from "./3-SearchResultTable";
-import styles from "./4a-IngresarForm.module.css";
+import styles from "./4a-PosicionForm.module.css";
 
-const IngresarForm: React.FC = () => {
+const PosicionForm: React.FC = () => {
    const [allCodigos, setAllCodigos] = useState<string[]>([]);
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
@@ -156,7 +156,7 @@ const IngresarForm: React.FC = () => {
 
 
    return (
-      <div >
+      < >
          <fieldset className={styles.wrapper}>
 
 
@@ -205,8 +205,8 @@ const IngresarForm: React.FC = () => {
 
          {error && <h3 className={styles.reponse}>Ocurrio un erro</h3>}
          {response && <h3 className={styles.reponse}>{response}</h3>}
-      </div>
+      </>
    )
 }
 
-export default IngresarForm;
+export default PosicionForm;

@@ -26,7 +26,7 @@ const LoginForm: React.FC = () => {
          console.log('Login successful');
          console.log(response.data);
          login(response.data);
-         navigate('/dannyhome/transfer');
+         navigate('/');
       } catch (error: any) {
          console.error('Login error: here', error);
          if (error.response.data.message) {
