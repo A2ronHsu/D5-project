@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
+import React, { useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
 import { DepOptions } from "./-1-DepOptions";
 import SearchResultTable from "./3-SearchResultTable";
 import styles from "./4a-PosicionForm.module.css";
@@ -11,11 +11,11 @@ const PosicionForm: React.FC = () => {
 
    const [dep, setDep] = useState<string>("D5");
    const [searchInput, setSearhInput] = useState<string>("");
+   const searchInputRef = useRef<HTMLInputElement>(null);
 
    const [pasillo, setPasillo] = useState<string>("");
    const [bloco, setBloco] = useState<string>("");
    const [secuencia, setSecuencia] = useState<string>("");
-
 
 
    const [row, setRow] = useState<string[]>([]);
@@ -93,7 +93,11 @@ const PosicionForm: React.FC = () => {
          setPasillo("");
          setBloco("");
          setSecuencia("");
-         setResponse("Enviado")
+         setResponse("Enviado");
+
+         if(searchInputRef.current){
+            searchInputRef.current.focus();
+         }
       } catch (error: any) {
          setResponse("Problema de Envio")
          setError(error.message);
@@ -167,7 +171,7 @@ const PosicionForm: React.FC = () => {
                </select>
 
                <label htmlFor="ingresar-codigo">Codigo</label>
-               <input className={`${styles.input} ${styles.ingresarCodigo}`} type="search" name="codigo" id="ingresar-codigo" list="codigoslist" value={searchInput} onChange={handleIngressarCodigo} required />
+               <input className={`${styles.input} ${styles.ingresarCodigo}`} ref={searchInputRef} type="search" name="codigo" id="ingresar-codigo" list="codigoslist" value={searchInput} onChange={handleIngressarCodigo} required />
 
                <datalist id="codigoslist">
                   {
@@ -187,7 +191,10 @@ const PosicionForm: React.FC = () => {
             </fieldset>
          </form>
 
+
          <SearchResultTable searchInput={searchInput} row={row}></SearchResultTable>
+
+
          <form className={styles.form} onSubmit={handleSubmit}>
 
             <fieldset className={styles.wrapper}>
