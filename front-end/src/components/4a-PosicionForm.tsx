@@ -157,7 +157,7 @@ const PosicionForm: React.FC = () => {
 
    return (
       < >
-         <form onSubmit={handleSearchButtton} >
+         <form className={styles.form} onSubmit={handleSearchButtton} >
             <fieldset className={styles.wrapper}>
                <legend className={styles.legend}>Deposito y Codigo</legend>
 
@@ -188,7 +188,7 @@ const PosicionForm: React.FC = () => {
          </form>
 
          <SearchResultTable searchInput={searchInput} row={row}></SearchResultTable>
-         <form className={styles.formularioEntradaPosiciones} onSubmit={handleSubmit}>
+         <form className={styles.form} onSubmit={handleSubmit}>
 
             <fieldset className={styles.wrapper}>
                <legend className={styles.legend}>Ingresar Codigo</legend>
