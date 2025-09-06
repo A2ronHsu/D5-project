@@ -1,5 +1,5 @@
 .tables-wrapper{
-  margin: 2em 0 2em 0;
+  margin: 1em 0 1em 0;
 
   width: 100%;
 }
@@ -8,6 +8,8 @@
   text-align: center;
   border: black solid 1px;
   min-width:320px;
+  width: 100%;
+
 }
 
 .th{
@@ -16,13 +18,10 @@
 }
 
 .td {
-  padding: .5em;
+  padding: .2em;
 }
 
-.tr{
-  margin:1em 0 1em 0;
-  padding: 1em 0 1em 0;
-}
+
 
 .search_result_table{
    margin-bottom: 1em;

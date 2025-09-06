@@ -31,10 +31,10 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
       let content: ReactElement[] = [];
       for (let i = 2; i < row.length; i++) {
          if ((i - 2) % 5 < 3){
-            posicion.push(<td>{row[i]}</td>);
+            posicion.push(<td className={styles.td} key={`p${i}`}>{row[i]}</td>);
          }
          if (posicion.length == 3){
-            content.push(<tr className={styles.tr} key={i}>{...posicion}</tr>)
+            content.push(<tr className={styles.tr} key={`c${i}`}>{...posicion}</tr>)
             posicion = [];
          }
       }
@@ -55,8 +55,8 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
             </thead>
             <tbody>
                <tr className={styles.tr}>
-                  <td>{codigo}</td>
-                  <td>{unidadPorCaja}</td>
+                  <td className={styles.td}>{codigo}</td>
+                  <td className={styles.td}>{unidadPorCaja}</td>
                </tr>
             </tbody>
          </table>
@@ -70,7 +70,7 @@ const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
             </thead>
             <tbody>
                <tr className={styles.tr}>
-                  <td>{descripcion}</td>
+                  <td className={styles.td}>{descripcion}</td>
                </tr>
             </tbody>
          </table>

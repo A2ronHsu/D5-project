@@ -158,7 +158,7 @@ const PosicionForm: React.FC = () => {
    return (
       < >
          <fieldset className={styles.wrapper}>
-
+            <legend className={styles.legend}>Deposito y Codigo</legend>
 
             <label htmlFor="ingresar-dep">Deposito</label>
             <select className={styles.ingresarDep} name="dep" id="ingresar-dep" value={dep} onChange={handleDepChange}>
@@ -181,15 +181,16 @@ const PosicionForm: React.FC = () => {
                      )
                }
             </datalist>
+            
             <form onSubmit={handleSearchButtton} >
-               <button type="submit" disabled={loading}>Buscar Posicion</button>
+               <button className={styles.button} type="submit" disabled={loading}>Buscar Posicion</button>
             </form>
          </fieldset>
 
          <SearchResultTable searchInput={searchInput} row={row}></SearchResultTable>
 
          <fieldset className={styles.wrapper}>
-
+            <legend className={styles.legend}>Ingresar Codigo</legend>
             <label htmlFor="passillo">Pasillo</label>
             <input className={`${styles.input} ${styles.pasillo}`} type="number" name="pasillo" id="pasillo" pattern="\d+" value={pasillo} onChange={handlePasillo} required />
 
@@ -197,9 +198,10 @@ const PosicionForm: React.FC = () => {
             <input className={`${styles.input} ${styles.bloco}`} type="number" name="bloco" id="bloco" pattern="\d+" value={bloco} onChange={handleBloco} required />
 
             <label htmlFor="secuencia">Secuencia</label>
-           <input className={`${styles.input} ${styles.secuencia}`}  type="number" name="secuencia" id="secuencia" pattern="\d+" value={secuencia} onChange={handleSecuencia} required />
+            <input className={`${styles.input} ${styles.secuencia}`} type="number" name="secuencia" id="secuencia" pattern="\d+" value={secuencia} onChange={handleSecuencia} required />
+            
             <form className={styles.formularioEntradaPosiciones} onSubmit={handleSubmit}>
-               <button type="submit" disabled={loading} >Enviar</button>
+               <button className={styles.button} type="submit" disabled={loading} >Ingresar</button>
             </form>
          </fieldset>
 
