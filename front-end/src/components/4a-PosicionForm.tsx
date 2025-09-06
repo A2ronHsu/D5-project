@@ -157,53 +157,53 @@ const PosicionForm: React.FC = () => {
 
    return (
       < >
-         <fieldset className={styles.wrapper}>
-            <legend className={styles.legend}>Deposito y Codigo</legend>
+         <form onSubmit={handleSearchButtton} >
+            <fieldset className={styles.wrapper}>
+               <legend className={styles.legend}>Deposito y Codigo</legend>
 
-            <label htmlFor="ingresar-dep">Deposito</label>
-            <select className={styles.ingresarDep} name="dep" id="ingresar-dep" value={dep} onChange={handleDepChange}>
-               <DepOptions />
-            </select>
+               <label htmlFor="ingresar-dep">Deposito</label>
+               <select className={styles.ingresarDep} name="dep" id="ingresar-dep" value={dep} onChange={handleDepChange}>
+                  <DepOptions />
+               </select>
 
-            <label htmlFor="ingresar-codigo">Codigo</label>
-            <input className={`${styles.input} ${styles.ingresarCodigo}`} type="search" name="codigo" id="ingresar-codigo" list="codigoslist" value={searchInput} onChange={handleIngressarCodigo} required />
+               <label htmlFor="ingresar-codigo">Codigo</label>
+               <input className={`${styles.input} ${styles.ingresarCodigo}`} type="search" name="codigo" id="ingresar-codigo" list="codigoslist" value={searchInput} onChange={handleIngressarCodigo} required />
 
-            <datalist id="codigoslist">
-               {
-                  filteredOptions.length > 0 ? (
-                     filteredOptions.map((element, i) => {
-                        return <option key={`${i}+${element}`} value={element}>{element}</option>
-                     })
-                  )
-                     :
-                     (
-                        <option ></option>
+               <datalist id="codigoslist">
+                  {
+                     filteredOptions.length > 0 ? (
+                        filteredOptions.map((element, i) => {
+                           return <option key={`${i}+${element}`} value={element}>{element}</option>
+                        })
                      )
-               }
-            </datalist>
-            
-            <form onSubmit={handleSearchButtton} >
+                        :
+                        (
+                           <option ></option>
+                        )
+                  }
+               </datalist>
+
                <button className={styles.button} type="submit" disabled={loading}>Buscar Posicion</button>
-            </form>
-         </fieldset>
+            </fieldset>
+         </form>
 
          <SearchResultTable searchInput={searchInput} row={row}></SearchResultTable>
+         <form className={styles.formularioEntradaPosiciones} onSubmit={handleSubmit}>
 
-         <fieldset className={styles.wrapper}>
-            <legend className={styles.legend}>Ingresar Codigo</legend>
-            <label htmlFor="passillo">Pasillo</label>
-            <input className={`${styles.input} ${styles.pasillo}`} type="number" name="pasillo" id="pasillo" pattern="\d+" value={pasillo} onChange={handlePasillo} required />
+            <fieldset className={styles.wrapper}>
+               <legend className={styles.legend}>Ingresar Codigo</legend>
+               <label htmlFor="passillo">Pasillo</label>
+               <input className={`${styles.input} ${styles.pasillo}`} type="number" name="pasillo" id="pasillo" pattern="\d+" value={pasillo} onChange={handlePasillo} required />
 
-            <label htmlFor="bloco">Bloco</label>
-            <input className={`${styles.input} ${styles.bloco}`} type="number" name="bloco" id="bloco" pattern="\d+" value={bloco} onChange={handleBloco} required />
+               <label htmlFor="bloco">Bloco</label>
+               <input className={`${styles.input} ${styles.bloco}`} type="number" name="bloco" id="bloco" pattern="\d+" value={bloco} onChange={handleBloco} required />
 
-            <label htmlFor="secuencia">Secuencia</label>
-            <input className={`${styles.input} ${styles.secuencia}`} type="number" name="secuencia" id="secuencia" pattern="\d+" value={secuencia} onChange={handleSecuencia} required />
-            
-            <form className={styles.formularioEntradaPosiciones} onSubmit={handleSubmit}>
+               <label htmlFor="secuencia">Secuencia</label>
+               <input className={`${styles.input} ${styles.secuencia}`} type="number" name="secuencia" id="secuencia" pattern="\d+" value={secuencia} onChange={handleSecuencia} required />
+
                <button className={styles.button} type="submit" disabled={loading} >Ingresar</button>
-            </form>
-         </fieldset>
+            </fieldset>
+         </form>
 
          {error && <h3 className={styles.reponse}>Ocurrio un erro</h3>}
          {response && <h3 className={styles.reponse}>{response}</h3>}
