@@ -12,6 +12,7 @@ const PosicionForm: React.FC = () => {
    const [dep, setDep] = useState<string>("D5");
    const [searchInput, setSearhInput] = useState<string>("");
    const searchInputRef = useRef<HTMLInputElement>(null);
+   const tableRef = useRef<HTMLDivElement>(null);
 
    const [pasillo, setPasillo] = useState<string>("");
    const [bloco, setBloco] = useState<string>("");
@@ -95,7 +96,7 @@ const PosicionForm: React.FC = () => {
          setSecuencia("");
          setResponse("Enviado");
 
-         if(searchInputRef.current){
+         if (searchInputRef.current) {
             searchInputRef.current.focus();
          }
       } catch (error: any) {
@@ -131,6 +132,10 @@ const PosicionForm: React.FC = () => {
 
          const json = await res.json();
          setRow(json.row);
+
+         if(tableRef.current){
+            tableRef.current.scrollIntoView({behavior:'smooth'});
+         };
 
       } catch (error: any) {
          setError(`codigo no existe o no encontrado`);
@@ -191,8 +196,9 @@ const PosicionForm: React.FC = () => {
             </fieldset>
          </form>
 
-
-         <SearchResultTable searchInput={searchInput} row={row}></SearchResultTable>
+         <div ref={tableRef}>
+            <SearchResultTable searchInput={searchInput} row={row}></SearchResultTable>
+         </div>
 
 
          <form className={styles.form} onSubmit={handleSubmit}>
