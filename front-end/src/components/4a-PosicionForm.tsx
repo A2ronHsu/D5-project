@@ -13,6 +13,7 @@ const PosicionForm: React.FC = () => {
    const [searchInput, setSearhInput] = useState<string>("");
    const searchInputRef = useRef<HTMLInputElement>(null);
    const tableRef = useRef<HTMLDivElement>(null);
+   const depositoCodigoRef = useRef<HTMLFormElement>(null);
 
    const [pasillo, setPasillo] = useState<string>("");
    const [bloco, setBloco] = useState<string>("");
@@ -96,9 +97,12 @@ const PosicionForm: React.FC = () => {
          setSecuencia("");
          setResponse("Enviado");
 
-         if (searchInputRef.current) {
-            searchInputRef.current.focus();
-         }
+         depositoCodigoRef.current?.scrollIntoView({ behavior: "smooth" });
+
+         setTimeout(() => {
+            // searchInputRef.current?.focus();
+
+         }, 500)
       } catch (error: any) {
          setResponse("Problema de Envio")
          setError(error.message);
@@ -133,8 +137,8 @@ const PosicionForm: React.FC = () => {
          const json = await res.json();
          setRow(json.row);
 
-         if(tableRef.current){
-            tableRef.current.scrollIntoView({behavior:'smooth'});
+         if (tableRef.current) {
+            tableRef.current.scrollIntoView({ behavior: 'smooth' });
          };
 
       } catch (error: any) {
@@ -166,7 +170,7 @@ const PosicionForm: React.FC = () => {
 
    return (
       < >
-         <form className={styles.form} onSubmit={handleSearchButtton} >
+         <form className={styles.form} ref={depositoCodigoRef} onSubmit={handleSearchButtton} >
             <fieldset className={styles.wrapper}>
                <legend className={styles.legend}>Deposito y Codigo</legend>
 
