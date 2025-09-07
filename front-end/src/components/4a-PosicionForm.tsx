@@ -100,7 +100,7 @@ const PosicionForm: React.FC = () => {
          depositoCodigoRef.current?.scrollIntoView({ behavior: "smooth" });
 
          setTimeout(() => {
-            // searchInputRef.current?.focus();
+            searchInputRef.current?.focus();
 
          }, 500)
       } catch (error: any) {
