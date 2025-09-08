@@ -1,10 +1,10 @@
-import React, { useEffect, useState, type ReactElement } from "react";
+import React, { useEffect, useState, type ReactElement} from "react";
 import styles from "./3-SearchResultTable.module.css";
 
 
 interface ISearch {
    searchInput: string,
-   row: string[]
+   row: string[],
 }
 
 const SearchResultTable: React.FC<ISearch> = ({ searchInput, row }) => {

@@ -7,14 +7,13 @@ const googleapis_1 = require("googleapis");
 const requestErrorHandler_1 = __importDefault(require("../4schemas/requestErrorHandler"));
 //id of my spreadsheet on googlesheets
 const SHEET_ID = {
+    'D1': "1CqLs1V4tMhBMb1EeOyOsy4heoruVqqDLogiSQSSppVE",
+    'D2': "1m5lRqJ2JSaLxG9lNDOBKPtbpI0b7zjeccDlCHQvS5co",
+    'D4': "1SaMpkICKXfvdlBmdogTb_GPOubPN7KapdP6n-GGMYf8",
     'D5': "1NECc6VReyx16_O1TTrizbDPZzyGas4lmatn8hGAG3xE",
     'D8': "1Ut6kE5d_Jn_KC0jBP4I9BhJ5u6A17tAB3cGI4cxZLzA",
-    'D1': "1CqLs1V4tMhBMb1EeOyOsy4heoruVqqDLogiSQSSppVE",
     'D9': "1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k",
-    'D4': "1SaMpkICKXfvdlBmdogTb_GPOubPN7KapdP6n-GGMYf8",
-    'D2': "1m5lRqJ2JSaLxG9lNDOBKPtbpI0b7zjeccDlCHQvS5co",
-    'DannyHome': "1v4VyPe8r-hls_DPW0kERgtW5Dxpr1pBt5beXlMjddLE",
-    'DannyHomeTransfer': "1EsPt0M46ViybuqiF_mxApg5i5EHVYEEFvkfkaZsQL7E"
+    'D10': "1U_K9pz9JIe7px50XXWabYCx3ffPtelbPqOESsOevLfI",
 };
 class GoogleRepository {
     authClient;
