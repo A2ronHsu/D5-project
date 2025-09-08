@@ -1,13 +1,10 @@
 import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import SearchResultTable from "./3-SearchResultTable";
-import { DepOptions } from "./-1-DepOptions";
+import DepOptions  from "./-1-DepOptions";
 import styles from "./2-Form.module.css"
 
 
 const Form: React.FC = () => {
-
-
-
    const [allCodigos, setAllCodigos] = useState<string[]>([]);
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);

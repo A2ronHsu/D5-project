@@ -5,6 +5,7 @@ import Transfer from './components/5-Transfer';
 import LoginForm from './components/6-LoginForm';
 import Devoluciones from './components/7-Devoluciones';
 import PrivateRoute from './components/PrivateRoute';
+import Recebimiento from './components/9-Recebimiento';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route element={<PrivateRoute />}>
         <Route path='/transfer' element={<Transfer />} />
         <Route path='/devoluciones' element={<Devoluciones />} />
+        <Route path='/recebimiento' element={<Recebimiento/>}/>
 
       </Route>
 

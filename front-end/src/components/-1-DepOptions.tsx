@@ -1,4 +1,4 @@
-export const DepOptions = () => (
+const DepOptions = () => (
    <>
       <option className="dep-options" value="D5">D5</option>
       <option className="dep-options" value="D8">D8</option>
@@ -10,3 +10,5 @@ export const DepOptions = () => (
 
    </>
 )
+
+export default DepOptions;

@@ -8,7 +8,7 @@ const Menu: React.FC = () => {
       <fieldset className={styles.fieldset}>
         <legend className={styles.legend}>Menu Principal</legend>
         <Link to="/posicion" className={Helper.link}>Posicion</Link>
-        <Link to="/transfer" className={Helper.link}>test1</Link>
+        <Link to="/recebimiento" className={Helper.link}>Recebimiento</Link>
         <Link to="/transfer" className={Helper.link}>test2</Link>
         <Link to="/transfer" className={Helper.link}>test3</Link>
 

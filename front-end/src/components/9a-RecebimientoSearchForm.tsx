@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
-import DepOptions from "./-1-DepOptions";
-import SearchResultTable from "./3-SearchResultTable";
+import PackingListOptions from "./-1-PackingListOptions";
 import styles from "./4a-PosicionForm.module.css";
+import RecebimientoResultTable from "./9b-RecebimientoResultTable";
 
-const PosicionForm: React.FC = () => {
+
+const RecebimientoSearchForm : React.FC = ()=>{
    const [allCodigos, setAllCodigos] = useState<string[]>([]);
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
@@ -162,7 +163,7 @@ const PosicionForm: React.FC = () => {
 
             <label htmlFor="ingresar-dep">Deposito</label>
             <select className={styles.ingresarDep} name="dep" id="ingresar-dep" value={dep} onChange={handleDepChange}>
-               <DepOptions />
+               <PackingListOptions />
             </select>
 
             <label htmlFor="ingresar-codigo">Codigo</label>
@@ -187,7 +188,7 @@ const PosicionForm: React.FC = () => {
             </form>
          </fieldset>
 
-         <SearchResultTable searchInput={searchInput} row={row}></SearchResultTable>
+         <RecebimientoResultTable searchInput={searchInput} row={row}></RecebimientoResultTable>
 
          <fieldset className={styles.wrapper}>
             <legend className={styles.legend}>Ingresar Codigo</legend>
@@ -211,4 +212,4 @@ const PosicionForm: React.FC = () => {
    )
 }
 
-export default PosicionForm;
+export default RecebimientoSearchForm;
