@@ -58,7 +58,7 @@ const RecebimientoSearchForm: React.FC = () => {
             const posicion: number = resJson.lastPosicion;
 
             // setLastPosicion(posicion);
-            setUnidadPosicion(posicion+1);
+            setUnidadPosicion(posicion + 1);
 
             return posicion;
 
@@ -116,7 +116,7 @@ const RecebimientoSearchForm: React.FC = () => {
 
          setSearhInput("")
          setResponse("Enviado")
-         setUnidadPosicion(unidadPosicion+1);
+         setUnidadPosicion(unidadPosicion + 1);
       } catch (error: any) {
          setResponse("Problema de Envio")
          setError(error.message);
@@ -206,6 +206,7 @@ const RecebimientoSearchForm: React.FC = () => {
                <button className={styles.button} type="submit" disabled={loading}>Buscar Posicion</button>
             </form>
          </fieldset>
+         {row[12] && <h3 className={styles.reponse}>Codigo ya hay posicion</h3>}
 
          <RecebimientoResultTable searchInput={searchInput} row={row}></RecebimientoResultTable>
 
@@ -221,7 +222,7 @@ const RecebimientoSearchForm: React.FC = () => {
 
 
             <form className={styles.formularioEntradaPosiciones} onSubmit={handleSubmit}>
-               <button className={styles.button} type="submit" disabled={loading} >Ingresar</button>
+               <button className={styles.button} type="submit" disabled={loading || row[12] !== undefined} >Ingresar</button>
             </form>
          </fieldset>
 

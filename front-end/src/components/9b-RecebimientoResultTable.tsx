@@ -48,7 +48,7 @@ const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
       // setAncho(Number(row[8]) / 100 || null);
       // setAlto(Number(row[9]) / 100 || null);
       // setPeso(row[10]);
-      setPosicion(Number(row[12]) || "no hay");
+      setPosicion(Number(row[12]) || null);
 
    }, [row]);
 
