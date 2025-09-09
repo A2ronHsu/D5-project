@@ -43,7 +43,16 @@ export default defineConfig({
       "/getRowRecebimientos": {
         target: "http://localhost:3000",
         changeOrigin: true
+      },
+      "/submitRecebimiento": {
+        target: "http://localhost:3000",
+        changeOrigin: true
+      },
+      "/getLastPosicionRecebimientos": {
+        target: "http://localhost:3000",
+        changeOrigin: true
       }
+
     }
   }
 })

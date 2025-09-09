@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { entradaPosicionesValidation, getCodigoValidation, transferValidation } from "../4schemas/FormSchemas";
+import { entradaPosicionesRecebimientosValidation, entradaPosicionesValidation, getCodigoValidation, transferValidation } from "../4schemas/FormSchemas";
 import FormService from "../2services/formService";
 import ResponseErrorHandler from "../4schemas/requestErrorHandler";
 
@@ -14,6 +14,26 @@ class FormController {
          console.log(req.body)
          const validInput = entradaPosicionesValidation(req.body);
          const response = await this.formService.submit(validInput);
+         res.json(response);
+      } catch (err: unknown) {
+         if (err instanceof ResponseErrorHandler) {
+            res.status(err.statusCode).json({
+               name: err.name,
+               message: err.message
+            });
+         } else {
+            res.json({ error: "unknown error" });
+
+         }
+      }
+   }
+
+   async postPosicionRecebimiento(req: Request, res: Response) {
+      console.log(req.body);
+      try {
+         console.log(req.body)
+         const validInput = entradaPosicionesRecebimientosValidation(req.body);
+         const response = await this.formService.postPosicionRecebimiento(validInput);
          res.json(response);
       } catch (err: unknown) {
          if (err instanceof ResponseErrorHandler) {
@@ -68,6 +88,29 @@ class FormController {
          }
       }
    }
+
+   async getLastPosicionRecebimientos(req: Request, res: Response) {
+      try {
+         const { packingList } = req.params;
+         console.log(req.params);
+         const response = await this.formService.getLastPosicionRecebimientos(packingList);
+         res.json({ lastPosicion: response });
+
+
+      } catch (err: unknown) {
+         if (err instanceof ResponseErrorHandler) {
+            res.status(err.statusCode).json({
+               name: err.name,
+               message: err.message
+            });
+         } else {
+            res.json({ error: "unknown error" });
+
+
+         }
+      }
+   }
+
 
    async getRow(req: Request, res: Response) {
       try {

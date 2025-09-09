@@ -4,19 +4,17 @@ import styles from "./4a-PosicionForm.module.css";
 import RecebimientoResultTable from "./9b-RecebimientoResultTable";
 
 
-const RecebimientoSearchForm : React.FC = ()=>{
+const RecebimientoSearchForm: React.FC = () => {
    const [allCodigos, setAllCodigos] = useState<string[]>([]);
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
    const [response, setResponse] = useState<string>("");
+   // const [lastPosicion, setLastPosicion] = useState<number | null>(null);
 
    const [packingList, setPackingList] = useState<string>("GT029");
    const [searchInput, setSearhInput] = useState<string>("");
 
-   const [pasillo, setPasillo] = useState<string>("");
-   const [bloco, setBloco] = useState<string>("");
-   const [secuencia, setSecuencia] = useState<string>("");
-
+   const [unidadPosicion, setUnidadPosicion] = useState<number>(0);
 
 
    const [row, setRow] = useState<string[]>([]);
@@ -47,14 +45,42 @@ const RecebimientoSearchForm : React.FC = ()=>{
          setResponse("");
       }
 
+      const getCurrentPosicionRecebimiento = async (packingList: string) => {
+         try {
+            setLoading(true);
+            setError(null);
+
+            const res = await fetch(`/getLastPosicionRecebimientos/${packingList}`);
+            if (!res.ok) {
+               throw new Error(`HTTP error! status: ${res.status}`)
+            }
+            const resJson = await res.json();
+            const posicion: number = resJson.lastPosicion;
+
+            // setLastPosicion(posicion);
+            setUnidadPosicion(posicion+1);
+
+            return posicion;
+
+         } catch (err: any) {
+            setError(err.message)
+            setAllCodigos([]);
+         } finally {
+            setLoading(false);
+         }
+         setResponse("");
+
+      }
+
       populateList(packingList);
+      getCurrentPosicionRecebimiento(packingList);
       setSearhInput("");
-      setPasillo("");
-      setBloco("");
-      setSecuencia("");
       setError(null);
 
    }, [packingList])
+
+
+
 
    const handlePackingListChange = (event: ChangeEvent<HTMLSelectElement>) => {
       setPackingList(event.target.value);
@@ -69,14 +95,12 @@ const RecebimientoSearchForm : React.FC = ()=>{
       setLoading(true);
       const formData = {
          codigo: searchInput,
-         pasillo: pasillo,
-         bloco: bloco,
-         secuencia: secuencia,
-         dep: packingList
+         packingList: packingList,
+         unidadPosicion: unidadPosicion
       }
 
       try {
-         const res = await fetch("/submit", {
+         const res = await fetch("/submitRecebimiento", {
             method: "POST",
             headers: {
                "content-type": "application/json"
@@ -91,10 +115,8 @@ const RecebimientoSearchForm : React.FC = ()=>{
          };
 
          setSearhInput("")
-         setPasillo("");
-         setBloco("");
-         setSecuencia("");
          setResponse("Enviado")
+         setUnidadPosicion(unidadPosicion+1);
       } catch (error: any) {
          setResponse("Problema de Envio")
          setError(error.message);
@@ -137,17 +159,14 @@ const RecebimientoSearchForm : React.FC = ()=>{
 
    }
 
-   const handlePasillo = (event: ChangeEvent<HTMLInputElement>) => {
-      setPasillo(event.target.value);
+   const handleUnidadPosicion = (event: ChangeEvent<HTMLInputElement>) => {
+      setUnidadPosicion(Number(event.target.value));
    }
 
-   const handleBloco = (event: ChangeEvent<HTMLInputElement>) => {
-      setBloco(event.target.value);
-   }
 
-   const handleSecuencia = (event: ChangeEvent<HTMLInputElement>) => {
-      setSecuencia(event.target.value);
-   }
+
+
+
 
    const filteredOptions = useMemo(() => {
       if (searchInput === '') return [];
@@ -182,7 +201,7 @@ const RecebimientoSearchForm : React.FC = ()=>{
                      )
                }
             </datalist>
-            
+
             <form onSubmit={handleSearchButtton} >
                <button className={styles.button} type="submit" disabled={loading}>Buscar Posicion</button>
             </form>
@@ -191,16 +210,16 @@ const RecebimientoSearchForm : React.FC = ()=>{
          <RecebimientoResultTable searchInput={searchInput} row={row}></RecebimientoResultTable>
 
          <fieldset className={styles.wrapper}>
-            <legend className={styles.legend}>Ingresar Codigo</legend>
-            <label htmlFor="passillo">Pasillo</label>
-            <input className={`${styles.input} ${styles.pasillo}`} type="number" name="pasillo" id="pasillo" pattern="\d+" value={pasillo} onChange={handlePasillo} required />
+            <legend className={styles.legend}>Ingresar Posicion</legend>
 
-            <label htmlFor="bloco">Bloco</label>
-            <input className={`${styles.input} ${styles.bloco}`} type="number" name="bloco" id="bloco" pattern="\d+" value={bloco} onChange={handleBloco} required />
 
-            <label htmlFor="secuencia">Secuencia</label>
-            <input className={`${styles.input} ${styles.secuencia}`} type="number" name="secuencia" id="secuencia" pattern="\d+" value={secuencia} onChange={handleSecuencia} required />
-            
+
+
+
+            <label htmlFor="unidadPosicion">Posicion Actual</label>
+            <input className={`${styles.input} ${styles.ultimaPosicion}`} type="number" name="unidadPosicion" id="unidadPosicion" value={unidadPosicion} onChange={handleUnidadPosicion} required disabled />
+
+
             <form className={styles.formularioEntradaPosiciones} onSubmit={handleSubmit}>
                <button className={styles.button} type="submit" disabled={loading} >Ingresar</button>
             </form>

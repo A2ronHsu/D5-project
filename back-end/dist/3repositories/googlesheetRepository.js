@@ -14,6 +14,7 @@ const SHEET_ID = {
     'D8': "1Ut6kE5d_Jn_KC0jBP4I9BhJ5u6A17tAB3cGI4cxZLzA",
     'D9': "1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k",
     'D10': "1U_K9pz9JIe7px50XXWabYCx3ffPtelbPqOESsOevLfI",
+    'GT029': "1FOaMcsiD70w-vJ7nnr6z_qFUXa8REcFl_pyPzWgN8lg"
 };
 class GoogleRepository {
     authClient;
@@ -172,6 +173,22 @@ class GoogleRepository {
             }
         }
     }
+    async appendPosicionRecebimiento(codigo, packingList, unidadPosicion) {
+        try {
+            const index = await this.findCodigoIndex(codigo, packingList);
+            const range = `N${index + 1}`;
+            return this.writeData(range, [[unidadPosicion]], packingList);
+        }
+        catch (error) {
+            console.error("error appending", error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, "append error", error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "append error", "Unknown error");
+            }
+        }
+    }
     /**
      * @param dep Warehouse name referent to SHEET_ID
      *
@@ -188,6 +205,23 @@ class GoogleRepository {
             console.error("error getting all codigos", error);
             if (error instanceof Error) {
                 throw new requestErrorHandler_1.default(500, "error getting codigo", error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "error getting codigo", "unknown error");
+            }
+        }
+    }
+    async getLastPosicionRecebimientos(packingList) {
+        try {
+            const allPosiciones = (await this.getRange("N3:N", packingList))?.flat();
+            if (!allPosiciones)
+                return 0;
+            return Math.max(...allPosiciones);
+        }
+        catch (error) {
+            console.error("error getting all codigos", error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, "error getting posicionRecebimiento", error.message);
             }
             else {
                 throw new requestErrorHandler_1.default(500, "error getting codigo", "unknown error");
@@ -215,6 +249,24 @@ class GoogleRepository {
             }
             else {
                 throw new requestErrorHandler_1.default(500, "row error", "unknown error");
+            }
+        }
+    }
+    async getRowRecebimientos(codigo, packingList) {
+        try {
+            const index = await this.findCodigoIndex(codigo, packingList);
+            const row = (await this.getRange(`B${index + 1}:N${index + 1}`, packingList))?.flat();
+            if (!row)
+                throw new Error("error on getRowRecebimietos");
+            return row;
+        }
+        catch (error) {
+            console.error("error getting row", error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, "rowRecebimientos error", error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "rowRecebimientos error", "unknown error");
             }
         }
     }

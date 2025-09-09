@@ -1,4 +1,4 @@
-import { entradaPosiciones, ITransfer } from "../5models/formModel";
+import { entradaPosiciones, ITransfer, posicionRecebimiento } from "../5models/formModel";
 import GoogleRepository from "../3repositories/googlesheetRepository";
 
 class FormService {
@@ -16,6 +16,12 @@ class FormService {
       return data;
    }
 
+   async postPosicionRecebimiento(input:posicionRecebimiento){
+      const { codigo, packingList, unidadPosicion } = input;
+      const data = await this.repository.appendPosicionRecebimiento(codigo, packingList, unidadPosicion);
+      return data;
+   }
+
    async getCodigo(codigo: string, dep: string): Promise<number> {
       const codigoRowNumber = await this.repository.findCodigoIndex(codigo, dep);
       return codigoRowNumber;
@@ -26,6 +32,10 @@ class FormService {
       const allCodigos = await this.repository.getAllCodigos(dep);
 
       return allCodigos;
+   }
+
+   async getLastPosicionRecebimientos(packingList:string): Promise<number>{
+      return await this.repository.getLastPosicionRecebimientos(packingList);
    }
 
    async getRow(codigo: string, dep: string): Promise<string[]> {

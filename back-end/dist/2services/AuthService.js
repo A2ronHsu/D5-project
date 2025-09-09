@@ -30,7 +30,7 @@ class AuthService {
         if (!isPasswordValid)
             throw new requestErrorHandler_1.default(401, "credential error");
         const secret = process.env.JWT_SECRET;
-        const token = jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, secret, { expiresIn: "3h" });
+        const token = jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, secret, { expiresIn: "5h" });
         return { token, userName: user.userName };
     }
     status(token) {

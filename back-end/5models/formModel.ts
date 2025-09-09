@@ -6,6 +6,12 @@ export interface entradaPosiciones {
    dep:string
 }
 
+export interface posicionRecebimiento{
+   codigo: string,
+   packingList: string,
+   unidadPosicion: number
+}
+
 export interface getRange {
    range: string,
 }

@@ -25,6 +25,9 @@ router.get("/getCodigo", async (req, res) => {
 router.get("/getAllCodigos/:dep", async (req, res) => {
     await formController.getAllCodigos(req, res);
 });
+router.get("/getLastPosicionRecebimientos/:packingList", async (req, res) => {
+    await formController.getLastPosicionRecebimientos(req, res);
+});
 router.post("/getRow", async (req, res) => {
     await formController.getRow(req, res);
 });
@@ -42,6 +45,12 @@ router.get("/auth/status", authenticationMiddleware_1.default, (0, authorization
 });
 router.post("/auth/logout", (req, res) => {
     authController.logout(req, res);
+});
+router.post("/getRowRecebimientos", (req, res) => {
+    formController.getRowRecebimientos(req, res);
+});
+router.post("/submitRecebimiento", (req, res) => {
+    formController.postPosicionRecebimiento(req, res);
 });
 //
 exports.default = router;

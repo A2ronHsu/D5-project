@@ -8,42 +8,47 @@ interface ISearch {
 }
 
 const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
-   const [unidadPorCaja, setUnidadPorCaja] = useState<string>("");
+   // const [unidadPorCaja, setUnidadPorCaja] = useState<string>("");
    const [descripcion, setDescripcion] = useState<string>("");
    const [codigo, setCodigo] = useState<string>("");
-   const [cajas, setCajas] = useState<number|null>(null);
-   const [cajasInteriores, setCajasInteriores] = useState<string>("");
-   const [unidadesEnCajasInteriores, setUnidadesEnCajasInteriores] = useState<string>("");
-   const [peso, setPeso] = useState<string>("");
-   const [largo, setLargo] = useState<number|null>(0);
-   const [ancho, setAncho] = useState<number|null>(0);
-   const [alto, setAlto] = useState<number|null>(0);
+   const [cajas, setCajas] = useState<number | null>(null);
+   // const [cajasInteriores, setCajasInteriores] = useState<string>("");
+   // const [unidadesEnCajasInteriores, setUnidadesEnCajasInteriores] = useState<string>("");
+   // const [peso, setPeso] = useState<string>("");
+   // const [largo, setLargo] = useState<number | null>(null);
+   // const [ancho, setAncho] = useState<number | null>(null);
+   // const [alto, setAlto] = useState<number | null>(null);
 
-   const [posicion, setPosicion] = useState<number|null>(0);
+   const [posicion, setPosicion] = useState<number | null | "no hay">(null);
 
 
    useEffect(() => {
       setCodigo("");
       setDescripcion("");
-      setUnidadPorCaja("");
+      // setUnidadPorCaja("");
       setCajas(null);
-      setCajasInteriores(row[3]);
-      setUnidadesEnCajasInteriores(row[4]);
+      // setCajasInteriores("");
+      // setUnidadesEnCajasInteriores("");
+      // setLargo(null);
+      // setAncho(null);
+      // setAlto(null);
+      // setPeso("");
+      setPosicion(null);
 
-      setPeso(row[10]);
    }, [searchInput]);
 
    useEffect(() => {
       setCodigo(searchInput);
       setDescripcion(row[0]);
-      setUnidadPorCaja(row[1]);
-      setCajas(Number(row[2]));
-      setCajasInteriores(row[3]);
-      setUnidadesEnCajasInteriores(row[4]);
-      setLargo(Number(row[7])/100);
-      setAncho(Number(row[8])/100);
-      setAlto(Number(row[9])/100);
-      setPeso(row[10]);
+      // setUnidadPorCaja(row[1]);
+      setCajas(Number(row[2]) || null);
+      // setCajasInteriores(row[3]);
+      // setUnidadesEnCajasInteriores(row[4]);
+      // setLargo(Number(row[7]) / 100 || null);
+      // setAncho(Number(row[8]) / 100 || null);
+      // setAlto(Number(row[9]) / 100 || null);
+      // setPeso(row[10]);
+      setPosicion(Number(row[12]) || "no hay");
 
    }, [row]);
 
@@ -54,12 +59,14 @@ const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
             <thead>
                <tr className={styles.tr}>
                   <th className={styles.th}>Codigo</th>
+                  <th className={styles.th}>Cajas</th>
                   <th className={styles.th}>Posicion</th>
                </tr>
             </thead>
             <tbody>
                <tr className={styles.tr}>
                   <td className={styles.td}>{codigo}</td>
+                  <td>{cajas}</td>
                   <td className={styles.td}>{posicion}</td>
                </tr>
             </tbody>
@@ -79,11 +86,10 @@ const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
             </tbody>
          </table>
 
-         <table className={`${styles.table} ${styles.posiciones_table}`}>
+         {/* <table className={`${styles.table} ${styles.posiciones_table}`}>
             <thead>
                <tr className={`${styles.posiciones_headings} ${styles.tr}`}>
 
-                  <th className={styles.th}>Cajas</th>
                   <th className={styles.th}>Uni/Cjs</th>
                   <th className={styles.th}>Cx Int.</th>
                   <th className={styles.th}>Pz/Cx</th>
@@ -96,7 +102,6 @@ const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
 
             <tbody>
                <tr className={styles.tr}>
-                  <td>{cajas}</td>
                   <td className={styles.td}>{unidadPorCaja}</td>
                   <td>{cajasInteriores}</td>
                   <td>{unidadesEnCajasInteriores}</td>
@@ -126,7 +131,7 @@ const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
                </tr>
 
             </tbody>
-         </table>
+         </table> */}
       </div>
    )
 }

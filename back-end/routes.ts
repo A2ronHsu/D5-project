@@ -43,6 +43,10 @@ router.get("/getAllCodigos/:dep", async (req: Request, res: Response) => {
    await formController.getAllCodigos(req, res);
 });
 
+router.get("/getLastPosicionRecebimientos/:packingList", async (req: Request, res: Response) => {
+   await formController.getLastPosicionRecebimientos(req, res);
+})
+
 router.post("/getRow", async (req: Request, res: Response) => {
    await formController.getRow(req, res);
 });
@@ -73,6 +77,11 @@ router.post("/auth/logout", (req: Request, res: Response) => {
 router.post("/getRowRecebimientos", (req: Request, res: Response) => {
    formController.getRowRecebimientos(req, res);
 })
+
+router.post("/submitRecebimiento", (req: Request, res: Response) => {
+   formController.postPosicionRecebimiento(req, res);
+})
+
 //
 
 

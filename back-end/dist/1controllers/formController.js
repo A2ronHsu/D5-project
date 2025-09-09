@@ -29,6 +29,26 @@ class FormController {
             }
         }
     }
+    async postPosicionRecebimiento(req, res) {
+        console.log(req.body);
+        try {
+            console.log(req.body);
+            const validInput = (0, FormSchemas_1.entradaPosicionesRecebimientosValidation)(req.body);
+            const response = await this.formService.postPosicionRecebimiento(validInput);
+            res.json(response);
+        }
+        catch (err) {
+            if (err instanceof requestErrorHandler_1.default) {
+                res.status(err.statusCode).json({
+                    name: err.name,
+                    message: err.message
+                });
+            }
+            else {
+                res.json({ error: "unknown error" });
+            }
+        }
+    }
     async getCodigo(req, res) {
         try {
             const validInput = (0, FormSchemas_1.getCodigoValidation)(req.body);
@@ -65,10 +85,47 @@ class FormController {
             }
         }
     }
+    async getLastPosicionRecebimientos(req, res) {
+        try {
+            const { packingList } = req.params;
+            console.log(req.params);
+            const response = await this.formService.getLastPosicionRecebimientos(packingList);
+            res.json({ lastPosicion: response });
+        }
+        catch (err) {
+            if (err instanceof requestErrorHandler_1.default) {
+                res.status(err.statusCode).json({
+                    name: err.name,
+                    message: err.message
+                });
+            }
+            else {
+                res.json({ error: "unknown error" });
+            }
+        }
+    }
     async getRow(req, res) {
         try {
             const { codigo, dep } = req.body;
             const response = await this.formService.getRow(codigo, dep);
+            res.json({ row: response });
+        }
+        catch (err) {
+            if (err instanceof requestErrorHandler_1.default) {
+                res.status(err.statusCode).json({
+                    name: err.name,
+                    message: err.message
+                });
+            }
+            else {
+                res.json({ error: "unknown error" });
+            }
+        }
+    }
+    async getRowRecebimientos(req, res) {
+        try {
+            const { codigo, packingList } = req.body;
+            const response = await this.formService.getRowRecebimientos(codigo, packingList);
             res.json({ row: response });
         }
         catch (err) {

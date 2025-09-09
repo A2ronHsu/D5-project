@@ -11,7 +11,7 @@ const SHEET_ID: { [key: string]: string } = {
    'D5': "1NECc6VReyx16_O1TTrizbDPZzyGas4lmatn8hGAG3xE",
    'D8': "1Ut6kE5d_Jn_KC0jBP4I9BhJ5u6A17tAB3cGI4cxZLzA",
    'D9': "1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k",
-   'D10':"1U_K9pz9JIe7px50XXWabYCx3ffPtelbPqOESsOevLfI",
+   'D10': "1U_K9pz9JIe7px50XXWabYCx3ffPtelbPqOESsOevLfI",
    'GT029': "1FOaMcsiD70w-vJ7nnr6z_qFUXa8REcFl_pyPzWgN8lg"
 }
 
@@ -191,9 +191,25 @@ class GoogleRepository {
             throw new ResponseErrorHandler(500, "append error", "Unknown error");
          }
       }
-
-
    }
+
+   async appendPosicionRecebimiento(codigo: string, packingList: string, unidadPosicion: number) {
+      try {
+         const index = await this.findCodigoIndex(codigo, packingList);
+         const range = `N${index + 1}`;
+         return this.writeData(range, [[unidadPosicion]], packingList);
+
+      } catch (error) {
+         console.error("error appending", error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, "append error", error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "append error", "Unknown error");
+         }
+      }
+   }
+
+
 
    /**
     * @param dep Warehouse name referent to SHEET_ID
@@ -217,6 +233,27 @@ class GoogleRepository {
       }
 
    }
+
+
+   async getLastPosicionRecebimientos(packingList: string): Promise<number> {
+
+      try {
+         const allPosiciones = (await this.getRange("N3:N", packingList))?.flat();
+         if (!allPosiciones) return 0;
+         return Math.max(...allPosiciones);
+
+      } catch (error) {
+         console.error("error getting all codigos", error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, "error getting posicionRecebimiento", error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "error getting codigo", "unknown error");
+         }
+      }
+
+   }
+
+
 
    /**
     * @param dep Warehouse name referent to SHEET_ID
@@ -242,7 +279,7 @@ class GoogleRepository {
 
    }
 
-   async getRowRecebimientos(codigo:string, packingList:string) : Promise<string[]> {
+   async getRowRecebimientos(codigo: string, packingList: string): Promise<string[]> {
       try {
          const index = await this.findCodigoIndex(codigo, packingList);
          const row = (await this.getRange(`B${index + 1}:N${index + 1}`, packingList))?.flat();
@@ -258,15 +295,16 @@ class GoogleRepository {
       }
    }
 
+
    async transfer(input: ITransferRow) {
       const rowContent: ITransferRow[] = [input];
       const dep = "DannyHomeTransfer";
-      
+
       try {
          const allCodigos = await this.getAllCodigos(dep);
-         const lastEmptyRow = allCodigos.length+1
+         const lastEmptyRow = allCodigos.length + 1
          const range = `A${lastEmptyRow}:E${lastEmptyRow}`;
-         
+
          const response = await this.writeData(range, rowContent, dep);
          return response;
       } catch (error) {

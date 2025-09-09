@@ -14,6 +14,16 @@ export const entradaPosicionesValidation = (input: any) => {
 
 }
 
+export const entradaPosicionesRecebimientosValidation = (input: any) => {
+   const { codigo, packingList, unidadPosicion } = input;
+   if (!codigo || !packingList || !unidadPosicion) {
+      let error = new ResponseErrorHandler(400, "Input Error","invalid Input");
+      throw error
+   };
+   return { codigo, packingList, unidadPosicion };
+
+}
+
 export const getCodigoValidation = (input: any) => {
    const { codigo, dep } = input;
    if (!codigo || !dep) {
