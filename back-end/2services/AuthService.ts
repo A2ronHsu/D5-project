@@ -30,7 +30,7 @@ export default class AuthService {
       const token = jwt.sign(
          { id: user.id, role: user.role },
          secret,
-         { expiresIn: "3h" }
+         { expiresIn: "5h" }
       )
 
 

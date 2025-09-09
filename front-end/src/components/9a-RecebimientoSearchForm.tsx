@@ -10,7 +10,7 @@ const RecebimientoSearchForm : React.FC = ()=>{
    const [error, setError] = useState<string | null>(null);
    const [response, setResponse] = useState<string>("");
 
-   const [dep, setDep] = useState<string>("D5");
+   const [packingList, setPackingList] = useState<string>("GT029");
    const [searchInput, setSearhInput] = useState<string>("");
 
    const [pasillo, setPasillo] = useState<string>("");
@@ -47,17 +47,17 @@ const RecebimientoSearchForm : React.FC = ()=>{
          setResponse("");
       }
 
-      populateList(dep);
+      populateList(packingList);
       setSearhInput("");
       setPasillo("");
       setBloco("");
       setSecuencia("");
       setError(null);
 
-   }, [dep])
+   }, [packingList])
 
-   const handleDepChange = (event: ChangeEvent<HTMLSelectElement>) => {
-      setDep(event.target.value);
+   const handlePackingListChange = (event: ChangeEvent<HTMLSelectElement>) => {
+      setPackingList(event.target.value);
       setResponse("");
 
    }
@@ -72,7 +72,7 @@ const RecebimientoSearchForm : React.FC = ()=>{
          pasillo: pasillo,
          bloco: bloco,
          secuencia: secuencia,
-         dep: dep
+         dep: packingList
       }
 
       try {
@@ -116,12 +116,12 @@ const RecebimientoSearchForm : React.FC = ()=>{
       setError(null);
       setLoading(true)
       try {
-         const res = await fetch("/getRow", {
+         const res = await fetch("/getRowRecebimientos", {
             method: "POST",
             headers: {
                "content-type": "application/json"
             },
-            body: JSON.stringify({ codigo: searchInput, dep: dep })
+            body: JSON.stringify({ codigo: searchInput, packingList: packingList })
          });
 
          if (!res.ok) throw new Error();
@@ -161,8 +161,8 @@ const RecebimientoSearchForm : React.FC = ()=>{
          <fieldset className={styles.wrapper}>
             <legend className={styles.legend}>Deposito y Codigo</legend>
 
-            <label htmlFor="ingresar-dep">Deposito</label>
-            <select className={styles.ingresarDep} name="dep" id="ingresar-dep" value={dep} onChange={handleDepChange}>
+            <label htmlFor="ingresar-dep">Packing List</label>
+            <select className={styles.ingresarDep} name="dep" id="ingresar-dep" value={packingList} onChange={handlePackingListChange}>
                <PackingListOptions />
             </select>
 

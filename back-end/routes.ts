@@ -56,19 +56,23 @@ router.post("/auth/login", async (req: Request, res: Response) => {
 })
 
 
-router.post("/dannyhome/transfer/post",  authenticationMiddleware, authorizationMiddleware(["depositero"]),async (req: Request, res: Response) => {
+router.post("/dannyhome/transfer/post", authenticationMiddleware, authorizationMiddleware(["depositero"]), async (req: Request, res: Response) => {
    await formController.transfer(req, res);
 
 })
 
-router.get("/auth/status", authenticationMiddleware, authorizationMiddleware(["depositero"]),(req: Request, res: Response)=>{
+router.get("/auth/status", authenticationMiddleware, authorizationMiddleware(["depositero"]), (req: Request, res: Response) => {
    authController.status(req, res);
 })
 
-router.post("/auth/logout",(req: Request, res: Response)=>{
+router.post("/auth/logout", (req: Request, res: Response) => {
    authController.logout(req, res);
 })
 
+
+router.post("/getRowRecebimientos", (req: Request, res: Response) => {
+   formController.getRowRecebimientos(req, res);
+})
 //
 
 

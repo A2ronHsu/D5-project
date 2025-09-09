@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState, type ChangeEvent } from "react";
-import DepOptions from "./-1-DepOptions";
+import React, { useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
+import  DepOptions  from "./-1-DepOptions";
 import SearchResultTable from "./3-SearchResultTable";
 import styles from "./4a-PosicionForm.module.css";
 

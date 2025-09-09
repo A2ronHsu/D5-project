@@ -34,8 +34,13 @@ class FormService {
 
    }
 
+   async getRowRecebimientos(codigo:string, packingList:string): Promise<string[]> {
+      const row = await this.repository.getRowRecebimientos(codigo, packingList);
+      return row;
+   }
+
    async transfer(input: ITransfer) {
-      const {fecha, dep, codigo, bloco, cantidad} = input;
+      const { fecha, dep, codigo, bloco, cantidad } = input;
       const response = await this.repository.transfer([fecha, dep, codigo, bloco, cantidad]);
       return response;
    }

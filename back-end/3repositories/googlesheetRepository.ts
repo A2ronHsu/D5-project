@@ -12,7 +12,7 @@ const SHEET_ID: { [key: string]: string } = {
    'D8': "1Ut6kE5d_Jn_KC0jBP4I9BhJ5u6A17tAB3cGI4cxZLzA",
    'D9': "1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k",
    'D10':"1U_K9pz9JIe7px50XXWabYCx3ffPtelbPqOESsOevLfI",
-
+   'GT029': "1FOaMcsiD70w-vJ7nnr6z_qFUXa8REcFl_pyPzWgN8lg"
 }
 
 class GoogleRepository {
@@ -240,6 +240,22 @@ class GoogleRepository {
       }
 
 
+   }
+
+   async getRowRecebimientos(codigo:string, packingList:string) : Promise<string[]> {
+      try {
+         const index = await this.findCodigoIndex(codigo, packingList);
+         const row = (await this.getRange(`B${index + 1}:N${index + 1}`, packingList))?.flat();
+         if (!row) throw new Error("error on getRowRecebimietos");
+         return row;
+      } catch (error) {
+         console.error("error getting row", error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, "rowRecebimientos error", error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "rowRecebimientos error", "unknown error");
+         }
+      }
    }
 
    async transfer(input: ITransferRow) {

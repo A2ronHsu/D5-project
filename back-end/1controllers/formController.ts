@@ -49,8 +49,8 @@ class FormController {
 
    async getAllCodigos(req: Request, res: Response) {
       try {
-         const {dep} = req.params;
-         
+         const { dep } = req.params;
+
          const response = await this.formService.getAllCodigos(dep);
          res.json({ allCodigos: response });
 
@@ -63,7 +63,7 @@ class FormController {
             });
          } else {
             res.json({ error: "unknown error" });
-            
+
 
          }
       }
@@ -88,7 +88,26 @@ class FormController {
       }
    }
 
-      async transfer (req: Request, res: Response) {
+   async getRowRecebimientos(req: Request, res: Response) {
+      try {
+         const { codigo, packingList } = req.body;
+         const response = await this.formService.getRowRecebimientos(codigo, packingList);
+         res.json({ row: response });
+
+      } catch (err: unknown) {
+         if (err instanceof ResponseErrorHandler) {
+            res.status(err.statusCode).json({
+               name: err.name,
+               message: err.message
+            });
+         } else {
+            res.json({ error: "unknown error" });
+
+         }
+      }
+   }
+
+   async transfer(req: Request, res: Response) {
       try {
          console.log(req.body);
          const validInput = transferValidation(req.body);

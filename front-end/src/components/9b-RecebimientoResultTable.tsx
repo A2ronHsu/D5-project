@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type ReactElement } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./3-SearchResultTable.module.css";
 
 
@@ -7,42 +7,45 @@ interface ISearch {
    row: string[]
 }
 
-const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row })=>{
+const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
    const [unidadPorCaja, setUnidadPorCaja] = useState<string>("");
    const [descripcion, setDescripcion] = useState<string>("");
    const [codigo, setCodigo] = useState<string>("");
-   const [content, setContent] = useState<ReactElement[]>([]);
-   
+   const [cajas, setCajas] = useState<number|null>(null);
+   const [cajasInteriores, setCajasInteriores] = useState<string>("");
+   const [unidadesEnCajasInteriores, setUnidadesEnCajasInteriores] = useState<string>("");
+   const [peso, setPeso] = useState<string>("");
+   const [largo, setLargo] = useState<number|null>(0);
+   const [ancho, setAncho] = useState<number|null>(0);
+   const [alto, setAlto] = useState<number|null>(0);
+
+   const [posicion, setPosicion] = useState<number|null>(0);
+
+
    useEffect(() => {
-      setUnidadPorCaja("");
-      setDescripcion("");
       setCodigo("");
-      setContent([]);
+      setDescripcion("");
+      setUnidadPorCaja("");
+      setCajas(null);
+      setCajasInteriores(row[3]);
+      setUnidadesEnCajasInteriores(row[4]);
+
+      setPeso(row[10]);
    }, [searchInput]);
 
    useEffect(() => {
       setCodigo(searchInput);
-      setUnidadPorCaja(row[0]);
-      setDescripcion(row[1]);
-      tableContent();
+      setDescripcion(row[0]);
+      setUnidadPorCaja(row[1]);
+      setCajas(Number(row[2]));
+      setCajasInteriores(row[3]);
+      setUnidadesEnCajasInteriores(row[4]);
+      setLargo(Number(row[7])/100);
+      setAncho(Number(row[8])/100);
+      setAlto(Number(row[9])/100);
+      setPeso(row[10]);
+
    }, [row]);
-
-   const tableContent = () => {
-      let posicion = [];
-      let content: ReactElement[] = [];
-      for (let i = 2; i < row.length; i++) {
-         if ((i - 2) % 5 < 3){
-            posicion.push(<td className={styles.td} key={`p${i}`}>{row[i]}</td>);
-         }
-         if (posicion.length == 3){
-            content.push(<tr className={styles.tr} key={`c${i}`}>{...posicion}</tr>)
-            posicion = [];
-         }
-      }
-      setContent(content);
-   }
-
-
 
 
    return (
@@ -51,13 +54,13 @@ const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row })=>{
             <thead>
                <tr className={styles.tr}>
                   <th className={styles.th}>Codigo</th>
-                  <th className={styles.th}>Uni/Cjs</th>
+                  <th className={styles.th}>Posicion</th>
                </tr>
             </thead>
             <tbody>
                <tr className={styles.tr}>
                   <td className={styles.td}>{codigo}</td>
-                  <td className={styles.td}>{unidadPorCaja}</td>
+                  <td className={styles.td}>{posicion}</td>
                </tr>
             </tbody>
          </table>
@@ -80,9 +83,10 @@ const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row })=>{
             <thead>
                <tr className={`${styles.posiciones_headings} ${styles.tr}`}>
 
-                  <th className={styles.th}>Pas</th>
-                  <th className={styles.th}>Blo</th>
-                  <th className={styles.th}>Sec</th>
+                  <th className={styles.th}>Cajas</th>
+                  <th className={styles.th}>Uni/Cjs</th>
+                  <th className={styles.th}>Cx Int.</th>
+                  <th className={styles.th}>Pz/Cx</th>
                </tr>
                {
 
@@ -91,12 +95,37 @@ const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row })=>{
             </thead>
 
             <tbody>
-               {content}
+               <tr className={styles.tr}>
+                  <td>{cajas}</td>
+                  <td className={styles.td}>{unidadPorCaja}</td>
+                  <td>{cajasInteriores}</td>
+                  <td>{unidadesEnCajasInteriores}</td>
+               </tr>
 
             </tbody>
+         </table>
 
+         <table className={`${styles.table} ${styles.posiciones_table}`}>
+            <thead>
+               <tr className={`${styles.posiciones_headings} ${styles.tr}`}>
 
+                  <th className={styles.th}>Largo</th>
+                  <th className={styles.th}>Ancho</th>
+                  <th className={styles.th}>Alto</th>
+                  <th className={styles.th}>Kg</th>
 
+               </tr>
+            </thead>
+
+            <tbody>
+               <tr className={styles.tr}>
+                  <td>{largo}</td>
+                  <td>{ancho}</td>
+                  <td>{alto}</td>
+                  <td>{peso}</td>
+               </tr>
+
+            </tbody>
          </table>
       </div>
    )

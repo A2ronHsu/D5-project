@@ -33,7 +33,6 @@ export default class AuthController {
 
    }
 
-
    async login(req: Request, res: Response) {
       try {
          const userLogin: IUserLogin = validadeUserLogin(req.body);
@@ -97,6 +96,7 @@ export default class AuthController {
       })
    }
 
+   
 
 
 }

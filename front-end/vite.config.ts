@@ -39,6 +39,10 @@ export default defineConfig({
       "/auth/logout": {
         target: "http://localhost:3000",
         changeOrigin: true
+      },
+      "/getRowRecebimientos": {
+        target: "http://localhost:3000",
+        changeOrigin: true
       }
     }
   }
