@@ -12,7 +12,8 @@ const SHEET_ID: { [key: string]: string } = {
    'D8': "1Ut6kE5d_Jn_KC0jBP4I9BhJ5u6A17tAB3cGI4cxZLzA",
    'D9': "1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k",
    'D10': "1U_K9pz9JIe7px50XXWabYCx3ffPtelbPqOESsOevLfI",
-   'GT029': "1FOaMcsiD70w-vJ7nnr6z_qFUXa8REcFl_pyPzWgN8lg"
+   'GT029': "1FOaMcsiD70w-vJ7nnr6z_qFUXa8REcFl_pyPzWgN8lg",
+   'D1GT021':"1KwuaO0C27sPEgxH7mODG62_TBVrfjx28B1IV0G5L_Lc"
 }
 
 class GoogleRepository {
