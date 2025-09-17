@@ -10,6 +10,9 @@ import AuthRepository from "./3repositories/AuthRepository";
 import authenticationMiddleware from "./5middlewares/authenticationMiddleware";
 import authorizationMiddleware from "./5middlewares/authorizationMiddleware";
 import { Roles } from "./5models/AuthModels";
+import OrderController from "./1controllers/OrderController";
+import OrderService from "./2services/OrderService";
+import Repository from "./3repositories/Repository";
 
 
 
@@ -17,6 +20,7 @@ import { Roles } from "./5models/AuthModels";
 const router = Router();
 const formController = new FormController(new FormService(new GoogleRepository(authClient())));
 const authController = new AuthController(new AuthService(new AuthRepository()));
+const orderController = new OrderController(new OrderService( new Repository()))
 
 declare global {
    namespace Express {
@@ -82,6 +86,10 @@ router.post("/submitRecebimiento", (req: Request, res: Response) => {
    formController.postPosicionRecebimiento(req, res);
 })
 
+
+router.post("/listadenotas", (req: Request, res: Response) =>{
+   orderController.addNotas(req,res);
+})
 //
 
 
