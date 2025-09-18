@@ -12,15 +12,15 @@ import authorizationMiddleware from "./5middlewares/authorizationMiddleware";
 import { Roles } from "./5models/AuthModels";
 import OrderController from "./1controllers/OrderController";
 import OrderService from "./2services/OrderService";
-import Repository from "./3repositories/Repository";
+import Repository from "./3repositories/PrismaRepository";
 
-
+import { PrismaClient } from "@prisma/client";
 
 
 const router = Router();
 const formController = new FormController(new FormService(new GoogleRepository(authClient())));
 const authController = new AuthController(new AuthService(new AuthRepository()));
-const orderController = new OrderController(new OrderService( new Repository()))
+const orderController = new OrderController(new OrderService( new Repository(new PrismaClient())))
 
 declare global {
    namespace Express {

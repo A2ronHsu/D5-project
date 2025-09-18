@@ -1,10 +1,10 @@
-import Repository from "../3repositories/Repository";
+import PrismaRepository from "../3repositories/PrismaRepository";
 import { OrderJson } from "../5models/OrderModels";
 
 
 class OrderService {
 
-   constructor(private repository: Repository) {
+   constructor(private repository: PrismaRepository) {
 
    }
 
