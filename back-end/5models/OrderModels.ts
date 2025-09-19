@@ -9,5 +9,16 @@ export interface OrderJson {
    deposito: string,
    codigoVendedor: string,
    nombreVendedor: string
-   dateTime?: Date
+}
+
+export interface Order {
+   nota: number,
+   comentario: string,
+   codigoCliente: string,
+   nombreCliente: string,
+   dateTime: Date,
+   printStatus: boolean,
+   deposito: string,
+   codigoVendedor: string,
+   nombreVendedor: string
 }

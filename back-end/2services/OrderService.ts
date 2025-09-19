@@ -1,5 +1,5 @@
 import PrismaRepository from "../3repositories/PrismaRepository";
-import { OrderJson } from "../5models/OrderModels";
+import { Order, OrderJson } from "../5models/OrderModels";
 
 
 class OrderService {
@@ -9,15 +9,26 @@ class OrderService {
    }
 
    addNotas(jsonInput: OrderJson[]) {
-      jsonInput.forEach(order => {
-         const date = order.fecha.split('-').reverse().join('-');
-         const dateTime = new Date(`${date}T${order.hora}`);
-         order.dateTime = dateTime
-         const response = this.repository.addNotas(order);
+      jsonInput.forEach(orderJson => {
+         const date = orderJson.fecha!.split('-').reverse().join('-');
+         const dateTime = new Date(`${date}T${orderJson.hora}`);
+         const order: Order = {
+            nota: Number(orderJson.nota),
+            comentario: orderJson.comentario,
+            codigoCliente: orderJson.codigoCliente,
+            nombreCliente: orderJson.nombreCliente,
+            printStatus: Boolean(orderJson.printStatus),
+            deposito: orderJson.deposito,
+            codigoVendedor: orderJson.codigoVendedor,
+            nombreVendedor: orderJson.nombreVendedor,
+            dateTime: dateTime,
+         }
+
+         const response = this.repository.addOrder(order);
 
       });
 
-      return {message: "ok"}
+      return { message: "ok" }
    }
 }
 

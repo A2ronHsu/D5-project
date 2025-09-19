@@ -16,7 +16,7 @@ datasource db {
 
 model Orders {
   id String @id @default(uuid())
-  nota Int 
+  nota BigInt 
   comentario String
   codigoCliente String
   nombreCliente String
@@ -25,5 +25,7 @@ model Orders {
   deposito String
   codigoVendedor String
   nombreVendedor String
+
+ @@index([nota]) 
   
 }

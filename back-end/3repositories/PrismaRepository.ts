@@ -1,14 +1,23 @@
-import { OrderJson } from "../5models/OrderModels";
+import { Order } from "../5models/OrderModels";
 import { PrismaClient } from "./../generated/prisma/client";
 
 class PrismaRepository {
-   constructor( private prisma:PrismaClient){
-      
+   constructor(private prisma: PrismaClient) {
+
    }
 
-   async addNotas(notas : OrderJson){
+
+   
+
+   async addOrder(order: Order) {
+      await this.prisma.orders.create({
+         data: {
+            ...order
+         }
+      })
+
+      console.log(order);
       
-      console.log(notas);
    }
 }
 
