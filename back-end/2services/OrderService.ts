@@ -12,8 +12,8 @@ class OrderService {
       jsonInput.forEach(orderJson => {
          const date = orderJson.fecha!.split('-').reverse().join('-');
          const dateTime = new Date(`${date}T${orderJson.hora}`);
-         const order: Order = {
-            nota: Number(orderJson.nota),
+         const inputOrder: Order = {
+            nota: BigInt(orderJson.nota),
             comentario: orderJson.comentario,
             codigoCliente: orderJson.codigoCliente,
             nombreCliente: orderJson.nombreCliente,
@@ -24,7 +24,9 @@ class OrderService {
             dateTime: dateTime,
          }
 
-         const response = this.repository.addOrder(order);
+         // if 
+
+         // const response = this.repository.addOrder(order);
 
       });
 

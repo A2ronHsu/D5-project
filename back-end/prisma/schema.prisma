@@ -25,7 +25,7 @@ model Orders {
   deposito String
   codigoVendedor String
   nombreVendedor String
-
+  createdAt DateTime @default(now())
  @@index([nota]) 
   
 }
