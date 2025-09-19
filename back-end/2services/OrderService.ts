@@ -10,11 +10,14 @@ class OrderService {
 
    addNotas(jsonInput: OrderJson[]) {
       jsonInput.forEach(order => {
-         const dateTime = new Date(`${order.fecha}T${order.hora}`);
+         const date = order.fecha.split('-').reverse().join('-');
+         const dateTime = new Date(`${date}T${order.hora}`);
          order.dateTime = dateTime
          const response = this.repository.addNotas(order);
 
       });
+
+      return {message: "ok"}
    }
 }
 

@@ -1,5 +1,5 @@
 import { OrderJson } from "../5models/OrderModels";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "./../generated/prisma/client";
 
 class PrismaRepository {
    constructor( private prisma:PrismaClient){
@@ -7,7 +7,8 @@ class PrismaRepository {
    }
 
    async addNotas(notas : OrderJson){
-
+      
+      console.log(notas);
    }
 }
 

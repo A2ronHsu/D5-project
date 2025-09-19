@@ -14,7 +14,7 @@ import OrderController from "./1controllers/OrderController";
 import OrderService from "./2services/OrderService";
 import Repository from "./3repositories/PrismaRepository";
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "./generated/prisma/client";
 
 
 const router = Router();

@@ -16,7 +16,7 @@ class OrderController {
 
          const response = this.orderService.addNotas(validInput);
 
-         res.json(validInput);
+         res.json(response);
 
       } catch (err) {
          if (err instanceof ResponseErrorHandler) {
