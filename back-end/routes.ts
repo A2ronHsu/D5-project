@@ -87,8 +87,8 @@ router.post("/submitRecebimiento", (req: Request, res: Response) => {
 })
 
 
-router.post("/listadenotas", (req: Request, res: Response) =>{
-   orderController.addNotas(req,res);
+router.post("/listadenotas", async (req: Request, res: Response) =>{
+   await orderController.addNotas(req,res);
 })
 //
 

@@ -8,10 +8,7 @@ const server = Express();
 dotenv.config();
 
 
-server.use((req, res, next) => {
-  console.log(`➡️ Received ${req.method} request for URL: ${req.originalUrl}`);
-  next(); // Call next() to pass the request on to the next handler
-},Express.static("../front-end/dist"), cookieParser(), json(),urlencoded({extended:true}),router);
+server.use(Express.static("../front-end/dist"), cookieParser(), json(),urlencoded({extended:true}),router);
 
 
 
