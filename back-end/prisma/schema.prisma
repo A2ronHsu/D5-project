@@ -16,7 +16,7 @@ datasource db {
 
 model Orders {
   id String @id @default(uuid())
-  nota BigInt 
+  nota Int
   comentario String
   codigoCliente String
   nombreCliente String

@@ -9,12 +9,11 @@ class OrderController {
 
    }
 
-   addNotas(req: Request, res: Response) {
+   async addNotas(req: Request, res: Response) {
       try {
          const validInput = OrderJsonValidation(req.body);
-         console.log(validInput);
-
-         const response = this.orderService.addNotas(validInput);
+         const response = await this.orderService.addNotas(validInput);
+         console.log(response);
 
          res.json(response);
 
@@ -25,7 +24,7 @@ class OrderController {
                message: err.message
             });
          } else {
-            res.json({ error: "unknown error" });
+            res.json({ error: `unknown error: ${err}` });
 
          }
       }

@@ -1,3 +1,4 @@
+import ResponseErrorHandler from "../4schemas/requestErrorHandler";
 import { Order } from "../5models/OrderModels";
 import { PrismaClient } from "./../generated/prisma/client";
 
@@ -6,17 +7,9 @@ class PrismaRepository {
 
    }
 
-   async isNotaRepeated(nota: number) : Promise<boolean> {
-      const count = await this.prisma.orders.count({
-         where: {
-            nota: nota
-         }
-      })
 
-      return count > 0
-   }
 
-   async getLastRepeatedNota(nota: number) {
+   async getLastRepeatedOrderNota(nota: number): Promise<Order | null> {
       const lastNota = await this.prisma.orders.findFirst({
          where: {
             nota: nota
@@ -30,30 +23,48 @@ class PrismaRepository {
    }
 
    async isOrderEqual(inputOrder: Order, databaseOrder: Order) {
+      const nota = inputOrder.nota == databaseOrder.nota;
+      const comentario = inputOrder.comentario == databaseOrder.comentario;
+      const codigoCliente = inputOrder.codigoCliente == databaseOrder.codigoCliente;
+      const nombreCliente = inputOrder.nombreCliente == databaseOrder.nombreCliente;
+      const dateTime = inputOrder.dateTime.toString() == databaseOrder.dateTime.toString();
+      const printStatus = inputOrder.printStatus == databaseOrder.printStatus;
+      const deposito = inputOrder.deposito == databaseOrder.deposito;
+      const codigoVendedor = inputOrder.codigoVendedor == databaseOrder.codigoVendedor;
+      const nombreVendedor = inputOrder.nombreVendedor == databaseOrder.nombreVendedor;
+
+      // if (!nota) console.log('nota '+nota)
+      // if (!comentario) console.log('comentario '+comentario)
+      // if (!codigoCliente) console.log('codigoCliente '+codigoCliente)
+      // if (!nombreCliente) console.log('nombreCliente '+nombreCliente)
+      // if (!dateTime) console.log('dateTime '+dateTime)
+      // if (!printStatus) console.log('printStatus '+printStatus)
+      // if (!deposito) console.log('deposito '+deposito)
+      // if (!codigoVendedor) console.log('codigoVendedor '+codigoVendedor)
+      // if (!nombreVendedor) console.log('nombreVendedor '+nombreVendedor)
+
+
       return (
-         inputOrder.nota == databaseOrder.nota &&
-         inputOrder.comentario == databaseOrder.comentario &&
-         inputOrder.codigoCliente == databaseOrder.codigoCliente &&
-         inputOrder.nombreCliente == databaseOrder.nombreCliente &&
-         inputOrder.dateTime == databaseOrder.dateTime &&
-         inputOrder.printStatus == databaseOrder.printStatus &&
-         inputOrder.deposito == databaseOrder.deposito &&
-         inputOrder.codigoVendedor == databaseOrder.codigoVendedor &&
-         inputOrder.nombreVendedor == databaseOrder.nombreVendedor
+         nota &&
+         comentario &&
+         codigoCliente &&
+         nombreCliente &&
+         dateTime &&
+         printStatus &&
+         deposito &&
+         codigoVendedor &&
+         nombreVendedor
       )
    }
 
-
-
    async addOrder(order: Order) {
-      await this.prisma.orders.create({
+      const result = await this.prisma.orders.create({
          data: {
             ...order
          }
       })
 
-      console.log(order);
-
+      return result
    }
 }
 

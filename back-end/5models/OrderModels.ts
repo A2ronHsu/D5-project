@@ -12,7 +12,7 @@ export interface OrderJson {
 }
 
 export interface Order {
-   nota: BigInt,
+   nota: number,
    comentario: string,
    codigoCliente: string,
    nombreCliente: string,
