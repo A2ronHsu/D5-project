@@ -88,6 +88,7 @@ router.post("/submitRecebimiento", (req: Request, res: Response) => {
 
 
 router.post("/listadenotas", async (req: Request, res: Response) =>{
+   console.log("post request on /listadenotas received");
    await orderController.addNotas(req,res);
 })
 //
