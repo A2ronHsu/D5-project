@@ -13,6 +13,7 @@ server.use(Express.static("../front-end/dist"), cookieParser(), json(),urlencode
 
 
 server.listen(3000,()=>{
-   console.log(process.env.PORT)
+   console.log(process.env);
+   console.log("port: ",process.env.PORT)
    console.log("listening")
 })
