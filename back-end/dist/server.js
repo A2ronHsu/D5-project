@@ -44,7 +44,7 @@ const server = (0, express_1.default)();
 dotenv_1.default.config();
 server.use(express_1.default.static("../front-end/dist"), (0, cookie_parser_1.default)(), (0, express_1.json)(), (0, express_1.urlencoded)({ extended: true }), routes_1.default);
 server.listen(3000, () => {
-    console.log(process.env);
+    // console.log(process.env);
     console.log("port: ", process.env.PORT);
     console.log("listening");
 });

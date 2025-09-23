@@ -20,7 +20,7 @@ import { PrismaClient } from "./generated/prisma/client";
 const router = Router();
 const formController = new FormController(new FormService(new GoogleRepository(authClient())));
 const authController = new AuthController(new AuthService(new AuthRepository()));
-const orderController = new OrderController(new OrderService( new Repository(new PrismaClient())))
+// const orderController = new OrderController(new OrderService( new Repository(new PrismaClient())))
 
 declare global {
    namespace Express {
@@ -87,10 +87,10 @@ router.post("/submitRecebimiento", (req: Request, res: Response) => {
 })
 
 
-router.post("/listadenotas", async (req: Request, res: Response) =>{
-   console.log("post request on /listadenotas received");
-   await orderController.addNotas(req,res);
-})
+// router.post("/listadenotas", async (req: Request, res: Response) =>{
+//    console.log("post request on /listadenotas received");
+//    await orderController.addNotas(req,res);
+// })
 //
 
 
