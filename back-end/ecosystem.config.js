@@ -1,22 +1,17 @@
 module.exports = {
-  apps : [{
-    name   : "server",
-    script : "dist/server.js",
-    env_file:".env",
+  apps: [{
+    name: 'my-app',
+    script: 'dist/server.js',
+    cwd: '/home/ubuntu/D5-project/back-end',
+    instances: 1,
+    autorestart: true,
+    watch: false,
+    max_memory_restart: '1G',
     env: {
-      NODE_ENV: "development"
+      NODE_ENV: 'development'
     },
     env_production: {
-      NODE_ENV: "production"
+      NODE_ENV: 'production'
     }
-  }],
-  deploy: {
-    production: {
-      env: {
-        // Load environment variables from a file
-        // You can replace this with your actual .env file path
-        "source_env": ".env" 
-      }
-    }
-  }
+  }]
 };
