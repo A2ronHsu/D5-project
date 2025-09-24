@@ -16,7 +16,7 @@ class FormService {
       return data;
    }
 
-   async postPosicionRecebimiento(input:posicionRecebimiento){
+   async postPosicionRecebimiento(input: posicionRecebimiento) {
       const { codigo, packingList, unidadPosicion } = input;
       const data = await this.repository.appendPosicionRecebimiento(codigo, packingList, unidadPosicion);
       return data;
@@ -34,7 +34,7 @@ class FormService {
       return allCodigos;
    }
 
-   async getLastPosicionRecebimientos(packingList:string): Promise<number>{
+   async getLastPosicionRecebimientos(packingList: string): Promise<number> {
       return await this.repository.getLastPosicionRecebimientos(packingList);
    }
 
@@ -44,10 +44,15 @@ class FormService {
 
    }
 
-   async getRowRecebimientos(codigo:string, packingList:string): Promise<string[]> {
+   async getRowRecebimientos(codigo: string, packingList: string): Promise<string[]> {
       const row = await this.repository.getRowRecebimientos(codigo, packingList);
       return row;
    }
+
+   async appendRecord(data: string[], dep: string) {
+      await this.repository.appendRecord(data, dep);
+   }
+
 
    async transfer(input: ITransfer) {
       const { fecha, dep, codigo, bloco, cantidad } = input;

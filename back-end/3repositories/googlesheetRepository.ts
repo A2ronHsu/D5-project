@@ -13,7 +13,11 @@ const SHEET_ID: { [key: string]: string } = {
    'D9': "1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k",
    'D10': "1U_K9pz9JIe7px50XXWabYCx3ffPtelbPqOESsOevLfI",
    'GT029': "1FOaMcsiD70w-vJ7nnr6z_qFUXa8REcFl_pyPzWgN8lg",
-   'D1GT021':"1KwuaO0C27sPEgxH7mODG62_TBVrfjx28B1IV0G5L_Lc"
+   'D1GT021': "1KwuaO0C27sPEgxH7mODG62_TBVrfjx28B1IV0G5L_Lc",
+   'EstragadoDH': "1WIbKxlZM0WyyEgNXriJMbNfCv_-ltqKHdvTxxtRLLL4",
+   'EstragadoDHD4': "1dYojcaWvXQQsk_VKTtpVPPlMPH8tGgk9RLg0ut5ov2g",
+   'EstragadoDHD2': ""
+
 }
 
 class GoogleRepository {
@@ -25,51 +29,6 @@ class GoogleRepository {
 
    }
 
-   /**
-    * Appends new rows of data to the specified range in the Google Sheet.
-    * This is ideal for adding new records.
-    *
-    * @param range The A1 notation or R1C1 notation of a range to append values to.  If the range is 'Sheet1!A:D', data will be appended after the last row in columns A-D.
-    * @param values The data to append, as an array of arrays (each inner array is a row).
-    * @param valueInputOption How the infilterCodigoIndexput data should be interpreted. 'USER_ENTERED' (default) parses values     * as if they were entered into the UI. 'RAW' treats all values as strings.
-    * @param dep Warehouse name referent to SHEET_ID
-    * @returns A promise that resolves to the append response from the API, or null if an error occurs.
-    */
-   async writeData(
-      range: string,
-      values: any[][],
-      dep: string,
-      valueInputOption: "USER_ENTERED" | "RAW" = "USER_ENTERED"
-   ): Promise<any[][]> {
-      try {
-         const sheets = this.sheet;
-
-         const requestBody: sheets_v4.Schema$ValueRange = {
-            values: values
-         }
-
-         const response = await sheets.spreadsheets.values.update({
-            spreadsheetId: SHEET_ID[dep],
-            range: range,
-            valueInputOption: valueInputOption,
-            requestBody: requestBody,
-            includeValuesInResponse: true
-
-         });
-         if (!response.data.updatedData!.values) {
-            throw new Error();
-         }
-         return response.data.updatedData!.values;
-
-      } catch (error: unknown) {
-         console.error(`Error apending data to range ${range}:, `, error);
-         if (error instanceof Error) {
-            throw new ResponseErrorHandler(500, "Error on writing data", error.message);
-         } else {
-            throw new ResponseErrorHandler(500, "Error on writing data", "unknown error");
-         }
-      }
-   }
 
 
    /**
@@ -125,6 +84,87 @@ class GoogleRepository {
    }
 
    /**
+    * @param dep Warehouse name referent to SHEET_ID
+    * 
+    * @returns all codigo of the table, basically the column A:A
+    */
+   async getAllCodigos(dep: string): Promise<string[]> {
+      try {
+
+         const allCodigos = await this.getRange("A:A", dep);
+
+         if (!allCodigos) throw new Error("empty codigo columns");
+         return allCodigos.flat();
+      } catch (error) {
+         console.error("error getting all codigos", error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, "error getting codigo", error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "error getting codigo", "unknown error");
+         }
+      }
+
+   }
+
+   async getLastPosicionRecebimientos(packingList: string): Promise<number> {
+
+      try {
+         const allPosiciones = (await this.getRange("N3:N", packingList))?.flat();
+         if (!allPosiciones) return 0;
+         return Math.max(...allPosiciones);
+
+      } catch (error) {
+         console.error("error getting all codigos", error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, "error getting posicionRecebimiento", error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "error getting codigo", "unknown error");
+         }
+      }
+
+   }
+
+   /**
+    * @param dep Warehouse name referent to SHEET_ID
+    * 
+    * @param codigo the string representing the codigo of the product on the sheet
+    * @returns flaten array representing the data on the fetched row.
+    */
+   async getRow(codigo: string, dep: string): Promise<string[]> {
+      try {
+         const index = await this.findCodigoIndex(codigo, dep);
+         const row = (await this.getRange(`B${index + 1}:W${index + 1}`, dep))?.flat();
+         if (!row) throw new Error("error on getRow");
+         return row;
+      } catch (error) {
+         console.error("error getting row", error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, "row error", error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "row error", "unknown error");
+         }
+      }
+
+
+   }
+
+   async getRowRecebimientos(codigo: string, packingList: string): Promise<string[]> {
+      try {
+         const index = await this.findCodigoIndex(codigo, packingList);
+         const row = (await this.getRange(`B${index + 1}:N${index + 1}`, packingList))?.flat();
+         if (!row) throw new Error("error on getRowRecebimietos");
+         return row;
+      } catch (error) {
+         console.error("error getting row", error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, "rowRecebimientos error", error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "rowRecebimientos error", "unknown error");
+         }
+      }
+   }
+
+   /**
     * use getAll to find the 0 starting index of the the input
     * @param dep Warehouse name referent to SHEET_ID
     * 
@@ -152,6 +192,53 @@ class GoogleRepository {
          }
       }
    }
+
+   /**
+    * Appends new rows of data to the specified range in the Google Sheet.
+    * This is ideal for adding new records.
+    *
+    * @param range The A1 notation or R1C1 notation of a range to append values to.  If the range is 'Sheet1!A:D', data will be appended after the last row in columns A-D.
+    * @param values The data to append, as an array of arrays (each inner array is a row).
+    * @param valueInputOption How the infilterCodigoIndexput data should be interpreted. 'USER_ENTERED' (default) parses values     * as if they were entered into the UI. 'RAW' treats all values as strings.
+    * @param dep Warehouse name referent to SHEET_ID
+    * @returns A promise that resolves to the append response from the API, or null if an error occurs.
+    */
+   async writeData(
+      range: string,
+      values: any[][],
+      dep: string,
+      valueInputOption: "USER_ENTERED" | "RAW" = "USER_ENTERED"
+   ): Promise<any[][]> {
+      try {
+         const sheets = this.sheet;
+
+         const requestBody: sheets_v4.Schema$ValueRange = {
+            values: values
+         }
+
+         const response = await sheets.spreadsheets.values.update({
+            spreadsheetId: SHEET_ID[dep],
+            range: range,
+            valueInputOption: valueInputOption,
+            requestBody: requestBody,
+            includeValuesInResponse: true
+
+         });
+         if (!response.data.updatedData!.values) {
+            throw new Error();
+         }
+         return response.data.updatedData!.values;
+
+      } catch (error: unknown) {
+         console.error(`Error apending data to range ${range}:, `, error);
+         if (error instanceof Error) {
+            throw new ResponseErrorHandler(500, "Error on writing data", error.message);
+         } else {
+            throw new ResponseErrorHandler(500, "Error on writing data", "unknown error");
+         }
+      }
+   }
+
 
    /**
     * @param dep Warehouse name referent to SHEET_ID
@@ -210,92 +297,44 @@ class GoogleRepository {
       }
    }
 
-
-
    /**
-    * @param dep Warehouse name referent to SHEET_ID
-    * 
-    * @returns all codigo of the table, basically the column A:A
+    * Appends a new row to the end of the specified Google Sheet.
+    * * @param data The data to be appended, as a one-dimensional array.
+    * @param dep The warehouse name (key for SHEET_ID) to identify the target spreadsheet.
+    * @param sheetName The name of the sheet (e.g., "Sheet1").
+    * @returns The updated range of the appended data.
     */
-   async getAllCodigos(dep: string): Promise<string[]> {
+   async appendRecord(data: any[], dep: string, sheetName: string = 'Sheet1'): Promise<any[][]> {
       try {
+         const sheets = this.sheet;
+         const range = `${sheetName}!A1`; // Appending starts at A1 and finds the next empty row.
 
-         const allCodigos = await this.getRange("A:A", dep);
+         const requestBody: sheets_v4.Schema$ValueRange = {
+            values: [data]
+         };
 
-         if (!allCodigos) throw new Error("empty codigo columns");
-         return allCodigos.flat();
-      } catch (error) {
-         console.error("error getting all codigos", error);
-         if (error instanceof Error) {
-            throw new ResponseErrorHandler(500, "error getting codigo", error.message);
-         } else {
-            throw new ResponseErrorHandler(500, "error getting codigo", "unknown error");
+         const response = await sheets.spreadsheets.values.append({
+            spreadsheetId: SHEET_ID[dep],
+            range: range,
+            valueInputOption: 'USER_ENTERED',
+            requestBody: requestBody,
+            insertDataOption: 'INSERT_ROWS',
+         });
+         
+         if (!response.data.updates?.updatedData?.values) {
+            throw new Error('No updated data received from the API.');
          }
-      }
+         return response.data.updates.updatedData.values;
 
-   }
-
-
-   async getLastPosicionRecebimientos(packingList: string): Promise<number> {
-
-      try {
-         const allPosiciones = (await this.getRange("N3:N", packingList))?.flat();
-         if (!allPosiciones) return 0;
-         return Math.max(...allPosiciones);
-
-      } catch (error) {
-         console.error("error getting all codigos", error);
+      } catch (error: unknown) {
+         console.error("Error appending record:", error);
          if (error instanceof Error) {
-            throw new ResponseErrorHandler(500, "error getting posicionRecebimiento", error.message);
+            throw new ResponseErrorHandler(500, "Error on appending record", error.message);
          } else {
-            throw new ResponseErrorHandler(500, "error getting codigo", "unknown error");
-         }
-      }
-
-   }
-
-
-
-   /**
-    * @param dep Warehouse name referent to SHEET_ID
-    * 
-    * @param codigo the string representing the codigo of the product on the sheet
-    * @returns flaten array representing the data on the fetched row.
-    */
-   async getRow(codigo: string, dep: string): Promise<string[]> {
-      try {
-         const index = await this.findCodigoIndex(codigo, dep);
-         const row = (await this.getRange(`B${index + 1}:W${index + 1}`, dep))?.flat();
-         if (!row) throw new Error("error on getRow");
-         return row;
-      } catch (error) {
-         console.error("error getting row", error);
-         if (error instanceof Error) {
-            throw new ResponseErrorHandler(500, "row error", error.message);
-         } else {
-            throw new ResponseErrorHandler(500, "row error", "unknown error");
-         }
-      }
-
-
-   }
-
-   async getRowRecebimientos(codigo: string, packingList: string): Promise<string[]> {
-      try {
-         const index = await this.findCodigoIndex(codigo, packingList);
-         const row = (await this.getRange(`B${index + 1}:N${index + 1}`, packingList))?.flat();
-         if (!row) throw new Error("error on getRowRecebimietos");
-         return row;
-      } catch (error) {
-         console.error("error getting row", error);
-         if (error instanceof Error) {
-            throw new ResponseErrorHandler(500, "rowRecebimientos error", error.message);
-         } else {
-            throw new ResponseErrorHandler(500, "rowRecebimientos error", "unknown error");
+            throw new ResponseErrorHandler(500, "Error on appending record", "unknown error");
          }
       }
    }
-
 
    async transfer(input: ITransferRow) {
       const rowContent: ITransferRow[] = [input];
