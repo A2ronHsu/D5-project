@@ -10,17 +10,18 @@ import AuthRepository from "./3repositories/AuthRepository";
 import authenticationMiddleware from "./5middlewares/authenticationMiddleware";
 import authorizationMiddleware from "./5middlewares/authorizationMiddleware";
 import { Roles } from "./5models/AuthModels";
+
 import OrderController from "./1controllers/OrderController";
 import OrderService from "./2services/OrderService";
 import Repository from "./3repositories/PrismaRepository";
 
-import { PrismaClient } from "./generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 
 const router = Router();
 const formController = new FormController(new FormService(new GoogleRepository(authClient())));
 const authController = new AuthController(new AuthService(new AuthRepository()));
-// const orderController = new OrderController(new OrderService( new Repository(new PrismaClient())))
+const orderController = new OrderController(new OrderService( new Repository(new PrismaClient())))
 
 declare global {
    namespace Express {
@@ -87,11 +88,11 @@ router.post("/submitRecebimiento", (req: Request, res: Response) => {
 })
 
 
-// router.post("/listadenotas", async (req: Request, res: Response) =>{
-//    console.log("post request on /listadenotas received");
-//    await orderController.addNotas(req,res);
-// })
-//
+router.post("/listadenotas", async (req: Request, res: Response) =>{
+   console.log("post request on /listadenotas received");
+   await orderController.addNotas(req,res);
+})
+
 
 
 

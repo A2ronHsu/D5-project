@@ -1,6 +1,7 @@
 import ResponseErrorHandler from "../4schemas/requestErrorHandler";
 import { Order } from "../5models/OrderModels";
-import { PrismaClient } from "./../generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
+
 
 class PrismaRepository {
    constructor(private prisma: PrismaClient) {

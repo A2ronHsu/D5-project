@@ -6,7 +6,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --ext ts js --exec 'ts-node server.ts'",
     "build": "npx tsc",
-    "start": "node ./dist/server.js"
+    "start": "node ./dist/server.js",
+    "postinstall": "npx prisma generate",
+    "deploy": "npx prisma migrate deploy"
   },
   "author": "",
   "license": "ISC",
