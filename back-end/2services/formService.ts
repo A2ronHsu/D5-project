@@ -1,4 +1,4 @@
-import { entradaPosiciones, ITransfer, posicionRecebimiento } from "../5models/formModel";
+import { entradaPosiciones, IEstragado, ITransfer, posicionRecebimiento } from "../5models/formModel";
 import GoogleRepository from "../3repositories/googlesheetRepository";
 
 class FormService {
@@ -16,7 +16,7 @@ class FormService {
       return data;
    }
 
-   async postPosicionRecebimiento(input:posicionRecebimiento){
+   async postPosicionRecebimiento(input: posicionRecebimiento) {
       const { codigo, packingList, unidadPosicion } = input;
       const data = await this.repository.appendPosicionRecebimiento(codigo, packingList, unidadPosicion);
       return data;
@@ -34,7 +34,7 @@ class FormService {
       return allCodigos;
    }
 
-   async getLastPosicionRecebimientos(packingList:string): Promise<number>{
+   async getLastPosicionRecebimientos(packingList: string): Promise<number> {
       return await this.repository.getLastPosicionRecebimientos(packingList);
    }
 
@@ -44,10 +44,19 @@ class FormService {
 
    }
 
-   async getRowRecebimientos(codigo:string, packingList:string): Promise<string[]> {
+   async getRowRecebimientos(codigo: string, packingList: string): Promise<string[]> {
       const row = await this.repository.getRowRecebimientos(codigo, packingList);
       return row;
    }
+
+   async appendEstragado(data: IEstragado): Promise<any> {
+      const { codigo, dep, descripcion,cantidad } = data;
+      
+      await this.repository.findCodigoIndex(codigo, "EstragadoDH"); // to check if the codigo exists, if not it will throw an error
+      const response = await this.repository.appendRecord([codigo, descripcion, cantidad], dep);
+      return response;
+   }
+
 
    async transfer(input: ITransfer) {
       const { fecha, dep, codigo, bloco, cantidad } = input;

@@ -9,7 +9,6 @@ const RecebimientoSearchForm: React.FC = () => {
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>(null);
    const [response, setResponse] = useState<string>("");
-   // const [lastPosicion, setLastPosicion] = useState<number | null>(null);
 
    const [packingList, setPackingList] = useState<string>("GT029");
    const [searchInput, setSearhInput] = useState<string>("");
@@ -93,6 +92,7 @@ const RecebimientoSearchForm: React.FC = () => {
       setError(null);
       setResponse("");
       setLoading(true);
+      
       const formData = {
          codigo: searchInput,
          packingList: packingList,

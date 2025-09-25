@@ -21,9 +21,6 @@ const router = (0, express_1.Router)();
 const formController = new formController_1.default(new formService_1.default(new googlesheetRepository_1.default((0, authGoogle_1.default)())));
 const authController = new AuthController_1.default(new AuthService_1.default(new AuthRepository_1.default()));
 const orderController = new OrderController_1.default(new OrderService_1.default(new PrismaRepository_1.default(new client_1.PrismaClient())));
-router.post("/submit", async (req, res) => {
-    await formController.submit(req, res);
-});
 router.get("/getCodigo", async (req, res) => {
     await formController.getCodigo(req, res);
 });
@@ -32,6 +29,9 @@ router.get("/getAllCodigos/:dep", async (req, res) => {
 });
 router.get("/getLastPosicionRecebimientos/:packingList", async (req, res) => {
     await formController.getLastPosicionRecebimientos(req, res);
+});
+router.post("/submit", async (req, res) => {
+    await formController.submit(req, res);
 });
 router.post("/getRow", async (req, res) => {
     await formController.getRow(req, res);
@@ -60,5 +60,9 @@ router.post("/submitRecebimiento", (req, res) => {
 router.post("/listadenotas", async (req, res) => {
     console.log("post request on /listadenotas received");
     await orderController.addNotas(req, res);
+});
+router.post("/estragados", async (req, res) => {
+    console.log("post request on /estragados received");
+    await formController.appendEstragado(req, res);
 });
 exports.default = router;

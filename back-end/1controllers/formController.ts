@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { entradaPosicionesRecebimientosValidation, entradaPosicionesValidation, getCodigoValidation, transferValidation } from "../4schemas/FormSchemas";
+import { entradaPosicionesRecebimientosValidation, entradaPosicionesValidation, estragadoValidation, getCodigoValidation, transferValidation } from "../4schemas/FormSchemas";
 import FormService from "../2services/formService";
 import ResponseErrorHandler from "../4schemas/requestErrorHandler";
+import { IEstragado } from "../5models/formModel";
 
 
 class FormController {
@@ -47,6 +48,25 @@ class FormController {
          }
       }
    }
+
+   async appendEstragado(req: Request, res: Response) {
+      try {
+         const validInput: IEstragado = estragadoValidation(req.body);
+         const response = await this.formService.appendEstragado(validInput);
+         res.json(response);
+      } catch (err: unknown) {
+         if (err instanceof ResponseErrorHandler) {
+            res.status(err.statusCode).json({
+               name: err.name,
+               message: err.message
+            });
+         } else {
+            res.json({ error: "unknown error" });
+
+         }
+      }
+   }
+
 
    async getCodigo(req: Request, res: Response) {
       try {
@@ -149,6 +169,8 @@ class FormController {
          }
       }
    }
+
+
 
    async transfer(req: Request, res: Response) {
       try {

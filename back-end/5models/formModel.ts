@@ -28,4 +28,11 @@ export interface ITransfer {
    cantidad: number
 }
 
+export interface IEstragado {
+   codigo: string,
+   descripcion: string,
+   dep: string,
+   cantidad: number
+}
+
 export type ITransferRow = [string, string, string, number, number];

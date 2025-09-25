@@ -49,6 +49,24 @@ class FormController {
             }
         }
     }
+    async appendEstragado(req, res) {
+        try {
+            const validInput = (0, FormSchemas_1.estragadoValidation)(req.body);
+            const response = await this.formService.appendEstragado(validInput);
+            res.json(response);
+        }
+        catch (err) {
+            if (err instanceof requestErrorHandler_1.default) {
+                res.status(err.statusCode).json({
+                    name: err.name,
+                    message: err.message
+                });
+            }
+            else {
+                res.json({ error: "unknown error" });
+            }
+        }
+    }
     async getCodigo(req, res) {
         try {
             const validInput = (0, FormSchemas_1.getCodigoValidation)(req.body);

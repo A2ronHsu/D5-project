@@ -35,6 +35,12 @@ class FormService {
         const row = await this.repository.getRowRecebimientos(codigo, packingList);
         return row;
     }
+    async appendEstragado(data) {
+        const { codigo, dep, descripcion, cantidad } = data;
+        await this.repository.findCodigoIndex(codigo, "EstragadoDH"); // to check if the codigo exists, if not it will throw an error
+        const response = await this.repository.appendRecord([codigo, descripcion, cantidad], dep);
+        return response;
+    }
     async transfer(input) {
         const { fecha, dep, codigo, bloco, cantidad } = input;
         const response = await this.repository.transfer([fecha, dep, codigo, bloco, cantidad]);

@@ -15,7 +15,10 @@ const SHEET_ID = {
     'D9': "1SdGxEMuxIx9lC8_GXLSuiyr96mM8KuVzgq5OPf8t_3k",
     'D10': "1U_K9pz9JIe7px50XXWabYCx3ffPtelbPqOESsOevLfI",
     'GT029': "1FOaMcsiD70w-vJ7nnr6z_qFUXa8REcFl_pyPzWgN8lg",
-    'D1GT021': "1KwuaO0C27sPEgxH7mODG62_TBVrfjx28B1IV0G5L_Lc"
+    'D1GT021': "1KwuaO0C27sPEgxH7mODG62_TBVrfjx28B1IV0G5L_Lc",
+    'EstragadoDH': "1WIbKxlZM0WyyEgNXriJMbNfCv_-ltqKHdvTxxtRLLL4",
+    'EstragadoDHD4': "1dYojcaWvXQQsk_VKTtpVPPlMPH8tGgk9RLg0ut5ov2g",
+    'EstragadoDHD2': "1cNG2ubJWl7mnzz5jgSB5I5Vn5oP9CEMXq32KxfqQslw"
 };
 class GoogleRepository {
     authClient;
@@ -24,44 +27,6 @@ class GoogleRepository {
         this.authClient = authClient;
         // This line initializes the 'googleapis' Sheets client instance, configuring it to use the 'auth' object (which handles the actual authentication tokens) for all API requests.
         this.sheet = googleapis_1.google.sheets({ version: "v4", auth: authClient });
-    }
-    /**
-     * Appends new rows of data to the specified range in the Google Sheet.
-     * This is ideal for adding new records.
-     *
-     * @param range The A1 notation or R1C1 notation of a range to append values to.  If the range is 'Sheet1!A:D', data will be appended after the last row in columns A-D.
-     * @param values The data to append, as an array of arrays (each inner array is a row).
-     * @param valueInputOption How the infilterCodigoIndexput data should be interpreted. 'USER_ENTERED' (default) parses values     * as if they were entered into the UI. 'RAW' treats all values as strings.
-     * @param dep Warehouse name referent to SHEET_ID
-     * @returns A promise that resolves to the append response from the API, or null if an error occurs.
-     */
-    async writeData(range, values, dep, valueInputOption = "USER_ENTERED") {
-        try {
-            const sheets = this.sheet;
-            const requestBody = {
-                values: values
-            };
-            const response = await sheets.spreadsheets.values.update({
-                spreadsheetId: SHEET_ID[dep],
-                range: range,
-                valueInputOption: valueInputOption,
-                requestBody: requestBody,
-                includeValuesInResponse: true
-            });
-            if (!response.data.updatedData.values) {
-                throw new Error();
-            }
-            return response.data.updatedData.values;
-        }
-        catch (error) {
-            console.error(`Error apending data to range ${range}:, `, error);
-            if (error instanceof Error) {
-                throw new requestErrorHandler_1.default(500, "Error on writing data", error.message);
-            }
-            else {
-                throw new requestErrorHandler_1.default(500, "Error on writing data", "unknown error");
-            }
-        }
     }
     /**
      *
@@ -108,85 +73,6 @@ class GoogleRepository {
             }
             else {
                 throw new requestErrorHandler_1.default(500, "error getting all", "unknown error");
-            }
-        }
-    }
-    /**
-     * use getAll to find the 0 starting index of the the input
-     * @param dep Warehouse name referent to SHEET_ID
-     *
-     * @param codigo string input to find on the sheets
-     * @returns index of codigo if present otherwise throws an error
-     */
-    async findCodigoIndex(codigo, dep) {
-        try {
-            const codigoColumns = await this.getAllCodigos(dep);
-            //find the index of the first occurrence of "codigo"
-            let codigoIndex = codigoColumns.findIndex(row => row.toLocaleLowerCase() == codigo.toLocaleLowerCase());
-            if (codigoIndex == -1)
-                throw new Error("codigo not found");
-            return codigoIndex;
-        }
-        catch (error) {
-            console.error("error fetching codigo index", error);
-            if (error instanceof Error) {
-                throw new requestErrorHandler_1.default(500, "index error", error.message);
-            }
-            else {
-                throw new requestErrorHandler_1.default(500, "index error", "unknown error");
-            }
-        }
-    }
-    /**
-     * @param dep Warehouse name referent to SHEET_ID
-     * @param codigo codigo of the posicion to be updated
-     * @param newPosicion array of the new posicion in the correct order: pasillo, bloco, secuencia
-     * @returns an array of array string[][], representing the row and columns of the updated row of codigo
-     */
-    async appendPosicion(codigo, newPosicion, dep) {
-        try {
-            const codigoIndex = await this.findCodigoIndex(codigo, dep);
-            const range = `D${codigoIndex + 1}:W${codigoIndex + 1}`;
-            let dataRow = await this.getRange(range, dep);
-            if (!dataRow) {
-                dataRow = [[]];
-            }
-            const outputData = Array.from(newPosicion);
-            outputData.push(...dataRow[0]);
-            //these two constants are specific for the table formatting
-            const endOfSheet = 20; //this is the number of columns
-            const posicionDataUnit = 5; //this is the size of data unit, which is 5 cells
-            if (outputData.length > endOfSheet) {
-                for (let i = 0; i < posicionDataUnit; i++) {
-                    outputData.pop();
-                }
-            }
-            // console.log(dataRow);
-            return this.writeData(range, [outputData], dep);
-        }
-        catch (error) {
-            console.error("error appending", error);
-            if (error instanceof Error) {
-                throw new requestErrorHandler_1.default(500, "append error", error.message);
-            }
-            else {
-                throw new requestErrorHandler_1.default(500, "append error", "Unknown error");
-            }
-        }
-    }
-    async appendPosicionRecebimiento(codigo, packingList, unidadPosicion) {
-        try {
-            const index = await this.findCodigoIndex(codigo, packingList);
-            const range = `N${index + 1}`;
-            return this.writeData(range, [[unidadPosicion]], packingList);
-        }
-        catch (error) {
-            console.error("error appending", error);
-            if (error instanceof Error) {
-                throw new requestErrorHandler_1.default(500, "append error", error.message);
-            }
-            else {
-                throw new requestErrorHandler_1.default(500, "append error", "Unknown error");
             }
         }
     }
@@ -268,6 +154,161 @@ class GoogleRepository {
             }
             else {
                 throw new requestErrorHandler_1.default(500, "rowRecebimientos error", "unknown error");
+            }
+        }
+    }
+    /**
+     * use getAll to find the 0 starting index of the the input
+     * @param dep Warehouse name referent to SHEET_ID
+     *
+     * @param codigo string input to find on the sheets
+     * @returns index of codigo if present otherwise throws an error
+     */
+    async findCodigoIndex(codigo, dep) {
+        try {
+            const codigoColumns = await this.getAllCodigos(dep);
+            //find the index of the first occurrence of "codigo"
+            let codigoIndex = codigoColumns.findIndex(row => row.toLocaleLowerCase() == codigo.toLocaleLowerCase());
+            if (codigoIndex == -1)
+                throw new Error("codigo not found");
+            return codigoIndex;
+        }
+        catch (error) {
+            console.error("error fetching codigo index", error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, "index error", error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "index error", "unknown error");
+            }
+        }
+    }
+    /**
+     * Appends new rows of data to the specified range in the Google Sheet.
+     * This is ideal for adding new records.
+     *
+     * @param range The A1 notation or R1C1 notation of a range to append values to.  If the range is 'Sheet1!A:D', data will be appended after the last row in columns A-D.
+     * @param values The data to append, as an array of arrays (each inner array is a row).
+     * @param valueInputOption How the infilterCodigoIndexput data should be interpreted. 'USER_ENTERED' (default) parses values     * as if they were entered into the UI. 'RAW' treats all values as strings.
+     * @param dep Warehouse name referent to SHEET_ID
+     * @returns A promise that resolves to the append response from the API, or null if an error occurs.
+     */
+    async writeData(range, values, dep, valueInputOption = "USER_ENTERED") {
+        try {
+            const sheets = this.sheet;
+            const requestBody = {
+                values: values
+            };
+            const response = await sheets.spreadsheets.values.update({
+                spreadsheetId: SHEET_ID[dep],
+                range: range,
+                valueInputOption: valueInputOption,
+                requestBody: requestBody,
+                includeValuesInResponse: true
+            });
+            if (!response.data.updatedData.values) {
+                throw new Error();
+            }
+            return response.data.updatedData.values;
+        }
+        catch (error) {
+            console.error(`Error apending data to range ${range}:, `, error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, "Error on writing data", error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "Error on writing data", "unknown error");
+            }
+        }
+    }
+    /**
+     * @param dep Warehouse name referent to SHEET_ID
+     * @param codigo codigo of the posicion to be updated
+     * @param newPosicion array of the new posicion in the correct order: pasillo, bloco, secuencia
+     * @returns an array of array string[][], representing the row and columns of the updated row of codigo
+     */
+    async appendPosicion(codigo, newPosicion, dep) {
+        try {
+            const codigoIndex = await this.findCodigoIndex(codigo, dep);
+            const range = `D${codigoIndex + 1}:W${codigoIndex + 1}`;
+            let dataRow = await this.getRange(range, dep);
+            if (!dataRow) {
+                dataRow = [[]];
+            }
+            const outputData = Array.from(newPosicion);
+            outputData.push(...dataRow[0]);
+            //these two constants are specific for the table formatting
+            const endOfSheet = 20; //this is the number of columns
+            const posicionDataUnit = 5; //this is the size of data unit, which is 5 cells
+            if (outputData.length > endOfSheet) {
+                for (let i = 0; i < posicionDataUnit; i++) {
+                    outputData.pop();
+                }
+            }
+            // console.log(dataRow);
+            return this.writeData(range, [outputData], dep);
+        }
+        catch (error) {
+            console.error("error appending", error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, "append error", error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "append error", "Unknown error");
+            }
+        }
+    }
+    async appendPosicionRecebimiento(codigo, packingList, unidadPosicion) {
+        try {
+            const index = await this.findCodigoIndex(codigo, packingList);
+            const range = `N${index + 1}`;
+            return this.writeData(range, [[unidadPosicion]], packingList);
+        }
+        catch (error) {
+            console.error("error appending", error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, "append error", error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "append error", "Unknown error");
+            }
+        }
+    }
+    /**
+     * Appends a new row to the end of the specified Google Sheet.
+     * * @param data The data to be appended, as a one-dimensional array.
+     * @param dep The warehouse name (key for SHEET_ID) to identify the target spreadsheet.
+     * @param sheetName The name of the sheet (e.g., "Sheet1").
+     * @returns The updated range of the appended data.
+     */
+    async appendRecord(data, dep, sheetName = 'Sheet1') {
+        try {
+            const sheets = this.sheet;
+            const range = `${sheetName}!A1`; // Appending starts at A1 and finds the next empty row.
+            const requestBody = {
+                values: [data]
+            };
+            const response = await sheets.spreadsheets.values.append({
+                spreadsheetId: SHEET_ID[dep],
+                range: range,
+                valueInputOption: 'USER_ENTERED',
+                requestBody: requestBody,
+                insertDataOption: 'INSERT_ROWS',
+                includeValuesInResponse: true
+            });
+            if (!response.data.updates?.updatedData?.values) {
+                console.log(response.data.updates?.updatedData?.values);
+                throw new Error('No updated data received from the API.');
+            }
+            return response.data.updates.updatedData.values.flat();
+        }
+        catch (error) {
+            console.error("Error appending record:", error);
+            if (error instanceof Error) {
+                throw new requestErrorHandler_1.default(500, "Error on appending record", error.message);
+            }
+            else {
+                throw new requestErrorHandler_1.default(500, "Error on appending record", "unknown error");
             }
         }
     }
