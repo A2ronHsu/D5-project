@@ -36,9 +36,7 @@ declare global {
 
 
 
-router.post("/submit", async (req: Request, res: Response) => {
-   await formController.submit(req, res);
-});
+
 
 router.get("/getCodigo", async (req: Request, res: Response) => {
    await formController.getCodigo(req, res);
@@ -51,6 +49,10 @@ router.get("/getAllCodigos/:dep", async (req: Request, res: Response) => {
 router.get("/getLastPosicionRecebimientos/:packingList", async (req: Request, res: Response) => {
    await formController.getLastPosicionRecebimientos(req, res);
 })
+
+router.post("/submit", async (req: Request, res: Response) => {
+   await formController.submit(req, res);
+});
 
 router.post("/getRow", async (req: Request, res: Response) => {
    await formController.getRow(req, res);
@@ -93,7 +95,10 @@ router.post("/listadenotas", async (req: Request, res: Response) =>{
    await orderController.addNotas(req,res);
 })
 
-
+router.post("/estragados", async (req: Request, res: Response) =>{
+   console.log("post request on /estragados received");
+   await formController.appendEstragado(req,res);
+})
 
 
 export default router;

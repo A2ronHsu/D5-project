@@ -8,31 +8,16 @@ interface ISearch {
 }
 
 const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
-   // const [unidadPorCaja, setUnidadPorCaja] = useState<string>("");
    const [descripcion, setDescripcion] = useState<string>("");
    const [codigo, setCodigo] = useState<string>("");
    const [cajas, setCajas] = useState<number | null>(null);
-   // const [cajasInteriores, setCajasInteriores] = useState<string>("");
-   // const [unidadesEnCajasInteriores, setUnidadesEnCajasInteriores] = useState<string>("");
-   // const [peso, setPeso] = useState<string>("");
-   // const [largo, setLargo] = useState<number | null>(null);
-   // const [ancho, setAncho] = useState<number | null>(null);
-   // const [alto, setAlto] = useState<number | null>(null);
-
    const [posicion, setPosicion] = useState<number | null | "no hay">(null);
 
 
    useEffect(() => {
       setCodigo("");
       setDescripcion("");
-      // setUnidadPorCaja("");
       setCajas(null);
-      // setCajasInteriores("");
-      // setUnidadesEnCajasInteriores("");
-      // setLargo(null);
-      // setAncho(null);
-      // setAlto(null);
-      // setPeso("");
       setPosicion(null);
 
    }, [searchInput]);
@@ -40,14 +25,7 @@ const RecebimientoResultTable: React.FC<ISearch> = ({ searchInput, row }) => {
    useEffect(() => {
       setCodigo(searchInput);
       setDescripcion(row[0]);
-      // setUnidadPorCaja(row[1]);
       setCajas(Number(row[2]) || null);
-      // setCajasInteriores(row[3]);
-      // setUnidadesEnCajasInteriores(row[4]);
-      // setLargo(Number(row[7]) / 100 || null);
-      // setAncho(Number(row[8]) / 100 || null);
-      // setAlto(Number(row[9]) / 100 || null);
-      // setPeso(row[10]);
       setPosicion(Number(row[12]) || null);
 
    }, [row]);

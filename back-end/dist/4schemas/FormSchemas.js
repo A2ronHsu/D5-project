@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.transferValidation = exports.getCodigoValidation = exports.entradaPosicionesRecebimientosValidation = exports.entradaPosicionesValidation = void 0;
+exports.estragadoValidation = exports.transferValidation = exports.getCodigoValidation = exports.entradaPosicionesRecebimientosValidation = exports.entradaPosicionesValidation = void 0;
 const requestErrorHandler_1 = __importDefault(require("./requestErrorHandler"));
 const entradaPosicionesValidation = (input) => {
     const { codigo, pasillo, bloco, secuencia, dep } = input;
@@ -47,3 +47,18 @@ const transferValidation = (input) => {
     return { fecha, dep, codigo, bloco, cantidad };
 };
 exports.transferValidation = transferValidation;
+const estragadoValidation = (input) => {
+    let { codigo, dep, descripcion, cantidad } = input;
+    if (!codigo || !dep || !cantidad || !descripcion) {
+        let error = new requestErrorHandler_1.default(400, "Input Error", "Invalid Input");
+        throw error;
+    }
+    ;
+    cantidad = Number(cantidad);
+    if (isNaN(cantidad) || cantidad <= 0) {
+        let error = new requestErrorHandler_1.default(400, "Input Error", "Invalid Input: 'cantidad' must be a positive number");
+        throw error;
+    }
+    return { codigo, dep, descripcion, cantidad };
+};
+exports.estragadoValidation = estragadoValidation;

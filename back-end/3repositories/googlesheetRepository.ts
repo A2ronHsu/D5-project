@@ -16,7 +16,7 @@ const SHEET_ID: { [key: string]: string } = {
    'D1GT021': "1KwuaO0C27sPEgxH7mODG62_TBVrfjx28B1IV0G5L_Lc",
    'EstragadoDH': "1WIbKxlZM0WyyEgNXriJMbNfCv_-ltqKHdvTxxtRLLL4",
    'EstragadoDHD4': "1dYojcaWvXQQsk_VKTtpVPPlMPH8tGgk9RLg0ut5ov2g",
-   'EstragadoDHD2': ""
+   'EstragadoDHD2': "1cNG2ubJWl7mnzz5jgSB5I5Vn5oP9CEMXq32KxfqQslw"
 
 }
 
@@ -163,6 +163,8 @@ class GoogleRepository {
          }
       }
    }
+
+   
 
    /**
     * use getAll to find the 0 starting index of the the input
@@ -319,12 +321,14 @@ class GoogleRepository {
             valueInputOption: 'USER_ENTERED',
             requestBody: requestBody,
             insertDataOption: 'INSERT_ROWS',
+            includeValuesInResponse: true
          });
          
          if (!response.data.updates?.updatedData?.values) {
+            console.log(response.data.updates?.updatedData?.values);
             throw new Error('No updated data received from the API.');
          }
-         return response.data.updates.updatedData.values;
+         return response.data.updates.updatedData.values.flat();
 
       } catch (error: unknown) {
          console.error("Error appending record:", error);

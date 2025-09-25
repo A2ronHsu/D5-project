@@ -9,8 +9,8 @@ const Menu: React.FC = () => {
         <legend className={styles.legend}>Menu Principal</legend>
         <Link to="/posicion" className={Helper.link}>Posicion</Link>
         <Link to="/recebimiento" className={Helper.link}>Recebimiento</Link>
-        <Link to="/transfer" className={Helper.link}>test2</Link>
-        <Link to="/transfer" className={Helper.link}>test3</Link>
+        <Link to="/estragados" className={Helper.link}>Estragados</Link>
+        <Link to="/transfer" className={Helper.link}>Devoluciones</Link>
 
 
 

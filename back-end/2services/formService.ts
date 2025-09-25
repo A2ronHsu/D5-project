@@ -1,4 +1,4 @@
-import { entradaPosiciones, ITransfer, posicionRecebimiento } from "../5models/formModel";
+import { entradaPosiciones, IEstragado, ITransfer, posicionRecebimiento } from "../5models/formModel";
 import GoogleRepository from "../3repositories/googlesheetRepository";
 
 class FormService {
@@ -49,8 +49,12 @@ class FormService {
       return row;
    }
 
-   async appendRecord(data: string[], dep: string) {
-      await this.repository.appendRecord(data, dep);
+   async appendEstragado(data: IEstragado): Promise<any> {
+      const { codigo, dep, descripcion,cantidad } = data;
+      
+      await this.repository.findCodigoIndex(codigo, "EstragadoDH"); // to check if the codigo exists, if not it will throw an error
+      const response = await this.repository.appendRecord([codigo, descripcion, cantidad], dep);
+      return response;
    }
 
 
